@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banquete de Gala - D5</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconos de Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Librerías Externas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> <!-- CÓDIGOS QR -->
+    <!-- NUEVA LIBRERÍA: Escáner de QR -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        body, html { 
+            background-color: #1A0F0A; 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .bg-custom {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 14, 23, 0.5) 0%, #1A0F0A 40%),
+                radial-gradient(circle at 90% 80%, rgba(89, 104, 39, 0.3) 0%, #1A0F0A 40%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .fade-out { animation: fadeOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .scale-in { animation: scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .envelope-open { animation: envelopeOpen 0.8s ease-in forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1) translateY(0); }
+            to { opacity: 0; transform: scale(0.95) translateY(-10px); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes envelopeOpen {
+            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            50% { transform: scale(1.1); opacity: 0.8; filter: brightness(1.2); }
+            100% { transform: scale(1.5); opacity: 0; filter: blur(10px); }
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        
+        .card-shadow { box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(74, 14, 23, 0.3); }
+
+        .inner-border {
+          border: 1px solid rgba(197, 160, 89, 0.4);
+          outline: 1px solid rgba(197, 160, 89, 0.4);
+          outline-offset: -4px;
+        }
+
+        #main-container { display: none; }
+        #view-form, #view-ticket { display: none; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #F8F5F2; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+
+        /* Estilos para el Escáner */
+        #qr-reader { width: 100%; border: 2px solid #C5A059 !important; border-radius: 8px; overflow: hidden;}
+        #qr-reader__scan_region img { opacity: 0.3; }
+        #qr-reader__dashboard_section_csr button { background-color: #596827 !important; color: white !important; border: none !important; padding: 5px 10px !important; border-radius: 4px !important; }
+    </style>
+</head>
+<body class="bg-custom flex items-center justify-center p-4">
+
+    <!-- REPRODUCTOR DE AUDIO INVISIBLE -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="seven.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- BOTÓN PARA ACTIVAR/SILENCIAR AUDIO -->
+    <button id="audio-toggle" onclick="toggleAudio()" class="hidden fixed bottom-4 left-4 z-[60] bg-[#1A0F0A]/80 text-[#C5A059] p-3 rounded-full border border-[#C5A059] shadow-[0_0_15px_rgba(197,160,89,0.3)] backdrop-blur-sm transition-transform hover:scale-110">
+        <i data-lucide="volume-2" class="w-5 h-5" id="audio-icon"></i>
+    </button>
+
+    <!-- ================== VISTA 0: SOBRE INICIAL ================== -->
+    <div id="view-envelope" class="flex flex-col items-center justify-center w-full max-w-md scale-in z-50 cursor-pointer" onclick="openEnvelope()">
+        <p class="text-[#C5A059] font-serif italic text-lg mb-4 opacity-80 tracking-widest text-center animate-pulse">Toca el sobre para abrir</p>
+        <div class="relative transition-transform duration-500 hover:scale-105" id="envelope-image-container">
+            <img src="sobre.jpg" alt="Sobre cerrado" class="w-full max-w-[350px] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)] rounded-md" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/4A0E17/F2EDE8?text=ABRIR+INVITACION';">
+        </div>
+    </div>
+
+
+    <!-- CONTENEDOR PRINCIPAL DE LA INVITACIÓN -->
+    <div id="main-container" class="relative w-full max-w-md bg-[#F8F5F2] card-shadow p-2 sm:p-3" style="min-height: 680px;">
+        <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col overflow-hidden bg-[#F2EDE8] inner-border">
+            
+            <!-- Esquinas Florales -->
+            <svg class="absolute -top-4 -left-4 w-52 h-52 pointer-events-none opacity-95 z-0 drop-shadow-lg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <path d="M20 100 Q 50 20 120 40" stroke="#C5A059" stroke-width="1" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <svg class="absolute -bottom-4 -right-4 w-60 h-60 pointer-events-none opacity-95 z-0 drop-shadow-lg transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M110 10 Q 160 30 140 90 Q 90 60 110 10 Z" fill="#596827" opacity="0.8"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <!-- ZONA SECRETA PARA ACTIVAR EL ADMIN -->
+            <div class="absolute top-0 right-0 w-20 h-20 z-50 cursor-default" onclick="handleAdmin()"></div>
+
+            <div class="relative z-10 p-6 sm:p-10 h-full flex flex-col justify-center flex-grow" id="content-area">
+
+                <!-- ================== VISTA 1: INVITACIÓN ================== -->
+                <div id="view-invitation" class="text-center flex flex-col h-full justify-between pt-6">
+                    <div>
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <span class="text-[#C5A059] text-[10px]">♦</span>
+                            <p class="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[#362017] font-semibold border-b border-[#C5A059] pb-1">
+                                Grupo de Gastronomía D5
+                            </p>
+                            <span class="text-[#C5A059] text-[10px]">♦</span>
+                        </div>
+                        
+                        <p class="font-script text-4xl sm:text-5xl text-[#596827] mb-6 leading-none drop-shadow-sm">Estás invitado al</p>
+                        
+                        <h1 class="font-serif text-4xl sm:text-5xl text-[#4A0E17] leading-[0.9] mb-4 font-bold tracking-tight">
+                            Proyecto<br/><span class="italic font-light">Integrador</span>
+                        </h1>
+                        
+                        <p class="font-serif text-lg sm:text-xl text-[#362017] tracking-[0.3em] uppercase mt-2 mb-4">Banquete de Gala</p>
+
+                        <button onclick="openMenu()" class="mx-auto flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-[#596827] border border-[#596827] rounded-full px-4 py-1.5 hover:bg-[#596827] hover:text-white transition-colors duration-300">
+                            <i data-lucide="utensils" class="w-3 h-3"></i> Descubrir Menú
+                        </button>
+
+                        <div class="flex items-center justify-center my-4 w-full max-w-[280px] mx-auto">
+                            <div class="h-[1px] bg-gradient-to-r from-[#F8F5F2] via-[#C5A059] to-[#F8F5F2] w-full"></div>
+                            <div class="mx-2 text-[#C5A059] text-xs">✦</div>
+                            <div class="mx-1 w-2 h-2 rotate-45 bg-[#C5A059] border border-[#362017]"></div>
+                            <div class="mx-2 text-[#C5A059] text-xs">✦</div>
+                            <div class="h-[1px] bg-gradient-to-r from-[#C5A059] via-[#C5A059] to-[#F8F5F2] w-full"></div>
+                        </div>
+
+                        <!-- Fecha, Hora y Ubicación -->
+                        <div class="space-y-4 text-sm text-[#362017] mb-6 relative z-20">
+                            <div class="flex flex-col items-center justify-center gap-1">
+                                <span class="font-serif italic text-xl text-[#4A0E17]">Viernes, 29 de Mayo</span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <div class="h-px w-6 bg-[#C5A059]"></div>
+                                    <span class="uppercase tracking-widest text-[11px] font-semibold">Recepción 18:30 H</span>
+                                    <div class="h-px w-6 bg-[#C5A059]"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4 flex flex-col items-center">
+                                <span class="block font-script text-3xl text-[#596827] mb-1">Casino La Lomita</span>
+                                
+                                <span class="block text-[10px] text-[#362017] font-medium text-center leading-relaxed mb-1 max-w-[240px]">
+                                    Boulevard Tepic Xalisco #110<br/>
+                                    Curva del Guayabo, Col. Lomas del Nayar
+                                </span>
+                                
+                                <span class="block text-[10px] uppercase tracking-[0.3em] mb-4 font-bold text-[#4A0E17]">Xalisco, Nayarit</span>
+                                
+                                <a href="https://maps.google.com/?q=Casino+La+Lomita+Xalisco+Nayarit" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-[#C5A059] bg-[#1A0F0A] px-4 py-2 rounded hover:bg-[#4A0E17] hover:text-white transition-colors duration-300 font-bold shadow-md w-max mx-auto">
+                                    <i data-lucide="map-pin" class="w-3 h-3"></i> Ver Ubicación
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOTONERA INFERIOR -->
+                    <div class="space-y-4 relative z-20">
+                        <div onclick="openDressCode()" class="py-2.5 px-4 border-2 border-[#C5A059] bg-[#F8F5F2] bg-opacity-95 w-full max-w-[280px] mx-auto rounded-sm cursor-pointer hover:bg-[#E5DACE] transition-colors shadow-sm group">
+                            <p class="text-[9px] uppercase tracking-widest text-[#4A0E17] font-bold flex flex-col items-center gap-1">
+                                <span>Código de Vestimenta:</span>
+                                <span class="text-[#596827] flex items-center gap-1">
+                                    Casual Elegante 
+                                </span>
+                            </p>
+                            <p class="text-[#C5A059] text-[7px] mt-1 tracking-[0.2em] font-bold">(Toca para ver guía visual)</p>
+                        </div>
+
+                        <button onclick="changeView('form')" class="w-full bg-[#4A0E17] text-[#F2EDE8] py-4 px-6 hover:bg-[#3A0D11] transition-all duration-500 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-lg">
+                            Confirmar Asistencia
+                            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ================== VISTA 2: FORMULARIO ================== -->
+                <div id="view-form" class="flex flex-col h-full justify-center relative z-20 bg-[#F8F5F2] bg-opacity-95 p-6 -mx-4 rounded-lg shadow-2xl border border-[#C5A059]">
+                    <div class="text-center mb-8">
+                        <h2 class="font-script text-5xl text-[#4A0E17] mb-2 drop-shadow-sm">Reserva</h2>
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="h-px w-4 bg-[#C5A059]"></div>
+                            <p class="text-[10px] uppercase tracking-[0.3em] text-[#596827] font-semibold">Confirma tu asistencia</p>
+                            <div class="h-px w-4 bg-[#C5A059]"></div>
+                        </div>
+                    </div>
+
+                    <form id="reservation-form" onsubmit="handleConfirm(event)" class="space-y-8">
+                        <div class="relative">
+                            <label class="block text-[10px] uppercase tracking-widest text-[#C5A059] mb-1 font-semibold absolute -top-5 left-0">Nombre del Invitado</label>
+                            <input type="text" id="guestName" required placeholder="Ej. Roberto Martínez" class="w-full py-3 bg-transparent border-b-2 border-[#362017] focus:border-[#C5A059] outline-none transition-colors text-[#4A0E17] font-serif italic text-xl placeholder-opacity-40 uppercase">
+                        </div>
+
+                        <div class="relative mt-12">
+                            <label class="block text-[10px] uppercase tracking-widest text-[#C5A059] mb-1 font-semibold absolute -top-5 left-0">Alumno Anfitrión</label>
+                            <div class="relative">
+                                <select id="selectedStudent" required class="w-full py-3 bg-transparent border-b-2 border-[#362017] focus:border-[#C5A059] outline-none transition-colors text-[#4A0E17] font-serif italic text-xl appearance-none cursor-pointer">
+                                    <option value="" disabled selected class="font-sans text-sm">Selecciona quién te invita...</option>
+                                </select>
+                                <i data-lucide="user" class="absolute right-0 top-4 text-[#C5A059] pointer-events-none w-5 h-5"></i>
+                            </div>
+                        </div>
+
+                        <div id="errorMsg" class="hidden text-xs text-red-700 bg-red-100 p-3 rounded text-center border border-red-300 font-semibold shadow-inner"></div>
+
+                        <div class="pt-8 flex flex-col gap-4">
+                            <button type="submit" id="btnSubmit" class="w-full bg-[#596827] border-[#596827] hover:bg-[#4a5720] hover:border-[#C5A059] text-[#F2EDE8] py-4 px-6 transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 border shadow-md">
+                                Obtener Pase Exclusivo
+                            </button>
+                            <button type="button" onclick="changeView('invitation')" class="w-full text-[#362017] py-2 text-[10px] uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors">Volver</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ================== VISTA 3: TICKET ================== -->
+                <div id="view-ticket" class="flex flex-col h-full justify-center items-center text-center relative z-20">
+                    
+                    <div id="ticket-exportable" class="w-full bg-[#1A0F0A] p-4 -mx-4 pb-0 rounded shadow-2xl relative overflow-hidden">
+                        
+                        <!-- ELEMENTO DE SEGURIDAD -->
+                        <div class="bg-gradient-to-r from-[#4A0E17] via-red-800 to-[#4A0E17] text-white text-[8px] sm:text-[9px] uppercase tracking-widest py-1.5 flex justify-center items-center gap-2 shadow-inner z-50 relative -mx-4 -mt-4 mb-6">
+                            <div class="w-2 h-2 rounded-full bg-red-400 animate-pulse border border-white"></div>
+                            <span>Pase Dinámico • Hora: <span id="live-clock" class="font-mono font-bold">00:00:00</span></span>
+                        </div>
+
+                        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #F2EDE8 25%, transparent 25%, transparent 75%, #F2EDE8 75%, #F2EDE8); background-position: 0 0, 10px 10px; background-size: 20px 20px;"></div>
+
+                        <div class="w-full bg-[#F8F5F2] border-2 border-[#C5A059] relative shadow-2xl overflow-hidden rounded-sm">
+                            <div class="absolute top-0 left-0 w-8 h-8 border-r border-b border-[#C5A059]"></div>
+                            <div class="absolute top-0 right-0 w-8 h-8 border-l border-b border-[#C5A059]"></div>
+                            
+                            <div class="p-4 sm:p-6 relative z-10">
+                                <div class="border-b-2 border-dashed border-[#C5A059] pb-3 mb-4 mt-2">
+                                    <p class="text-[9px] uppercase tracking-[0.4em] text-[#596827] mb-2 font-bold">Pase VIP de Gala</p>
+                                    <h3 id="ticket-name" class="font-cinzel font-bold text-[#4A0E17] leading-tight px-1 tracking-widest break-words uppercase">NOMBRE</h3>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-center mb-4">
+                                    <div class="border-r-2 border-dashed border-[#C5A059] flex flex-col justify-center">
+                                        <p class="text-[8px] uppercase tracking-widest text-[#596827] font-bold">Mesa</p>
+                                        <p id="ticket-table" class="font-serif text-3xl sm:text-4xl text-[#4A0E17] mt-1">0</p>
+                                    </div>
+                                    <div class="flex flex-col justify-center items-center px-1">
+                                        <p class="text-[8px] uppercase tracking-widest text-[#596827] font-bold mb-1">Invitado por</p>
+                                        <p id="ticket-host" class="font-serif italic text-[11px] leading-tight text-[#362017] break-words">Anfitrión</p>
+                                    </div>
+                                </div>
+
+                                <!-- SECCIÓN DEL CÓDIGO QR -->
+                                <div class="bg-[#1A0F0A] p-4 mx-[-1.5rem] mb-[-1.5rem] text-center border-t-2 border-[#C5A059]">
+                                    <div id="qrcode-container" class="flex justify-center mb-3 bg-white p-2 w-max mx-auto rounded"></div>
+                                    <p id="ticket-code" class="font-serif text-xl tracking-[0.3em] text-[#C5A059]">CODIGO</p>
+                                    <p class="text-[7px] text-[#F2EDE8] opacity-60 tracking-widest uppercase mt-2">Presenta este QR en la entrada</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btnDownload" onclick="handleDownload()" class="mt-6 bg-[#C5A059] text-[#1A0F0A] py-3 px-6 hover:bg-[#AA771C] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 border-2 border-[#C5A059] shadow-lg w-full max-w-[250px]">
+                        <i data-lucide="download" class="w-4 h-4"></i> Guardar Pase
+                    </button>
+                    
+                    <button onclick="changeView('invitation')" class="mt-4 text-[#C5A059] text-[10px] uppercase tracking-[0.3em] opacity-60 hover:opacity-100 font-bold transition-opacity">Volver al inicio</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== MODAL STORYTELLING Y MENÚ ================== -->
+    <div id="modal-menu" class="hidden fixed inset-0 z-[100] flex-col items-center justify-center bg-black/90 p-4 backdrop-blur-md transition-opacity" onclick="closeMenu()">
+        <div class="relative w-full max-w-lg max-h-[85vh] flex flex-col bg-[#F8F5F2] rounded border-2 border-[#C5A059] shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+            
+            <!-- HEADER MODAL MENÚ -->
+            <div class="bg-[#4A0E17] p-4 flex justify-between items-center border-b-2 border-[#C5A059]">
+                <div class="flex items-center gap-2 text-[#C5A059]">
+                    <i data-lucide="chef-hat" class="w-5 h-5"></i>
+                    <h3 class="font-cinzel font-bold text-lg tracking-wide uppercase">Experiencia Gastronómica</h3>
+                </div>
+                <button onclick="closeMenu()" class="text-white hover:text-[#C5A059] transition-colors"><i data-lucide="x-circle" class="w-6 h-6"></i></button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto flex-grow font-sans custom-scrollbar text-[#362017]">
+                
+                <!-- INTRODUCCIÓN -->
+                <div class="text-center mb-6">
+                    <h4 class="font-script text-4xl text-[#596827]">La Dualidad del Sabor</h4>
+                    <p class="text-xs leading-relaxed opacity-90 italic font-serif mt-2">
+                        Un recorrido sensorial donde el confort y la tradición de la <span class="font-bold text-[#4A0E17]">Cocina Italiana</span> se encuentran con la audacia y técnica de la <span class="font-bold text-[#4A0E17]">Cocina de Autor</span>. El Grupo D5 de Gastronomía ha diseñado un banquete que desafía los sentidos.
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-center my-6 w-full">
+                    <div class="h-px bg-[#C5A059] w-1/4"></div>
+                    <i data-lucide="utensils" class="w-4 h-4 mx-3 text-[#C5A059]"></i>
+                    <div class="h-px bg-[#C5A059] w-1/4"></div>
+                </div>
+
+                <!-- LISTA DEL MENÚ -->
+                <div class="space-y-6 text-left px-2">
+                    
+                    <!-- ANTIPASTO -->
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Antipasto <span class="font-normal opacity-70">| Cocina de Autor</span></p>
+                        <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Carpaccio de Salmón y Atún Curados</p>
+                        <p class="text-[11px] opacity-80 mt-1 mb-2 leading-relaxed">Corte fino de pescado seleccionado, de textura sedosa y sabor limpio, acompañado de una esferificación de soya, miel, limón y chile piquín que estalla en boca, liberando un equilibrio de matices umami, dulces, cítricos y sutilmente picantes.</p>
+                        <div class="bg-[#E5DACE] bg-opacity-30 p-2 rounded border-l-2 border-[#C5A059]">
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-[#C5A059] flex items-center gap-1 mb-1"><i data-lucide="glass-water" class="w-3 h-3"></i> Maridaje de Bienvenida</p>
+                            <p class="font-serif font-bold text-[#362017] text-sm">Lichi Tónico</p>
+                            <p class="text-[10px] opacity-75 leading-tight">Bebida a base de lichi y agua tónica, de perfil fresco y ligeramente cítrico, con notas dulces que realzan la ligereza del carpaccio.</p>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-gradient-to-r from-transparent via-[#C5A059] to-transparent w-full opacity-50"></div>
+
+                    <!-- PRIMO PIATTO -->
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Primo Piatto <span class="font-normal opacity-70">| Cocina Italiana</span></p>
+                        <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Ravioli de Ricotta y Espinaca</p>
+                        <p class="text-[11px] opacity-80 mt-1 mb-2 leading-relaxed">Pasta fresca de elaboración artesanal, rellena de ricotta y espinaca, servida en una salsa bechamel de textura cremosa que resalta la suavidad y equilibrio del conjunto.</p>
+                        <div class="bg-[#E5DACE] bg-opacity-30 p-2 rounded border-l-2 border-[#C5A059]">
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-[#C5A059] flex items-center gap-1 mb-1"><i data-lucide="wine" class="w-3 h-3"></i> Maridaje</p>
+                            <p class="font-serif font-bold text-[#362017] text-sm">Albahaca & Limón</p>
+                            <p class="text-[10px] opacity-75 leading-tight">Bebida a base de albahaca fresca, limón y agua mineral, de perfil herbal y cítrico, con burbuja ligera que equilibra la cremosidad de la pasta.</p>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-gradient-to-r from-transparent via-[#C5A059] to-transparent w-full opacity-50"></div>
+
+                    <!-- PLATO FUERTE -->
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Plato Fuerte <span class="font-normal opacity-70">| Fusión Italo-Contemporánea</span></p>
+                        <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Pulpo a las Brasas con Acentos Mediterráneos</p>
+                        <p class="text-[11px] opacity-80 mt-1 mb-2 leading-relaxed">Pulpo asado a las brasas, acompañado de una emulsión especiada, puré de plátano macho y ensalada de hojas frescas con repollo morado fermentado, que aporta acidez y equilibrio al conjunto.</p>
+                        <div class="bg-[#E5DACE] bg-opacity-30 p-2 rounded border-l-2 border-[#C5A059]">
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-[#C5A059] flex items-center gap-1 mb-1"><i data-lucide="wine" class="w-3 h-3"></i> Maridaje</p>
+                            <p class="font-serif font-bold text-[#362017] text-sm">Aroma Blanco</p>
+                            <p class="text-[10px] opacity-75 leading-tight">Vino blanco con notas cítricas de limón y matices herbales de romero, de burbuja ligera, que aporta frescura y equilibrio.</p>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-gradient-to-r from-transparent via-[#C5A059] to-transparent w-full opacity-50"></div>
+
+                    <!-- POSTRE -->
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Dolce <span class="font-normal opacity-70">| Cocina de Autor</span></p>
+                        <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Tarta de Chocolate y Mole Poblano</p>
+                        <p class="text-[11px] opacity-80 mt-1 mb-2 leading-relaxed">Un diálogo entre la profundidad del cacao y la complejidad del mole poblano. Base crujiente de cocoa con relleno de chocolate semiamargo infusionado con mole casero. Se complementa con ganache, cremoso de queso de cabra y crocante de sésamo tostado.</p>
+                        <div class="bg-[#E5DACE] bg-opacity-30 p-2 rounded border-l-2 border-[#C5A059]">
+                            <p class="text-[9px] uppercase tracking-widest font-bold text-[#C5A059] flex items-center gap-1 mb-1"><i data-lucide="coffee" class="w-3 h-3"></i> Digestivo</p>
+                            <p class="font-serif font-bold text-[#362017] text-sm">Amaro Cítrico</p>
+                            <p class="text-[10px] opacity-75 leading-tight">Licor digestivo italiano de perfil herbal y cítrico, con amargor equilibrado, que limpia el paladar y armoniza con las notas profundas del postre.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== MODAL DRESS CODE CORREGIDO ================== -->
+    <!-- Se usa flex-col para separar el botón de cerrar de la imagen, garantizando que nunca quede oculto por altura -->
+    <div id="modal-dress-code" class="hidden fixed inset-0 z-[100] flex-col items-center justify-center bg-black/90 p-4 backdrop-blur-sm transition-opacity" onclick="closeDressCode()">
+        
+        <!-- Botón superior independiente de la imagen -->
+        <div class="w-full max-w-sm flex justify-end mb-3" onclick="event.stopPropagation()">
+            <button onclick="closeDressCode()" class="bg-[#1A0F0A]/80 border border-[#C5A059] text-white hover:text-[#C5A059] transition-colors flex items-center gap-2 px-4 py-2 rounded-full shadow-lg">
+                <span class="text-xs tracking-widest uppercase font-bold">Cerrar</span>
+                <i data-lucide="x-circle" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Contenedor con scroll de la imagen -->
+        <div class="relative max-w-sm w-full max-h-[75vh] overflow-y-auto custom-scrollbar rounded border-2 border-[#C5A059] shadow-2xl bg-[#F8F5F2]" onclick="event.stopPropagation()">
+            <img src="dress.png" alt="Guía de Estilo" class="w-full h-auto block">
+        </div>
+        
+    </div>
+
+    <!-- ================== MODAL ADMIN: DASHBOARD LOGÍSTICA ================== -->
+    <div id="modal-guest-list" class="hidden fixed inset-0 z-[100] flex-col items-center justify-center bg-black/95 p-4 backdrop-blur-md" onclick="closeGuestList()">
+        <div class="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-[#F8F5F2] rounded border-2 border-[#C5A059] shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+            
+            <div class="bg-[#1A0F0A] p-4 flex justify-between items-center border-b-2 border-[#C5A059]">
+                <div class="flex items-center gap-2 text-[#C5A059]">
+                    <i data-lucide="scan-line" class="w-5 h-5"></i>
+                    <h3 class="font-cinzel font-bold text-lg tracking-wider">Control de Acceso</h3>
+                </div>
+                <button onclick="closeGuestList()" class="text-white hover:text-[#C5A059] transition-colors"><i data-lucide="x-circle" class="w-6 h-6"></i></button>
+            </div>
+
+            <!-- Resumen Rápido -->
+            <div class="bg-[#4A0E17] text-white p-3 flex justify-around text-center text-[10px] uppercase tracking-widest font-bold shadow-inner">
+                <div>Confirmados<br><span id="stat-total" class="text-xl text-[#C5A059]">0</span></div>
+                <div>Han Llegado<br><span id="stat-arrived" class="text-xl text-green-400">0</span></div>
+                <div>Faltan<br><span id="stat-missing" class="text-xl text-red-400">0</span></div>
+            </div>
+
+            <!-- BOTÓN PARA ABRIR ESCÁNER QR -->
+            <div class="bg-[#F2EDE8] p-3 border-b-2 border-[#C5A059] text-center">
+                <button onclick="iniciarEscaner()" id="btn-start-scan" class="bg-[#596827] text-white px-6 py-2 rounded-full text-xs uppercase font-bold tracking-widest hover:bg-[#4a5720] transition-colors shadow-md flex items-center gap-2 mx-auto">
+                    <i data-lucide="qr-code" class="w-4 h-4"></i> Abrir Escáner QR
+                </button>
+                <!-- DIV DONDE SE DIBUJARÁ LA CÁMARA -->
+                <div id="qr-reader" class="hidden mt-3 max-w-sm mx-auto"></div>
+                <!-- RESULTADO DEL ESCANEO -->
+                <div id="scan-result" class="hidden mt-2 p-2 rounded text-sm font-bold text-center"></div>
+            </div>
+            
+            <div id="guest-list-content" class="p-4 overflow-y-auto flex-grow space-y-4 font-sans custom-scrollbar bg-[#F2EDE8]">
+                <!-- Lista inyectada por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase y Lógica JavaScript -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, setDoc, updateDoc, getDoc, collection, addDoc, getDocs, deleteDoc, enableIndexedDbPersistence, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // CONFIGURACIÓN DE FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWvlKYMuFlxL88OrSOzGPzXk0w_HUTGQ8",
+            authDomain: "scuatyg2026.firebaseapp.com",
+            projectId: "scuatyg2026",
+            storageBucket: "scuatyg2026.firebasestorage.app",
+            messagingSenderId: "321639282182",
+            appId: "1:321639282182:web:6803746ad3ff4c8e8e3587"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        let html5QrcodeScanner = null; // Variable global para el escáner
+        
+        enableIndexedDbPersistence(db).catch((err) => console.log("Offline mode err", err));
+        
+        let currentUser = null;
+        let guestCounts = {};
+        
+        const STUDENTS = [
+            { name: "Grupo D5 Gastronomía", table: "VIP", maxGuests: 18 },
+            { name: "Aron Rafael Bañuelos Cortez", table: 1, maxGuests: 6 },
+            { name: "Brandon Jaramillo Rosas", table: 2, maxGuests: 6 },
+            { name: "Carlos Isac Luna", table: 3, maxGuests: 6 },
+            { name: "Cristhian Iván López Ponce", table: 4, maxGuests: 6 },
+            { name: "Daniela Rivera Carrillo", table: 5, maxGuests: 6 },
+            { name: "David Villagrana Ibarra", table: 6, maxGuests: 6 },
+            { name: "Diego De La Rosa Torres", table: 7, maxGuests: 6 },
+            { name: "Fátima Lizbeth Gómez Flores", table: 8, maxGuests: 6 },
+            { name: "Fernando Rincon Mendiola", table: 9, maxGuests: 6 },
+            { name: "Francisco Sepulveda Paredes", table: 10, maxGuests: 6 },
+            { name: "Giselle Fabiola Jiménez Silva", table: 11, maxGuests: 6 },
+            { name: "Gloria Estefanía Barraza Taracena", table: 12, maxGuests: 6 },
+            { name: "Heidi Gisela Castillo Ramírez", table: 13, maxGuests: 6 },
+            { name: "Iván Salinas Rosales", table: 14, maxGuests: 6 },
+            { name: "Julieta Esmeralda Hernández", table: 15, maxGuests: 6 },
+            { name: "Kestin Yaletzi Gutiérrez Álvarez", table: 16, maxGuests: 6 },
+            { name: "Leonel Aldair Arroyo Soria", table: 17, maxGuests: 6 },
+            { name: "Luis Armando Santiago Gonzalez", table: 18, maxGuests: 6 },
+            { name: "Martin Enrique Márquez Abascal", table: 19, maxGuests: 6 },
+            { name: "Nazbith Adilene Fletes Guardado", table: 20, maxGuests: 6 },
+            { name: "Gerardo Tovar Estrada", table: 21, maxGuests: 6 },
+            { name: "Zully Adolfo Gonzalez Hernández", table: 22, maxGuests: 6 }
+        ];
+
+        // LÓGICA DE AUDIO DE FONDO
+        const bgAudio = document.getElementById('bg-audio');
+        bgAudio.volume = 0.2; // 20% de volumen para que no moleste
+        let isAudioPlaying = false;
+
+        window.toggleAudio = () => {
+            if (bgAudio.muted) {
+                bgAudio.muted = false;
+                document.getElementById('audio-icon').setAttribute('data-lucide', 'volume-2');
+            } else {
+                bgAudio.muted = true;
+                document.getElementById('audio-icon').setAttribute('data-lucide', 'volume-x');
+            }
+            lucide.createIcons();
+        };
+
+        setInterval(() => {
+            const timeEl = document.getElementById('live-clock');
+            if(timeEl) timeEl.innerText = new Date().toLocaleTimeString('es-MX', { hour12: false });
+        }, 1000);
+
+        window.openEnvelope = () => {
+            document.getElementById('envelope-image-container').classList.add('envelope-open');
+            
+            // Iniciar la música automáticamente al tocar el sobre (interacción del usuario requerida por navegadores)
+            bgAudio.play().then(() => {
+                isAudioPlaying = true;
+                const audioBtn = document.getElementById('audio-toggle');
+                audioBtn.classList.remove('hidden');
+                audioBtn.classList.add('flex');
+            }).catch(e => console.log("Autoplay bloqueado:", e));
+
+            setTimeout(() => {
+                document.getElementById('view-envelope').style.display = 'none';
+                document.getElementById('main-container').style.display = 'block';
+            }, 700);
+        };
+
+        window.openDressCode = () => {
+            // Nota: Aquí se usa 'flex' porque el contenedor ahora es 'flex-col' (y flex activa flex-col de Tailwind)
+            document.getElementById('modal-dress-code').classList.replace('hidden', 'flex');
+        };
+        window.closeDressCode = () => {
+            document.getElementById('modal-dress-code').classList.replace('flex', 'hidden');
+        };
+        
+        window.openMenu = () => {
+            document.getElementById('modal-menu').classList.replace('hidden', 'flex');
+        };
+        window.closeMenu = () => {
+            document.getElementById('modal-menu').classList.replace('flex', 'hidden');
+        };
+
+        signInAnonymously(auth).catch(err => console.error("Auth:", err));
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                onSnapshot(doc(db, 'invitaciones_banquete', 'conteo'), (docSnap) => {
+                    if (docSnap.exists()) {
+                        guestCounts = docSnap.data();
+                        renderSelect();
+                    } else {
+                        const initialData = {};
+                        STUDENTS.forEach(s => initialData[s.name] = 0);
+                        setDoc(doc(db, 'invitaciones_banquete', 'conteo'), initialData);
+                    }
+                });
+            }
+        });
+
+        function renderSelect() {
+            const select = document.getElementById('selectedStudent');
+            const currentVal = select.value; 
+            select.innerHTML = '<option value="" disabled selected class="font-sans text-sm">Selecciona quién te invita...</option>';
+            
+            STUDENTS.forEach(student => {
+                const count = guestCounts[student.name] || 0;
+                const isFull = count >= student.maxGuests; 
+                const option = document.createElement('option');
+                option.value = student.name;
+                option.disabled = isFull;
+                
+                option.className = student.name === "Grupo D5 Gastronomía" 
+                    ? `font-sans text-sm font-bold bg-yellow-50 ${isFull ? 'text-gray-400' : 'text-[#4A0E17]'}`
+                    : `font-sans text-sm font-semibold ${isFull ? 'text-gray-400 bg-[#E5E0DA]' : 'text-[#362017]'}`;
+                
+                option.textContent = `${student.name} ${isFull ? '(Lugares Agotados)' : '(' + (student.maxGuests - count) + ' lugares)'}`;
+                select.appendChild(option);
+            });
+            if(currentVal) select.value = currentVal;
+        }
+
+        window.changeView = (newViewId) => {
+            const views = ['view-invitation', 'view-form', 'view-ticket'];
+            views.forEach(v => {
+                const el = document.getElementById(v);
+                if (window.getComputedStyle(el).display !== 'none') {
+                    el.classList.remove('fade-in');
+                    el.classList.add('fade-out');
+                    setTimeout(() => {
+                        el.style.display = 'none';
+                        if (newViewId === 'form') {
+                            document.getElementById('reservation-form').reset();
+                            document.getElementById('errorMsg').classList.add('hidden');
+                        }
+                        const nextEl = document.getElementById(`view-${newViewId}`);
+                        nextEl.classList.remove('fade-out');
+                        nextEl.classList.add('fade-in');
+                        nextEl.style.display = 'flex'; 
+                    }, 400);
+                }
+            });
+        };
+
+        window.handleConfirm = async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            let guestName = document.getElementById('guestName').value.toUpperCase().trim();
+            const selectedStudentName = document.getElementById('selectedStudent').value;
+            const btnSubmit = document.getElementById('btnSubmit');
+            const errorMsg = document.getElementById('errorMsg');
+
+            if(!guestName || !selectedStudentName) return;
+
+            btnSubmit.innerHTML = 'Procesando...';
+            btnSubmit.classList.add('opacity-70', 'cursor-wait');
+            btnSubmit.disabled = true;
+            errorMsg.classList.add('hidden');
+
+            const countsDocRef = doc(db, 'invitaciones_banquete', 'conteo');
+            const listRef = collection(db, 'invitaciones_banquete_registros');
+            const studentData = STUDENTS.find(s => s.name === selectedStudentName);
+
+            try {
+                const docSnap = await getDoc(countsDocRef);
+                const currentCount = docSnap.exists() ? (docSnap.data()[selectedStudentName] || 0) : 0;
+
+                if (currentCount >= studentData.maxGuests) {
+                    errorMsg.textContent = `Lo sentimos, límite alcanzado para este anfitrión.`;
+                    errorMsg.classList.remove('hidden');
+                    btnSubmit.innerHTML = 'Obtener Pase Exclusivo';
+                    btnSubmit.classList.remove('opacity-70', 'cursor-wait');
+                    btnSubmit.disabled = false;
+                    return;
+                }
+
+                // Generar código numérico para fácil lectura de QR
+                const uniqueCode = 'D5-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+                await updateDoc(countsDocRef, { [selectedStudentName]: currentCount + 1 });
+                await addDoc(listRef, {
+                    invitado: guestName,
+                    anfitrion: selectedStudentName,
+                    mesa: studentData.table,
+                    codigo: uniqueCode,
+                    asistio: false, 
+                    fecha: new Date().toLocaleString()
+                });
+
+                const ticketNameEl = document.getElementById('ticket-name');
+                ticketNameEl.textContent = guestName;
+                ticketNameEl.classList.remove('text-3xl', 'sm:text-4xl', 'text-2xl', 'sm:text-3xl', 'text-xl', 'sm:text-2xl', 'text-lg', 'sm:text-xl');
+                
+                const len = guestName.length;
+                if (len <= 15) ticketNameEl.classList.add('text-3xl', 'sm:text-4xl');
+                else if (len <= 23) ticketNameEl.classList.add('text-2xl', 'sm:text-3xl');
+                else if (len <= 32) ticketNameEl.classList.add('text-xl', 'sm:text-2xl');
+                else ticketNameEl.classList.add('text-lg', 'sm:text-xl');
+
+                document.getElementById('ticket-table').textContent = studentData.table;
+                document.getElementById('ticket-host').textContent = selectedStudentName === "Grupo D5 Gastronomía" ? "Generación D5" : selectedStudentName;
+                document.getElementById('ticket-code').textContent = uniqueCode;
+
+                document.getElementById("qrcode-container").innerHTML = "";
+                new QRCode(document.getElementById("qrcode-container"), {
+                    text: uniqueCode, // EL QR GUARDA EL CÓDIGO ÚNICO
+                    width: 120,
+                    height: 120,
+                    colorDark : "#1A0F0A",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+
+                btnSubmit.innerHTML = 'Obtener Pase Exclusivo';
+                btnSubmit.classList.remove('opacity-70', 'cursor-wait');
+                btnSubmit.disabled = false;
+
+                window.changeView('ticket');
+
+            } catch (error) {
+                errorMsg.textContent = "Error de conexión. Intenta nuevamente.";
+                errorMsg.classList.remove('hidden');
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Obtener Pase Exclusivo';
+                btnSubmit.classList.remove('opacity-70', 'cursor-wait');
+            }
+        };
+
+        window.handleDownload = () => {
+            const btnDownload = document.getElementById('btnDownload');
+            btnDownload.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Guardando...';
+            btnDownload.disabled = true;
+            const ticketElement = document.getElementById('ticket-exportable');
+            const guestName = document.getElementById('ticket-name').textContent;
+            
+            if (window.html2canvas) {
+                window.html2canvas(ticketElement, { scale: 2, backgroundColor: '#1A0F0A', useCORS: true }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Pase_Gala_D5_${guestName.replace(/\s+/g, '_')}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    btnDownload.innerHTML = '<i data-lucide="download" class="w-4 h-4"></i> Guardar Pase';
+                    btnDownload.disabled = false;
+                    lucide.createIcons();
+                });
+            }
+        };
+
+        // ADMIN Y ESCÁNER QR
+        window.handleAdmin = async () => {
+            const pass = prompt("Acceso Logística - Introduce el código:");
+            if (pass === "LUIX1986") {
+                if(confirm("⚠️ ¿Estás seguro? Esto borrará TODO el contador y TODA la lista.")) {
+                    const countsDocRef = doc(db, 'invitaciones_banquete', 'conteo');
+                    const initialData = {};
+                    STUDENTS.forEach(s => initialData[s.name] = 0);
+                    await setDoc(countsDocRef, initialData); 
+                    const snap = await getDocs(collection(db, 'invitaciones_banquete_registros'));
+                    snap.forEach((d) => deleteDoc(doc(db, 'invitaciones_banquete_registros', d.id)));
+                    alert("Base de datos reiniciada."); window.location.reload(); 
+                }
+            } 
+            else if (pass === "TESTIGOD5") {
+                window.showGuestList();
+            } 
+            else if (pass !== null) { alert("❌ Código incorrecto."); }
+        };
+
+        window.showGuestList = async () => {
+            // PAUSAR AUDIO AL ENTRAR AL DASHBOARD
+            if (bgAudio) {
+                bgAudio.pause();
+                const audioBtn = document.getElementById('audio-toggle');
+                audioBtn.classList.add('hidden');
+                audioBtn.classList.remove('flex');
+            }
+
+            const content = document.getElementById('guest-list-content');
+            const modal = document.getElementById('modal-guest-list');
+            
+            content.innerHTML = '<p class="text-center text-[#596827] font-bold mt-10"><i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2"></i> Sincronizando datos...</p>';
+            modal.classList.replace('hidden', 'flex');
+            lucide.createIcons();
+
+            onSnapshot(collection(db, 'invitaciones_banquete_registros'), (querySnapshot) => {
+                let html = '<ul class="space-y-4">';
+                let count = 0; let arrived = 0;
+                let grouped = {};
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if(!grouped[data.anfitrion]) grouped[data.anfitrion] = [];
+                    grouped[data.anfitrion].push({ id: doc.id, ...data });
+                    count++;
+                    if(data.asistio) arrived++;
+                });
+
+                document.getElementById('stat-total').innerText = count;
+                document.getElementById('stat-arrived').innerText = arrived;
+                document.getElementById('stat-missing').innerText = count - arrived;
+
+                for (const anfitrion in grouped) {
+                    html += `
+                    <li class="bg-white p-3 border border-[#C5A059] rounded shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-[#596827]"></div>
+                        <div class="flex justify-between items-end border-b border-gray-200 pb-2 mb-3 pl-2">
+                            <h4 class="font-serif font-bold text-[#4A0E17] text-sm leading-tight">${anfitrion}</h4>
+                            <span class="text-[9px] text-[#C5A059] font-bold tracking-widest uppercase bg-[#F8F5F2] px-2 py-1 rounded">
+                                ${grouped[anfitrion].length} Registros
+                            </span>
+                        </div>
+                        <ul class="text-sm space-y-2 pl-2">`;
+                    
+                    grouped[anfitrion].forEach(inv => {
+                        const bgClass = inv.asistio ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200';
+                        const checkBtn = inv.asistio 
+                            ? `<button onclick="toggleCheckIn('${inv.id}', false)" class="text-[9px] font-bold text-gray-500 hover:text-red-500 ml-2" title="Deshacer entrada">Deshacer</button>`
+                            : `<button onclick="toggleCheckIn('${inv.id}', true)" class="bg-[#596827] text-white px-3 py-1 rounded text-[10px] uppercase font-bold tracking-wider hover:bg-green-700 transition shadow" title="Marcar como ingresado">Dar Acceso</button>`;
+
+                        html += `
+                            <li class="flex justify-between items-center text-gray-700 p-2 rounded border ${bgClass}">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-xs ${inv.asistio ? 'text-green-800' : ''}">${inv.invitado}</span> 
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-[9px] text-white bg-[#C5A059] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">MESA ${inv.mesa}</span>
+                                        <span class="text-[9px] text-gray-400 font-mono">${inv.codigo}</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    ${checkBtn}
+                                    <button onclick="eliminarInvitado(this, '${inv.id}', '${anfitrion}')" class="text-red-400 hover:text-red-700 ml-2 p-1" title="Eliminar registro"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </div>
+                            </li>`;
+                    });
+                    html += `</ul></li>`;
+                }
+                html += '</ul>';
+
+                content.innerHTML = count === 0 ? '<div class="text-center mt-10 text-gray-500 italic">No hay invitados registrados.</div>' : html;
+                lucide.createIcons();
+            });
+        };
+
+        window.closeGuestList = () => { 
+            document.getElementById('modal-guest-list').classList.replace('flex', 'hidden'); 
+            // Apagar escáner al cerrar modal
+            if(html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+                document.getElementById('qr-reader').classList.add('hidden');
+                document.getElementById('btn-start-scan').style.display = 'flex';
+                document.getElementById('scan-result').classList.add('hidden');
+            }
+            // REANUDAR AUDIO SI APLICA
+            if (bgAudio && isAudioPlaying && !bgAudio.muted) {
+                bgAudio.play();
+            }
+            // SIEMPRE REVELAR EL BOTON DE AUDIO AL VOLVER
+            if(isAudioPlaying) {
+                const audioBtn = document.getElementById('audio-toggle');
+                audioBtn.classList.remove('hidden');
+                audioBtn.classList.add('flex');
+            }
+        };
+
+        window.toggleCheckIn = async (docId, status) => {
+            try { await updateDoc(doc(db, 'invitaciones_banquete_registros', docId), { asistio: status }); } 
+            catch (error) { console.error("Error check-in:", error); alert("Error de conexión al marcar acceso."); }
+        };
+
+        window.eliminarInvitado = async (btnElement, docId, anfitrion) => {
+            if (!confirm(`¿Eliminar definitivamente este invitado?\nEsto liberará un lugar para: ${anfitrion}.`)) return;
+            btnElement.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>';
+            try {
+                await deleteDoc(doc(db, 'invitaciones_banquete_registros', docId));
+                const countsDocRef = doc(db, 'invitaciones_banquete', 'conteo');
+                const docSnap = await getDoc(countsDocRef);
+                if (docSnap.exists()) {
+                    const c = docSnap.data()[anfitrion] || 0;
+                    if (c > 0) await updateDoc(countsDocRef, { [anfitrion]: c - 1 });
+                }
+            } catch (error) {
+                alert("Error al intentar eliminar.");
+                btnElement.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
+                lucide.createIcons();
+            }
+        };
+
+        // ====== LÓGICA DEL ESCÁNER QR =======
+        window.iniciarEscaner = () => {
+            document.getElementById('btn-start-scan').style.display = 'none';
+            document.getElementById('qr-reader').classList.remove('hidden');
+            document.getElementById('scan-result').classList.add('hidden');
+
+            // Configurar para usar siempre la cámara trasera (environment) y SOLAMENTE cámara
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", 
+                { 
+                    fps: 10, 
+                    qrbox: {width: 250, height: 250}, 
+                    aspectRatio: 1.0,
+                    videoConstraints: { facingMode: "environment" },
+                    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA] // DESACTIVA SUBIR IMAGEN LOCAL
+                }
+            );
+            
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        };
+
+        async function onScanSuccess(decodedText, decodedResult) {
+            // Detener el escáner al encontrar un código
+            html5QrcodeScanner.clear();
+            document.getElementById('qr-reader').classList.add('hidden');
+            
+            const resDiv = document.getElementById('scan-result');
+            resDiv.classList.remove('hidden');
+            resDiv.className = "mt-2 p-3 rounded text-sm font-bold text-center text-[#596827] bg-[#F2EDE8] border border-[#596827]";
+            resDiv.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-1"></i> Buscando código: ${decodedText}...`;
+            lucide.createIcons();
+
+            try {
+                // Buscar en la base de datos a quién le pertenece ese código
+                const q = query(collection(db, "invitaciones_banquete_registros"), where("codigo", "==", decodedText));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    resDiv.className = "mt-2 p-3 rounded text-sm font-bold text-center text-red-700 bg-red-100 border border-red-300";
+                    resDiv.innerHTML = `❌ Código NO VÁLIDO o no encontrado.<br><button onclick="iniciarEscaner()" class="mt-2 underline text-xs">Escanear otro</button>`;
+                } else {
+                    // Si lo encuentra, sacamos sus datos
+                    let docId = "";
+                    let invitadoData = {};
+                    querySnapshot.forEach((doc) => {
+                        docId = doc.id;
+                        invitadoData = doc.data();
+                    });
+
+                    if(invitadoData.asistio) {
+                        resDiv.className = "mt-2 p-3 rounded text-sm font-bold text-center text-yellow-700 bg-yellow-100 border border-yellow-300";
+                        resDiv.innerHTML = `⚠️ ¡CUIDADO! Este código ya fue usado.<br>Invitado: ${invitadoData.invitado}<br><button onclick="iniciarEscaner()" class="mt-2 underline text-xs">Escanear otro</button>`;
+                    } else {
+                        // Marcar como "Llegó" automáticamente
+                        await updateDoc(doc(db, 'invitaciones_banquete_registros', docId), { asistio: true });
+                        
+                        resDiv.className = "mt-2 p-3 rounded text-sm font-bold text-center text-green-700 bg-green-100 border border-green-300 shadow-lg";
+                        resDiv.innerHTML = `✅ ¡ACCESO PERMITIDO!<br>
+                                            <span class="text-lg">${invitadoData.invitado}</span><br>
+                                            <span class="text-xs">Invitado por: ${invitadoData.anfitrion}</span><br>
+                                            Mesa ${invitadoData.mesa}<br>
+                                            <button onclick="iniciarEscaner()" class="mt-2 bg-green-700 text-white px-3 py-1 rounded shadow">Siguiente</button>`;
+                    }
+                }
+            } catch (error) {
+                console.error("Error validando QR:", error);
+                resDiv.className = "mt-2 p-3 rounded text-sm font-bold text-center text-red-700 bg-red-100 border border-red-300";
+                resDiv.innerHTML = `❌ Error de conexión al validar.<br><button onclick="iniciarEscaner()" class="mt-2 underline text-xs">Reintentar</button>`;
+            }
+        }
+
+        function onScanFailure(error) {
+            // Ignorar errores continuos de cuando la cámara no enfoca nada
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
