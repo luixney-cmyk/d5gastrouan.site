@@ -298,15 +298,14 @@
                         </div>
                     </div>
 
-                    <!-- BOTONERA DE EXPORTACIÓN (Guardar / WhatsApp) -->
+                    <!-- BOTONERA DE EXPORTACIÓN (Guardar / Compartir) -->
                     <div class="w-full flex flex-col gap-3 mt-6 relative z-30">
                         <button id="btnDownload" onclick="handleDownload()" class="bg-[#C5A059] text-[#1A0F0A] py-3 px-6 hover:bg-[#AA771C] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 border-2 border-[#C5A059] shadow-lg w-full max-w-[250px] mx-auto">
                             <i data-lucide="download" class="w-4 h-4"></i> Guardar Pase
                         </button>
                         
-                        <button id="btnWhatsApp" onclick="handleWhatsAppShare()" class="bg-[#25D366] text-white py-3 px-6 hover:bg-[#128C7E] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 border-2 border-[#25D366] shadow-lg w-full max-w-[250px] mx-auto">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.323-.297-.124-1.758-.867-2.03-.967-.272-.099-.47-.148-.669.148-.198.298-.769.966-.943 1.164-.173.199-.347.223-.644.099-.297-.124-1.255-.462-2.39-1.305-.88-.653-1.473-1.46-1.646-1.708-.173-.249-.018-.381.13-.505.134-.111.298-.347.446-.521.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.521-.075-.148-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-                            Enviar por WhatsApp
+                        <button id="btnShare" onclick="handleShare()" class="bg-[#25D366] text-white py-3 px-6 hover:bg-[#128C7E] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 border-2 border-[#25D366] shadow-lg w-full max-w-[250px] mx-auto">
+                            <i data-lucide="share-2" class="w-4 h-4"></i> Compartir Pase
                         </button>
                     </div>
 
@@ -760,16 +759,50 @@
             }
         };
 
-        // NUEVA LÓGICA DE COMPARTIR POR WHATSAPP
-        window.handleWhatsAppShare = () => {
+        // NUEVA LÓGICA DE COMPARTIR IMAGEN NATIVA
+        window.handleShare = async () => {
+            const btnShare = document.getElementById('btnShare');
+            const originalHTML = btnShare.innerHTML;
+            btnShare.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Preparando...';
+            btnShare.disabled = true;
+            lucide.createIcons();
+
+            const ticketElement = document.getElementById('ticket-exportable');
             const guestName = document.getElementById('ticket-name').textContent;
-            const table = document.getElementById('ticket-table').textContent;
-            const code = document.getElementById('ticket-code').textContent;
             
-            const message = `¡Hola! Este es mi pase para el Banquete de Gala D5. 🍷✨%0A%0A*Invitado:* ${guestName}%0A*Código de Acceso:* ${code}%0A*Mi lugar:* Mesa ${table}%0A%0A¡Nos vemos ahí!`;
-            
-            // wa.me abre directamente en la app si está en móvil, o en WhatsApp Web si está en escritorio.
-            window.open(`https://wa.me/?text=${message}`, '_blank');
+            if (window.html2canvas) {
+                try {
+                    const canvas = await window.html2canvas(ticketElement, { scale: 2, backgroundColor: '#1A0F0A', useCORS: true });
+                    
+                    canvas.toBlob(async (blob) => {
+                        const file = new File([blob], `Pase_Gala_D5_${guestName.replace(/\s+/g, '_')}.png`, { type: 'image/png' });
+                        
+                        // Verifica si el navegador soporta compartir archivos (imágenes) nativamente
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            await navigator.share({
+                                files: [file],
+                                title: 'Pase de Gala D5'
+                                // No enviamos texto predefinido para que el usuario escriba su propio mensaje en WhatsApp
+                            });
+                        } else {
+                            // Si está en una computadora de escritorio antigua que no soporta compartir imágenes, lo descarga
+                            alert("Tu dispositivo no soporta enviar la imagen directamente. Se descargará a tu galería para que puedas enviarla.");
+                            handleDownload();
+                        }
+                        
+                        btnShare.innerHTML = originalHTML;
+                        btnShare.disabled = false;
+                        lucide.createIcons();
+                        
+                    }, 'image/png');
+                } catch (error) {
+                    console.error("Error al compartir:", error);
+                    alert("Hubo un error al preparar la imagen para compartir.");
+                    btnShare.innerHTML = originalHTML;
+                    btnShare.disabled = false;
+                    lucide.createIcons();
+                }
+            }
         };
 
         // ADMIN Y ESCÁNER QR
