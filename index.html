@@ -13,8 +13,7 @@
     
     <!-- Librerías Externas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> <!-- CÓDIGOS QR -->
-    <!-- NUEVA LIBRERÍA: Escáner de QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <!-- Fuentes -->
@@ -482,30 +481,31 @@
         let currentUser = null;
         let guestCounts = {};
         
+        // NUEVA DISTRIBUCIÓN OFICIAL CON LÓGICA VISUAL VS REAL
         const STUDENTS = [
-            { name: "Grupo D5 Gastronomía", table: "VIP", maxGuests: 18 },
+            { name: "Grupo D5 Gastronomía", table: "VIP", maxGuests: 17, visualMaxGuests: 18 }, // Visually 18, limits at 17
             { name: "Aron Rafael Bañuelos Cortez", table: 2, maxGuests: 4 },
-            { name: "Brandon Jaramillo Rosas", table: 9, maxGuests: 6 },
-            { name: "Carlos Isac Luna", table: 8, maxGuests: 6 },
-            { name: "Cristhian Iván López Ponce", table: 7, maxGuests: 6 },
-            { name: "Daniela Rivera Carrillo", table: 10, maxGuests: 6 },
-            { name: "David Villagrana Ibarra", table: 11, maxGuests: 6 },
-            { name: "Diego De La Rosa Torres", table: 3, maxGuests: 4 },
-            { name: "Fátima Lizbeth Gómez Flores", table: 4, maxGuests: 6 },
-            { name: "Fernando Rincon Mendiola", table: 6, maxGuests: 6 },
-            { name: "Francisco Sepulveda Paredes", table: 8, maxGuests: 6 },
-            { name: "Giselle Fabiola Jiménez Silva", table: 5, maxGuests: 6 },
-            { name: "Gloria Estefanía Barraza Taracena", table: 4, maxGuests: 6 },
+            { name: "Brandon Jaramillo Rosas", table: 8, maxGuests: 6 },
+            { name: "Carlos Isac Luna", table: 7, maxGuests: 6 },
+            { name: "Cristhian Iván López Ponce", table: 6, maxGuests: 6 },
+            { name: "Daniela Rivera Carrillo", table: 9, maxGuests: 6 },
+            { name: "David Villagrana Ibarra", table: 10, maxGuests: 6 },
+            { name: "Diego De La Rosa Torres", table: 11, maxGuests: 4 },
+            { name: "Fátima Lizbeth Gómez Flores", table: 3, maxGuests: 6 },
+            { name: "Fernando Rincon Mendiola", table: 5, maxGuests: 6 },
+            { name: "Francisco Sepulveda Paredes", table: 7, maxGuests: 6 },
+            { name: "Gerardo Tovar Estrada", table: 8, maxGuests: 6 },
+            { name: "Giselle Fabiola Jiménez Silva", table: 4, maxGuests: 6 },
+            { name: "Gloria Estefanía Barraza Taracena", table: 3, maxGuests: 6 },
             { name: "Heidi Gisela Castillo Ramírez", table: 2, maxGuests: 8 },
-            { name: "Iván Salinas Rosales", table: 7, maxGuests: 6 },
+            { name: "Iván Salinas Rosales", table: 6, maxGuests: 6 },
             { name: "Julieta Esmeralda Hernández", table: 1, maxGuests: 11 },
-            { name: "Kestin Yaletzi Gutiérrez Álvarez", table: 5, maxGuests: 6 },
-            { name: "Leonel Aldair Arroyo Soria", table: 10, maxGuests: 6 },
-            { name: "Luis Armando Santiago Gonzalez", table: 3, maxGuests: 8 },
+            { name: "Kestin Yaletzi Gutiérrez Álvarez", table: 4, maxGuests: 6 },
+            { name: "Leonel Aldair Arroyo Soria", table: 9, maxGuests: 6 },
+            { name: "Luis Armando Santiago Gonzalez", table: "Dinámica", maxGuests: 9, visualMaxGuests: 8 }, // Visually 8, allows up to 9
             { name: "Martin Enrique Márquez Abascal", table: 1, maxGuests: 1 },
-            { name: "Nazbith Adilene Fletes Guardado", table: 6, maxGuests: 6 },
-            { name: "Gerardo Tovar Estrada", table: 9, maxGuests: 6 },
-            { name: "Zully Adolfo Gonzalez Hernández", table: 11, maxGuests: 6 }
+            { name: "Nazbith Adilene Fletes Guardado", table: 5, maxGuests: 6 },
+            { name: "Zully Adolfo Gonzalez Hernández", table: 10, maxGuests: 6 }
         ];
 
         // LÓGICA DE AUDIO DE FONDO
@@ -547,7 +547,6 @@
         };
 
         window.openDressCode = () => {
-            // Nota: Aquí se usa 'flex' porque el contenedor ahora es 'flex-col' (y flex activa flex-col de Tailwind)
             document.getElementById('modal-dress-code').classList.replace('hidden', 'flex');
         };
         window.closeDressCode = () => {
@@ -587,6 +586,11 @@
             STUDENTS.forEach(student => {
                 const count = guestCounts[student.name] || 0;
                 const isFull = count >= student.maxGuests; 
+                
+                // Lógica de conteo visual (Oculta la discrepancia real para VIP y Luix)
+                const visualMax = student.visualMaxGuests !== undefined ? student.visualMaxGuests : student.maxGuests;
+                const remainingVisual = Math.max(0, visualMax - count);
+                
                 const option = document.createElement('option');
                 option.value = student.name;
                 option.disabled = isFull;
@@ -595,7 +599,7 @@
                     ? `font-sans text-sm font-bold bg-yellow-50 ${isFull ? 'text-gray-400' : 'text-[#4A0E17]'}`
                     : `font-sans text-sm font-semibold ${isFull ? 'text-gray-400 bg-[#E5E0DA]' : 'text-[#362017]'}`;
                 
-                option.textContent = `${student.name} ${isFull ? '(Lugares Agotados)' : '(' + (student.maxGuests - count) + ' lugares)'}`;
+                option.textContent = `${student.name} ${isFull ? '(Lugares Agotados)' : '(' + remainingVisual + ' lugares)'}`;
                 select.appendChild(option);
             });
             if(currentVal) select.value = currentVal;
@@ -659,11 +663,32 @@
                 // Generar código numérico para fácil lectura de QR
                 const uniqueCode = 'D5-' + Math.random().toString(36).substring(2, 8).toUpperCase();
 
+                // === LÓGICA DE ASIGNACIÓN DINÁMICA DE MESAS ===
+                let assignedTable = studentData.table;
+                
+                // Lógica especial para Luis Armando (Repartido Mesa 11 y 12)
+                if (selectedStudentName === "Luis Armando Santiago Gonzalez") {
+                    if (currentCount < 4) {
+                        assignedTable = 11; // Los primeros 4 van a la Mesa 11 (con Diego)
+                    } else {
+                        assignedTable = 12; // Los últimos 5 van a la Mesa 12 (la sobrante)
+                    }
+                }
+                
+                // Lógica especial para Grupo D5 (Repartido en VIP 1 y VIP 2)
+                if (selectedStudentName === "Grupo D5 Gastronomía") {
+                    if (currentCount < 9) {
+                        assignedTable = "VIP 1"; // Primeros 9 a la mesa VIP 1
+                    } else {
+                        assignedTable = "VIP 2"; // Los últimos 8 a la mesa VIP 2
+                    }
+                }
+
                 await updateDoc(countsDocRef, { [selectedStudentName]: currentCount + 1 });
                 await addDoc(listRef, {
                     invitado: guestName,
                     anfitrion: selectedStudentName,
-                    mesa: studentData.table,
+                    mesa: assignedTable,
                     codigo: uniqueCode,
                     asistio: false, 
                     fecha: new Date().toLocaleString()
@@ -679,7 +704,7 @@
                 else if (len <= 32) ticketNameEl.classList.add('text-xl', 'sm:text-2xl');
                 else ticketNameEl.classList.add('text-lg', 'sm:text-xl');
 
-                document.getElementById('ticket-table').textContent = studentData.table;
+                document.getElementById('ticket-table').textContent = assignedTable;
                 document.getElementById('ticket-host').textContent = selectedStudentName === "Grupo D5 Gastronomía" ? "Generación D5" : selectedStudentName;
                 document.getElementById('ticket-code').textContent = uniqueCode;
 
