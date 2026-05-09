@@ -755,6 +755,7 @@
         // ADMIN Y ESCÁNER QR
         window.handleAdmin = async () => {
             const pass = prompt("Acceso Logística - Introduce el código:");
+            
             if (pass === "LUIX1986") {
                 if(confirm("⚠️ ¿Estás seguro? Esto borrará TODO el contador y TODA la lista.")) {
                     const countsDocRef = doc(db, 'invitaciones_banquete', 'conteo');
@@ -768,7 +769,39 @@
             } 
             else if (pass === "TESTIGOD5") {
                 window.showGuestList();
-            } 
+            }
+            // ========================================================
+            // NUEVO CÓDIGO DE EMERGENCIA: RESCATE
+            // ========================================================
+            else if (pass === "RESCATE") {
+                if(confirm("⚠️ ¿Deseas recalcular los lugares ocupados basándote en los invitados actuales? Esto restaurará el contador sin perder a tus invitados ya registrados.")) {
+                    try {
+                        const snap = await getDocs(collection(db, 'invitaciones_banquete_registros'));
+                        const realCounts = {};
+                        
+                        // 1. Iniciamos todo en cero
+                        STUDENTS.forEach(s => realCounts[s.name] = 0);
+
+                        // 2. Leemos la base de datos real y contamos a quién le pertenece cada registro
+                        snap.forEach(documento => {
+                            const anfitrion = documento.data().anfitrion;
+                            if(realCounts[anfitrion] !== undefined) {
+                                realCounts[anfitrion]++;
+                            } else {
+                                realCounts[anfitrion] = 1; // Por si hay algún nombre extra
+                            }
+                        });
+
+                        // 3. Guardamos ese conteo calculado directamente en la nube
+                        await setDoc(doc(db, 'invitaciones_banquete', 'conteo'), realCounts);
+                        
+                        alert("✅ ¡Éxito! El contador se ha restaurado correctamente basado en los " + snap.size + " invitados registrados.");
+                        window.location.reload();
+                    } catch(e) {
+                        alert("Error reconstruyendo conteo: " + e.message);
+                    }
+                }
+            }
             else if (pass !== null) { alert("❌ Código incorrecto."); }
         };
 
