@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Mesas - Banquete D5</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconos de Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        body, html { 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1A0F0A;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .bg-custom {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 14, 23, 0.5) 0%, #1A0F0A 40%),
+                radial-gradient(circle at 90% 80%, rgba(89, 104, 39, 0.3) 0%, #1A0F0A 40%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        
+        .card-shadow { box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(74, 14, 23, 0.3); }
+
+        .inner-border {
+          border: 1px solid rgba(197, 160, 89, 0.4);
+          outline: 1px solid rgba(197, 160, 89, 0.4);
+          outline-offset: -6px;
+        }
+
+        /* Dimensiones exactas de la tarjeta para impresión (5x7 pulgadas) */
+        .mesa-card {
+            width: 5in;
+            height: 7in;
+            background-color: #F8F5F2;
+        }
+
+        /* ESTILOS ESPECÍFICOS PARA LA IMPRESIÓN */
+        @media print {
+            body {
+                background-color: white !important;
+                background-image: none !important;
+            }
+            /* Configurar la hoja en tamaño carta horizontal (Landscape) sin márgenes del navegador */
+            @page {
+                size: letter landscape;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col">
+
+    <!-- BARRA DE CONTROLES (No se imprime) -->
+    <div class="print:hidden w-full bg-[#4A0E17] border-b-2 border-[#C5A059] p-4 shadow-lg z-50 sticky top-0">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3 text-[#F2EDE8]">
+                <i data-lucide="layout-template" class="w-6 h-6 text-[#C5A059]"></i>
+                <div>
+                    <h1 class="font-cinzel font-bold tracking-widest uppercase text-sm">Personalizados de Mesa</h1>
+                    <p class="text-[10px] text-[#C5A059] tracking-widest uppercase">Banquete de Gala D5</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 w-full sm:w-auto">
+                <select id="tableSelector" class="flex-grow sm:w-64 bg-[#F8F5F2] text-[#4A0E17] border-2 border-[#C5A059] p-2 rounded outline-none font-bold uppercase text-xs tracking-wider" onchange="updateCards()">
+                    <option value="" disabled selected>-- Selecciona una Mesa --</option>
+                    <!-- Opciones inyectadas por JS -->
+                </select>
+
+                <button onclick="imprimirPDF()" class="bg-[#596827] text-white px-6 py-2 rounded uppercase font-bold text-xs tracking-widest border-2 border-[#596827] hover:bg-[#4a5720] transition shadow-md flex items-center gap-2 whitespace-nowrap">
+                    <i data-lucide="printer" class="w-4 h-4"></i> Imprimir en PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÁREA DE VISTA PREVIA (No se imprime) -->
+    <div class="print:hidden flex-grow flex items-center justify-center p-8 bg-custom">
+        <div class="text-center">
+            <p class="text-[#C5A059] mb-4 text-xs uppercase tracking-widest font-bold"><i data-lucide="eye" class="inline w-4 h-4 mb-1"></i> Vista Previa (1 Tarjeta)</p>
+            
+            <!-- CONTENEDOR DE LA TARJETA DE VISTA PREVIA -->
+            <div class="mesa-card card-shadow relative p-3 mx-auto transition-transform duration-500 hover:scale-[1.02]" id="preview-card">
+                <!-- Se inyecta el diseño con JS -->
+            </div>
+            
+            <p class="text-white opacity-60 mt-6 text-[10px] uppercase tracking-widest max-w-sm mx-auto">
+                Al imprimir se generarán automáticamente 2 tarjetas centradas en una hoja tamaño carta en formato horizontal. Usa hojas de Opalina para mejor calidad.
+            </p>
+        </div>
+    </div>
+
+    <!-- ÁREA DE IMPRESIÓN (Solo visible al imprimir) -->
+    <!-- Se centran 2 tarjetas en una hoja Carta Horizontal (11 x 8.5 pulgadas) -->
+    <div id="print-area" class="hidden print:flex w-screen h-screen bg-white flex-row justify-center items-center gap-[0.5in]">
+        <div class="mesa-card relative p-3" id="print-card-1"></div>
+        <div class="mesa-card relative p-3" id="print-card-2"></div>
+    </div>
+
+    <script>
+        // BASE DE DATOS MODIFICADA PARA INCLUIR NOMBRES COMPLETOS
+        const mesasData = {
+            "1": ["Julieta Esmeralda Hernández Arias"],
+            "2": ["Aron Rafael Bañuelos Cortez", "Heidi Gisela Castillo Ramírez"],
+            "3": ["Fátima Lizbeth Gómez Flores", "Gloria Estefanía Barraza Taracena"],
+            "4": ["Giselle Fabiola Jiménez Silva", "Kestin Yaletzi Gutiérrez Álvarez"],
+            "5": ["Carlos Isac Luna Arreola", "Luis Armando Santiago González" ],
+            "6": ["Cristhian Iván López Ponce", "Iván Salinas Rosales"],
+            "7": ["Francisco Sepulveda Paredes", "Zully Adolfo González Hernández"],
+            "8": ["Brandon Jaramillo Rosas"],
+            "9": ["Daniela Rivera Carrillo", "Leonel Aldair Arroyo Soria"],
+            "10": ["David Villagrana Ibarra", "Gerardo Tovar Estrada"],
+            "11": ["Diego De La Rosa Torres", "Luis Armando Santiago González"],
+            "12": ["Fernando Rincon Mendiola", "Nazbith Adilene Fletes Guardado"],
+            "VIP 1": ["Grupo D5 Gastronomía Vespertino"],
+            "VIP 2": ["Grupo D5 Gastronomía Vespertino"]
+        };
+
+        // Función para generar el HTML interno de una tarjeta
+        function generarDiseñoTarjeta(numeroMesa, anfitriones) {
+            // Formatear anfitriones asegurando que no se rompan las líneas con 'whitespace-nowrap'
+            // Ajuste dinámico de tamaño de letra según qué tan largo sea el nombre
+            const nombresHTML = anfitriones.map(nombre => {
+                let textSize = "text-[1.25rem]"; // Tamaño para nombres muy cortos
+                if (nombre.length >= 31) textSize = "text-[0.85rem]"; // Nombres muy largos
+                else if (nombre.length >= 26) textSize = "text-[0.95rem]"; // Nombres largos
+                else if (nombre.length >= 20) textSize = "text-[1.05rem]"; // Nombres medianos
+                
+                return `<span class="block whitespace-nowrap ${textSize} w-full">${nombre}</span>`;
+            }).join('<div class="h-1.5"></div>'); // Espacio sutil entre anfitriones
+
+            return `
+                <div class="relative w-full h-full border-2 border-[#C5A059] inner-border flex flex-col items-center justify-center bg-[#F2EDE8] overflow-hidden">
+                    
+                    <!-- SVG Esquina Superior Izquierda -->
+                    <svg class="absolute -top-4 -left-4 w-52 h-52 pointer-events-none opacity-90" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                        <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                        <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                        <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                        <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                        <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
+                        <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                        <path d="M20 100 Q 50 20 120 40" stroke="#C5A059" stroke-width="1" fill="none"/>
+                        <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+                    </svg>
+
+                    <!-- SVG Esquina Inferior Derecha -->
+                    <svg class="absolute -bottom-4 -right-4 w-52 h-52 pointer-events-none opacity-90 transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                        <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                        <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                        <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                        <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                        <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
+                        <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                        <path d="M20 100 Q 50 20 120 40" stroke="#C5A059" stroke-width="1" fill="none"/>
+                        <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+                    </svg>
+
+                    <!-- CONTENIDO DE LA TARJETA -->
+                    <div class="relative z-10 text-center px-6 w-full">
+                        <p class="font-cinzel text-[#4A0E17] text-4xl tracking-[0.3em] uppercase mb-8">Mesa</p>
+                        
+                        <!-- Círculo del Número -->
+                        <div class="mx-auto w-40 h-40 rounded-full border-[3px] border-[#C5A059] flex items-center justify-center mb-10 bg-white bg-opacity-40 shadow-inner p-2">
+                            <div class="w-full h-full rounded-full border border-dashed border-[#C5A059] flex items-center justify-center">
+                                <span class="font-serif text-[#4A0E17] text-6xl font-bold text-center leading-none mt-2 ${numeroMesa.includes('VIP') ? 'text-[2.5rem]' : 'text-7xl'}">${numeroMesa}</span>
+                            </div>
+                        </div>
+
+                        <!-- Línea decorativa -->
+                        <div class="flex items-center justify-center mb-8 w-full px-4">
+                            <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
+                            <div class="mx-3 text-[#C5A059] text-[10px]">✦</div>
+                            <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
+                        </div>
+
+                        <!-- Anfitriones -->
+                        <p class="text-[12px] uppercase tracking-[0.3em] text-[#596827] font-bold mb-4">Anfitriones</p>
+                        <h2 class="font-serif italic text-[#362017] leading-none font-semibold px-2 drop-shadow-sm w-full">
+                            ${nombresHTML}
+                        </h2>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Inicializar el selector y la primera tarjeta
+        window.onload = () => {
+            const selector = document.getElementById('tableSelector');
+            
+            // Llenar el dropdown
+            for (const mesa in mesasData) {
+                const option = document.createElement('option');
+                option.value = mesa;
+                option.textContent = mesa.includes("VIP") ? `Mesa ${mesa} (Docentes/Directivos)` : `Mesa ${mesa}`;
+                selector.appendChild(option);
+            }
+
+            // Seleccionar la Mesa 1 por defecto
+            selector.value = "1";
+            updateCards();
+            
+            lucide.createIcons();
+        };
+
+        // Función que actualiza las tarjetas cuando se cambia el selector
+        window.updateCards = () => {
+            const selector = document.getElementById('tableSelector');
+            const mesaSeleccionada = selector.value;
+            const anfitriones = mesasData[mesaSeleccionada];
+
+            if(!mesaSeleccionada) return;
+
+            const htmlDiseño = generarDiseñoTarjeta(mesaSeleccionada, anfitriones);
+
+            // Actualizar la vista previa
+            document.getElementById('preview-card').innerHTML = htmlDiseño;
+            
+            // Actualizar las 2 tarjetas del área de impresión
+            document.getElementById('print-card-1').innerHTML = htmlDiseño;
+            document.getElementById('print-card-2').innerHTML = htmlDiseño;
+        };
+
+        // Función para mandar a imprimir
+        window.imprimirPDF = () => {
+            window.print();
+        };
+
+    </script>
+</body>
+</html>
