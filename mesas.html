@@ -135,22 +135,34 @@
 
         // Función para generar el HTML interno de una tarjeta
         function generarDiseñoTarjeta(numeroMesa, anfitriones) {
-            // Formatear anfitriones asegurando que no se rompan las líneas con 'whitespace-nowrap'
-            // Ajuste dinámico de tamaño de letra según qué tan largo sea el nombre
+            
+            // Lógica inteligente para dividir los nombres largos en 2 líneas 
+            // (Nombres arriba, Apellidos abajo) con tamaño grande
             const nombresHTML = anfitriones.map(nombre => {
-                let textSize = "text-[1.15rem]"; // Tamaño para nombres muy cortos
-                if (nombre.length >= 31) textSize = "text-[0.80rem]"; // Nombres muy largos
-                else if (nombre.length >= 26) textSize = "text-[0.90rem]"; // Nombres largos
-                else if (nombre.length >= 20) textSize = "text-[1rem]"; // Nombres medianos
+                if (nombre.includes("VIP") || nombre.includes("Grupo")) {
+                    return `<span class="block text-3xl sm:text-[2rem] w-full leading-tight">${nombre}</span>`;
+                }
+
+                const partes = nombre.split(' ');
+                let nameFormatted = nombre;
+
+                // Si tiene 3 o más palabras (ej. 1 Nombre y 2 Apellidos, o 2 Nombres y 2 Apellidos)
+                if (partes.length >= 3) {
+                    const mitad = Math.floor(partes.length / 2); // Divide a la mitad
+                    const nombres = partes.slice(0, mitad).join(' ');
+                    const apellidos = partes.slice(mitad).join(' ');
+                    // Nombre principal grande, apellidos ligeramente más chicos abajo
+                    nameFormatted = `${nombres}<br><span class="text-2xl sm:text-3xl opacity-80 mt-1 block">${apellidos}</span>`;
+                }
                 
-                return `<span class="block whitespace-nowrap ${textSize} w-full">${nombre}</span>`;
-            }).join('<div class="h-1"></div>'); // Espacio sutil entre anfitriones
+                return `<span class="block text-3xl sm:text-[2rem] w-full leading-tight mb-2">${nameFormatted}</span>`;
+            }).join('<div class="h-4"></div>'); // Espacio más amplio entre anfitriones si hay varios
 
             return `
-                <div class="relative w-full h-full border-2 border-[#C5A059] inner-border flex flex-col items-center justify-between bg-[#F2EDE8] overflow-hidden py-8">
+                <div class="relative w-full h-full border-2 border-[#C5A059] inner-border flex flex-col items-center justify-between bg-[#F2EDE8] overflow-hidden py-10 px-4">
                     
                     <!-- SVG Esquina Superior Izquierda -->
-                    <svg class="absolute -top-4 -left-4 w-52 h-52 pointer-events-none opacity-90" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="absolute -top-4 -left-4 w-60 h-60 pointer-events-none opacity-90" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
                         <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
                         <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
@@ -163,7 +175,7 @@
                     </svg>
 
                     <!-- SVG Esquina Inferior Derecha -->
-                    <svg class="absolute -bottom-4 -right-4 w-52 h-52 pointer-events-none opacity-90 transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="absolute -bottom-4 -right-4 w-60 h-60 pointer-events-none opacity-90 transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
                         <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
                         <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
@@ -175,37 +187,37 @@
                         <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
                     </svg>
 
-                    <!-- CONTENIDO SUPERIOR Y CENTRAL -->
+                    <!-- CONTENIDO SUPERIOR Y CENTRAL (MUCHO MÁS GRANDE) -->
                     <div class="relative z-10 text-center px-6 w-full flex-grow flex flex-col justify-center">
-                        <p class="font-cinzel text-[#4A0E17] text-3xl tracking-[0.3em] uppercase mb-4">Mesa</p>
+                        <p class="font-cinzel text-[#4A0E17] text-4xl sm:text-[2.5rem] tracking-[0.3em] uppercase mb-6">Mesa</p>
                         
-                        <!-- Círculo del Número -->
-                        <div class="mx-auto w-36 h-36 rounded-full border-[3px] border-[#C5A059] flex items-center justify-center mb-6 bg-white bg-opacity-40 shadow-inner p-2">
-                            <div class="w-full h-full rounded-full border border-dashed border-[#C5A059] flex items-center justify-center">
-                                <span class="font-serif text-[#4A0E17] font-bold text-center leading-none mt-2 ${numeroMesa.includes('VIP') ? 'text-5xl' : 'text-8xl'}">${numeroMesa}</span>
+                        <!-- Círculo del Número (Enorme) -->
+                        <div class="mx-auto w-52 h-52 rounded-full border-[4px] border-[#C5A059] flex items-center justify-center mb-8 bg-white bg-opacity-40 shadow-inner p-2.5">
+                            <div class="w-full h-full rounded-full border-[2px] border-dashed border-[#C5A059] flex items-center justify-center">
+                                <span class="font-serif text-[#4A0E17] font-bold text-center leading-none mt-2 ${numeroMesa.includes('VIP') ? 'text-6xl' : 'text-[7.5rem]'}">${numeroMesa}</span>
                             </div>
                         </div>
 
                         <!-- Línea decorativa -->
-                        <div class="flex items-center justify-center mb-6 w-full px-4">
+                        <div class="flex items-center justify-center mb-8 w-full px-4">
                             <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
-                            <div class="mx-3 text-[#C5A059] text-[10px]">✦</div>
+                            <div class="mx-4 text-[#C5A059] text-[14px]">✦</div>
                             <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
                         </div>
 
-                        <!-- Anfitriones -->
-                        <p class="text-[11px] uppercase tracking-[0.3em] text-[#596827] font-bold mb-3">Anfitriones</p>
+                        <!-- Anfitriones (Letra más grande y dividida en 2 líneas) -->
+                        <p class="text-[14px] uppercase tracking-[0.3em] text-[#596827] font-bold mb-4">Anfitriones</p>
                         <h2 class="font-serif italic text-[#362017] leading-none font-semibold px-2 drop-shadow-sm w-full">
                             ${nombresHTML}
                         </h2>
                     </div>
 
-                    <!-- NUEVA SECCIÓN: CÓDIGO QR PARA ENCUESTA -->
-                    <div class="relative z-10 mt-2 flex flex-col items-center px-2">
-                        <div class="bg-white p-1.5 border-2 border-[#C5A059] shadow-sm mb-1.5">
-                            <img src="qr.png" alt="Encuesta Satisfacción" class="w-16 h-16 object-contain" onerror="this.style.display='none'">
+                    <!-- NUEVA SECCIÓN: CÓDIGO QR PARA ENCUESTA (MUCHO MÁS GRANDE) -->
+                    <div class="relative z-10 mt-6 flex flex-col items-center px-4 w-full">
+                        <div class="bg-white p-2.5 border-2 border-[#C5A059] shadow-sm mb-3">
+                            <img src="qr.png" alt="Encuesta Satisfacción" class="w-28 h-28 object-contain" onerror="this.style.display='none'">
                         </div>
-                        <p class="text-[7.5px] uppercase tracking-[0.1em] text-[#4A0E17] font-bold text-center leading-tight">
+                        <p class="text-[11px] uppercase tracking-[0.15em] text-[#4A0E17] font-bold text-center leading-relaxed">
                             Al finalizar este evento, escanea el código<br>para contestar nuestra encuesta de satisfacción
                         </p>
                     </div>
