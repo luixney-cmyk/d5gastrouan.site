@@ -136,8 +136,15 @@
         // Función para generar el HTML interno de una tarjeta
         function generarDiseñoTarjeta(numeroMesa, anfitriones) {
             
-            // Lógica inteligente para dividir los nombres largos en 2 líneas 
-            // (Nombres arriba, Apellidos abajo) con tamaño grande
+            // Detectamos si es más de un anfitrión para aplicar ajustes de tamaño y espacio
+            const isMultiple = anfitriones.length > 1;
+
+            // Ajustamos márgenes internos dependiendo de cuántos anfitriones hay para que no desborde hacia abajo
+            const gapCirculo = isMultiple ? "mb-4" : "mb-8";
+            const gapLinea = isMultiple ? "mb-4" : "mb-8";
+            const gapTitulo = isMultiple ? "mb-2" : "mb-4";
+            const gapAnfitriones = isMultiple ? '<div class="h-2"></div>' : '<div class="h-4"></div>';
+
             const nombresHTML = anfitriones.map(nombre => {
                 if (nombre.includes("VIP") || nombre.includes("Grupo")) {
                     return `<span class="block text-3xl sm:text-[2rem] w-full leading-tight">${nombre}</span>`;
@@ -146,20 +153,24 @@
                 const partes = nombre.split(' ');
                 let nameFormatted = nombre;
 
+                // Definimos el tamaño de las letras (Más pequeñas si son 2 personas, Grandes si es 1 sola)
+                const sizeNombres = isMultiple ? "text-[1.4rem] sm:text-[1.6rem]" : "text-[2rem] sm:text-[2.2rem]";
+                const sizeApellidos = isMultiple ? "text-[1.1rem] sm:text-[1.25rem]" : "text-[1.5rem] sm:text-[1.8rem]";
+
                 // Si tiene 3 o más palabras (ej. 1 Nombre y 2 Apellidos, o 2 Nombres y 2 Apellidos)
                 if (partes.length >= 3) {
                     const mitad = Math.floor(partes.length / 2); // Divide a la mitad
                     const nombres = partes.slice(0, mitad).join(' ');
                     const apellidos = partes.slice(mitad).join(' ');
                     // Nombre principal grande, apellidos ligeramente más chicos abajo
-                    nameFormatted = `${nombres}<br><span class="text-2xl sm:text-3xl opacity-80 mt-1 block">${apellidos}</span>`;
+                    nameFormatted = `${nombres}<br><span class="${sizeApellidos} opacity-85 mt-0.5 block">${apellidos}</span>`;
                 }
                 
-                return `<span class="block text-3xl sm:text-[2rem] w-full leading-tight mb-2">${nameFormatted}</span>`;
-            }).join('<div class="h-4"></div>'); // Espacio más amplio entre anfitriones si hay varios
+                return `<span class="block ${sizeNombres} w-full leading-tight">${nameFormatted}</span>`;
+            }).join(gapAnfitriones);
 
             return `
-                <div class="relative w-full h-full border-2 border-[#C5A059] inner-border flex flex-col items-center justify-between bg-[#F2EDE8] overflow-hidden py-10 px-4">
+                <div class="relative w-full h-full border-2 border-[#C5A059] inner-border flex flex-col items-center justify-between bg-[#F2EDE8] overflow-hidden py-8 px-4">
                     
                     <!-- SVG Esquina Superior Izquierda -->
                     <svg class="absolute -top-4 -left-4 w-60 h-60 pointer-events-none opacity-90" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -187,34 +198,34 @@
                         <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
                     </svg>
 
-                    <!-- CONTENIDO SUPERIOR Y CENTRAL (MUCHO MÁS GRANDE) -->
+                    <!-- CONTENIDO SUPERIOR Y CENTRAL (AJUSTE AUTOMÁTICO DE MÁRGENES) -->
                     <div class="relative z-10 text-center px-6 w-full flex-grow flex flex-col justify-center">
-                        <p class="font-cinzel text-[#4A0E17] text-4xl sm:text-[2.5rem] tracking-[0.3em] uppercase mb-6">Mesa</p>
+                        <p class="font-cinzel text-[#4A0E17] text-4xl sm:text-[2.5rem] tracking-[0.3em] uppercase mb-4">Mesa</p>
                         
                         <!-- Círculo del Número (Enorme) -->
-                        <div class="mx-auto w-52 h-52 rounded-full border-[4px] border-[#C5A059] flex items-center justify-center mb-8 bg-white bg-opacity-40 shadow-inner p-2.5">
+                        <div class="mx-auto w-52 h-52 rounded-full border-[4px] border-[#C5A059] flex items-center justify-center ${gapCirculo} bg-white bg-opacity-40 shadow-inner p-2.5">
                             <div class="w-full h-full rounded-full border-[2px] border-dashed border-[#C5A059] flex items-center justify-center">
                                 <span class="font-serif text-[#4A0E17] font-bold text-center leading-none mt-2 ${numeroMesa.includes('VIP') ? 'text-6xl' : 'text-[7.5rem]'}">${numeroMesa}</span>
                             </div>
                         </div>
 
                         <!-- Línea decorativa -->
-                        <div class="flex items-center justify-center mb-8 w-full px-4">
+                        <div class="flex items-center justify-center ${gapLinea} w-full px-4">
                             <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
                             <div class="mx-4 text-[#C5A059] text-[14px]">✦</div>
                             <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
                         </div>
 
-                        <!-- Anfitriones (Letra más grande y dividida en 2 líneas) -->
-                        <p class="text-[14px] uppercase tracking-[0.3em] text-[#596827] font-bold mb-4">Anfitriones</p>
+                        <!-- Anfitriones (Letra adaptable) -->
+                        <p class="text-[14px] uppercase tracking-[0.3em] text-[#596827] font-bold ${gapTitulo}">Anfitriones</p>
                         <h2 class="font-serif italic text-[#362017] leading-none font-semibold px-2 drop-shadow-sm w-full">
                             ${nombresHTML}
                         </h2>
                     </div>
 
-                    <!-- NUEVA SECCIÓN: CÓDIGO QR PARA ENCUESTA (MUCHO MÁS GRANDE) -->
-                    <div class="relative z-10 mt-6 flex flex-col items-center px-4 w-full">
-                        <div class="bg-white p-2.5 border-2 border-[#C5A059] shadow-sm mb-3">
+                    <!-- SECCIÓN: CÓDIGO QR PARA ENCUESTA -->
+                    <div class="relative z-10 mt-3 flex flex-col items-center px-4 w-full">
+                        <div class="bg-white p-2.5 border-2 border-[#C5A059] shadow-sm mb-2">
                             <img src="qr.png" alt="Encuesta Satisfacción" class="w-28 h-28 object-contain" onerror="this.style.display='none'">
                         </div>
                         <p class="text-[11px] uppercase tracking-[0.15em] text-[#4A0E17] font-bold text-center leading-relaxed">
