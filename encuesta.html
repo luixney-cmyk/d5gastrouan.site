@@ -256,7 +256,6 @@
                     `;
                 }
 
-                // CAMBIO AQUÍ: flex-wrap + justify-center en lugar de justify-between
                 html += `
                     <div class="bg-white bg-opacity-70 p-4 sm:p-6 rounded border border-gray-200 shadow-sm rating-group relative">
                         <label class="block text-[#362017] font-bold text-sm mb-4 leading-relaxed">${p.texto}</label>
@@ -264,15 +263,15 @@
                         <div class="flex flex-wrap justify-center gap-1.5 sm:gap-2">
                 `;
 
-                // Botones del 1 al 10
-                for(let i = 1; i <= 10; i++) {
+                // Botones del 5 al 10
+                for(let i = 5; i <= 10; i++) {
                     html += `<button type="button" class="rating-btn w-7 h-7 sm:w-9 sm:h-9 rounded-full border border-[#C5A059] text-[#362017] flex items-center justify-center font-bold text-xs sm:text-sm hover:bg-[#C5A059] hover:text-white transition-colors" data-val="${i}">${i}</button>`;
                 }
 
                 html += `
                         </div>
                         <div class="flex justify-between text-[8px] sm:text-[9px] uppercase tracking-widest text-[#C5A059] mt-3 font-bold px-1">
-                            <span>1 - Deficiente</span>
+                            <span>5 - Deficiente</span>
                             <span>10 - Excelente</span>
                         </div>
                         
@@ -337,7 +336,7 @@
             });
 
             if(!formValid) {
-                showCustomAlert("Por favor, asigna una calificación del 1 al 10 en todas las preguntas marcadas en rojo para poder enviar tus respuestas.");
+                showCustomAlert("Por favor, asigna una calificación del 5 al 10 en todas las preguntas marcadas en rojo para poder enviar tus respuestas.");
                 return;
             }
 
@@ -623,7 +622,7 @@
                         <p style="font-size: 18px; color: #4A0E17; margin-top: 10px;">Total de encuestas recibidas: <strong>${total}</strong></p>
                     </div>
 
-                    <h2 class="section-title">Promedios de Calificación (Escala 1 al 10)</h2>
+                    <h2 class="section-title">Promedios de Calificación (Escala 5 al 10)</h2>
             `;
 
             // Imprimir promedios
