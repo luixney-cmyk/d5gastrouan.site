@@ -44,10 +44,10 @@
           outline-offset: -6px;
         }
 
-        /* Dimensiones exactas de la tarjeta para impresión (5x7 pulgadas) */
+        /* Dimensiones exactas de la tarjeta para impresión (Media Carta: 5.5 x 8.5 pulgadas) */
         .mesa-card {
-            width: 5in;
-            height: 7in;
+            width: 5.5in;
+            height: 8.5in;
             background-color: #F8F5F2;
         }
 
@@ -102,15 +102,15 @@
             </div>
             
             <p class="text-white opacity-60 mt-6 text-[10px] uppercase tracking-widest max-w-sm mx-auto">
-                Al imprimir se generarán automáticamente 2 tarjetas centradas en una hoja tamaño carta en formato horizontal. Usa hojas de Opalina para mejor calidad.
+                Al imprimir se generarán automáticamente 2 tarjetas que cubrirán toda la hoja tamaño carta en formato horizontal. Usa hojas de Opalina para mejor calidad.
             </p>
         </div>
     </div>
 
     <!-- ÁREA DE IMPRESIÓN (Solo visible al imprimir) -->
-    <!-- Se centran 2 tarjetas en una hoja Carta Horizontal (11 x 8.5 pulgadas) -->
-    <div id="print-area" class="hidden print:flex w-screen h-screen bg-white flex-row justify-center items-center gap-[0.5in]">
-        <div class="mesa-card relative p-3" id="print-card-1"></div>
+    <!-- Se colocan 2 tarjetas llenando exactamente una hoja Carta Horizontal (11 x 8.5 pulgadas) -->
+    <div id="print-area" class="hidden print:flex w-[11in] h-[8.5in] bg-white flex-row justify-center items-center overflow-hidden">
+        <div class="mesa-card relative p-3 border-r border-dashed border-gray-300" id="print-card-1"></div>
         <div class="mesa-card relative p-3" id="print-card-2"></div>
     </div>
 
@@ -138,16 +138,16 @@
             // Formatear anfitriones asegurando que no se rompan las líneas con 'whitespace-nowrap'
             // Ajuste dinámico de tamaño de letra según qué tan largo sea el nombre
             const nombresHTML = anfitriones.map(nombre => {
-                let textSize = "text-[1.25rem]"; // Tamaño para nombres muy cortos
-                if (nombre.length >= 31) textSize = "text-[0.85rem]"; // Nombres muy largos
-                else if (nombre.length >= 26) textSize = "text-[0.95rem]"; // Nombres largos
-                else if (nombre.length >= 20) textSize = "text-[1.05rem]"; // Nombres medianos
+                let textSize = "text-[1.15rem]"; // Tamaño para nombres muy cortos
+                if (nombre.length >= 31) textSize = "text-[0.80rem]"; // Nombres muy largos
+                else if (nombre.length >= 26) textSize = "text-[0.90rem]"; // Nombres largos
+                else if (nombre.length >= 20) textSize = "text-[1rem]"; // Nombres medianos
                 
                 return `<span class="block whitespace-nowrap ${textSize} w-full">${nombre}</span>`;
-            }).join('<div class="h-1.5"></div>'); // Espacio sutil entre anfitriones
+            }).join('<div class="h-1"></div>'); // Espacio sutil entre anfitriones
 
             return `
-                <div class="relative w-full h-full border-2 border-[#C5A059] inner-border flex flex-col items-center justify-center bg-[#F2EDE8] overflow-hidden">
+                <div class="relative w-full h-full border-2 border-[#C5A059] inner-border flex flex-col items-center justify-between bg-[#F2EDE8] overflow-hidden py-8">
                     
                     <!-- SVG Esquina Superior Izquierda -->
                     <svg class="absolute -top-4 -left-4 w-52 h-52 pointer-events-none opacity-90" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -175,30 +175,41 @@
                         <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
                     </svg>
 
-                    <!-- CONTENIDO DE LA TARJETA -->
-                    <div class="relative z-10 text-center px-6 w-full">
-                        <p class="font-cinzel text-[#4A0E17] text-4xl tracking-[0.3em] uppercase mb-8">Mesa</p>
+                    <!-- CONTENIDO SUPERIOR Y CENTRAL -->
+                    <div class="relative z-10 text-center px-6 w-full flex-grow flex flex-col justify-center">
+                        <p class="font-cinzel text-[#4A0E17] text-3xl tracking-[0.3em] uppercase mb-4">Mesa</p>
                         
                         <!-- Círculo del Número -->
-                        <div class="mx-auto w-40 h-40 rounded-full border-[3px] border-[#C5A059] flex items-center justify-center mb-10 bg-white bg-opacity-40 shadow-inner p-2">
+                        <div class="mx-auto w-36 h-36 rounded-full border-[3px] border-[#C5A059] flex items-center justify-center mb-6 bg-white bg-opacity-40 shadow-inner p-2">
                             <div class="w-full h-full rounded-full border border-dashed border-[#C5A059] flex items-center justify-center">
-                                <span class="font-serif text-[#4A0E17] text-6xl font-bold text-center leading-none mt-2 ${numeroMesa.includes('VIP') ? 'text-[2.5rem]' : 'text-7xl'}">${numeroMesa}</span>
+                                <span class="font-serif text-[#4A0E17] font-bold text-center leading-none mt-2 ${numeroMesa.includes('VIP') ? 'text-5xl' : 'text-8xl'}">${numeroMesa}</span>
                             </div>
                         </div>
 
                         <!-- Línea decorativa -->
-                        <div class="flex items-center justify-center mb-8 w-full px-4">
+                        <div class="flex items-center justify-center mb-6 w-full px-4">
                             <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
                             <div class="mx-3 text-[#C5A059] text-[10px]">✦</div>
                             <div class="h-px bg-[#C5A059] flex-grow opacity-60"></div>
                         </div>
 
                         <!-- Anfitriones -->
-                        <p class="text-[12px] uppercase tracking-[0.3em] text-[#596827] font-bold mb-4">Anfitriones</p>
+                        <p class="text-[11px] uppercase tracking-[0.3em] text-[#596827] font-bold mb-3">Anfitriones</p>
                         <h2 class="font-serif italic text-[#362017] leading-none font-semibold px-2 drop-shadow-sm w-full">
                             ${nombresHTML}
                         </h2>
                     </div>
+
+                    <!-- NUEVA SECCIÓN: CÓDIGO QR PARA ENCUESTA -->
+                    <div class="relative z-10 mt-2 flex flex-col items-center px-2">
+                        <div class="bg-white p-1.5 border-2 border-[#C5A059] shadow-sm mb-1.5">
+                            <img src="qr.png" alt="Encuesta Satisfacción" class="w-16 h-16 object-contain" onerror="this.style.display='none'">
+                        </div>
+                        <p class="text-[7.5px] uppercase tracking-[0.1em] text-[#4A0E17] font-bold text-center leading-tight">
+                            Al finalizar este evento, escanea el código<br>para contestar nuestra encuesta de satisfacción
+                        </p>
+                    </div>
+
                 </div>
             `;
         }
