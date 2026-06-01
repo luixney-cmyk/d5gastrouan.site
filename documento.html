@@ -175,6 +175,7 @@
     <div class="w-full max-w-4xl h-[85vh] h-[85dvh] mt-16 bg-[#F8F5F2] card-shadow p-2 sm:p-3 relative z-10 mx-4 slide-up">
         <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col overflow-hidden bg-[#F2EDE8] inner-border">
             
+            <!-- Patrones SVG en las esquinas -->
             <svg class="absolute -top-4 -left-4 w-28 sm:w-36 h-28 sm:h-36 pointer-events-none opacity-30 z-0 drop-shadow-sm" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
                 <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
@@ -198,7 +199,6 @@
 
             <div class="relative z-10 w-full h-full p-6 pb-24 sm:p-12 sm:pb-12 overflow-y-auto custom-scrollbar" id="content-area">
 
-                <!-- VISTA: CARÁTULA -->
                 <div id="view-caratula" class="view-section view-active flex-col justify-center items-center min-h-full text-center fade-in">
                     <div class="mb-8">
                         <h2 class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold text-[#4A0E17] tracking-widest leading-tight">
@@ -234,7 +234,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: ÍNDICE -->
                 <div id="view-indice" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-8 flex items-center justify-between">
                         <h2 class="font-cinzel text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Índice</h2>
@@ -359,7 +358,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: PRESENTACIÓN -->
                 <div id="view-presentacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Presentación</h2>
@@ -383,7 +381,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: INTRODUCCIÓN -->
                 <div id="view-introduccion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Introducción</h2>
@@ -429,7 +426,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: JUSTIFICACIÓN -->
                 <div id="view-justificacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Justificación</h2>
@@ -455,7 +451,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: CONCEPTUALIZACIÓN -->
                 <div id="view-conceptualizacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Conceptualización</h2>
@@ -557,7 +552,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: OBJETIVOS -->
                 <div id="view-objetivos" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Objetivos</h2>
@@ -607,7 +601,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: MISIÓN Y VISIÓN -->
                 <div id="view-mision-vision" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Identidad</h2>
@@ -639,7 +632,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: MARCO METODOLÓGICO -->
                 <div id="view-metodologia" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Marco Metodológico</h2>
@@ -751,7 +743,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: ESTRUCTURA ORGANIZACIONAL -->
                 <div id="view-organigrama" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Estructura Organizacional</h2>
@@ -768,12 +759,12 @@
                             </p>
                         </div>
 
-                        <!-- Imagen del Organigrama (.png) -->
                         <div class="w-full flex justify-center items-center bg-[#F2EDE8] border-2 border-[#C5A059]/30 rounded p-2 sm:p-4 shadow-inner mb-6 relative group">
                             <div class="absolute inset-0 flex items-center justify-center bg-[#F2EDE8] z-0 opacity-50">
                                 <i class="fas fa-sitemap text-[#C5A059] text-6xl opacity-30"></i>
                             </div>
                             
+                            <!-- Imagen corregida a .png -->
                             <img src="orga.png" alt="Organigrama Operativo del Grupo D5" class="w-full max-w-3xl h-auto rounded object-contain shadow-md relative z-10 transition-transform duration-500 hover:scale-[1.02]" onerror="this.onerror=null; this.src='https://placehold.co/800x600/F2EDE8/4A0E17?text=Organigrama+D5';">
                         </div>
 
@@ -785,7 +776,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: FICHA TÉCNICA -->
                 <div id="view-ficha-tecnica" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Ficha Técnica</h2>
@@ -869,7 +859,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: MENÚ -->
                 <div id="view-menu" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Definición del Menú</h2>
@@ -945,7 +934,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: INSUMOS Y COSTOS -->
                 <div id="view-insumos" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Control de Insumos</h2>
@@ -1011,7 +999,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: INVITACIÓN DIGITAL -->
                 <div id="view-invitacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">La Invitación Digital</h2>
@@ -1077,7 +1064,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: RESULTADOS DE SATISFACCIÓN -->
                 <div id="view-resultados" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Resultados de Evaluación</h2>
@@ -1265,7 +1251,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: CONCLUSIONES GENERALES -->
                 <div id="view-conclusiones" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Conclusiones Generales</h2>
@@ -1309,7 +1294,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: EVIDENCIAS VIDEOGRÁFICAS -->
                 <div id="view-evidencias" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Evidencias Videográficas</h2>
@@ -1317,9 +1301,10 @@
                     
                     <div class="flex-grow flex flex-col justify-center items-center w-full max-w-3xl mx-auto px-2 sm:px-6 pb-6">
                         
-                        <div class="relative w-full aspect-video rounded-lg overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 border-[#C5A059]/60 bg-black flex justify-center items-center group">
-                            <!-- El video cargará localmente -->
-                            <video id="evidence-video" src="vid.mp4" controls muted class="w-full h-full object-cover">
+                        <!-- Contenedor adaptado para Video Vertical (9:16) tipo celular -->
+                        <div class="relative w-full max-w-sm mx-auto aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-4 border-[#C5A059] bg-black">
+                            <!-- object-contain asegura que el video se vea completo sin recortarse. playsinline es clave para móviles -->
+                            <video id="evidence-video" src="vid.mp4" controls muted playsinline class="absolute top-0 left-0 w-full h-full object-contain">
                                 Tu navegador no soporta el formato de video.
                             </video>
                         </div>
@@ -1338,7 +1323,6 @@
                     </div>
                 </div>
 
-                <!-- VISTA: CONTRAPORTADA -->
                 <div id="view-contraportada" class="view-section flex-col justify-center items-center min-h-full text-center fade-in pb-10">
                     
                     <div class="mb-6 flex flex-col items-center justify-center space-y-4">
@@ -1385,7 +1369,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE NAVEGACIÓN Y LÓGICA DE INVENTARIO -->
     <script>
         // Inicializar iconos de Lucide
         lucide.createIcons();
@@ -1417,8 +1400,6 @@
                             const videoEl = document.getElementById('evidence-video');
                             if(videoEl) {
                                 videoEl.currentTime = 0; // Reiniciar video
-                                // Autoplay (puede ser bloqueado por algunos navegadores si no está silenciado, 
-                                // pero le pusimos el atributo 'muted' en el HTML para evitarlo).
                                 videoEl.play().catch(e => console.log("Autoplay prevenido por el navegador:", e));
                             }
                         }
