@@ -150,6 +150,10 @@
             .inventory-inputs { display: none !important; }
             .inventory-print-fields { display: block !important; margin-top: 5px; border-top: 1px dashed #ccc; padding-top: 5px; }
             #budget-header { border-bottom: 2px solid #333 !important; margin-bottom: 20px !important; padding-bottom: 10px !important; }
+            
+            /* Ajustes para la gráfica de resultados en impresión */
+            .result-bar-bg { background-color: #eee !important; border: 1px solid #ccc; }
+            .result-bar-fill { background-color: #4A0E17 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
@@ -1109,13 +1113,13 @@
                     </div>
                 </div>
 
-                <!-- VISTA: RESULTADOS Y EVALUACIÓN (NUEVA SECCIÓN) -->
+                <!-- VISTA: RESULTADOS Y EVALUACIÓN (NUEVO DASHBOARD) -->
                 <div id="view-resultados" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Resultados y Evaluación</h2>
                     </div>
                     
-                    <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-3xl mx-auto w-full px-2 sm:px-6 pb-6">
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-4xl mx-auto w-full px-2 sm:px-6 pb-6">
                         
                         <div class="bg-white p-4 sm:p-5 border-l-4 border-[#C5A059] shadow-sm mb-6 text-justify">
                             <p class="font-serif text-sm sm:text-base leading-relaxed">
@@ -1133,7 +1137,7 @@
                             <i data-lucide="clipboard-check" class="w-12 h-12 text-[#C5A059] mb-3 relative z-10 group-hover:scale-110 transition-transform"></i>
                             <h3 class="font-cinzel text-[#F8F5F2] text-xl font-bold tracking-widest uppercase relative z-10 mb-2">Encuesta Interactiva D5</h3>
                             <p class="font-serif text-sm text-[#E5DACE] opacity-80 mb-6 relative z-10 max-w-lg">
-                                La plataforma permitía a los comensales calificar del 5 al 10 diversos aspectos del banquete: logística, servicio, sabor de los platillos y entretenimiento.
+                                La plataforma permitía a los comensales calificar del 5 al 10 diversos aspectos del banquete: logística, servicio, sabor de los platillos y entretenimiento. A continuación se presentan los promedios obtenidos.
                             </p>
                             
                             <a href="https://d5gastrouan.site/encuesta" target="_blank" class="relative z-10 print-url inline-flex bg-[#C5A059] text-[#1A0F0A] py-2 px-6 hover:bg-[#AA771C] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold items-center justify-center gap-2 shadow-lg hover:shadow-xl rounded-sm">
@@ -1141,55 +1145,164 @@
                             </a>
                         </div>
 
-                        <!-- Resumen de Resultados -->
-                        <div>
-                            <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-4 flex items-center gap-2">
-                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i> Resumen de Evaluación
-                            </h3>
+                        <!-- DASHBOARD DE RESULTADOS (Todas las preguntas) -->
+                        <div class="space-y-8">
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <!-- Métrica 1 -->
-                                <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/30 shadow-sm">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Satisfacción General</p>
-                                        <i data-lucide="star" class="w-4 h-4 text-[#C5A059] fill-[#C5A059]"></i>
-                                    </div>
-                                    <div class="flex items-end gap-2">
-                                        <p class="font-serif text-3xl font-bold text-[#4A0E17]">9.8</p>
-                                        <p class="text-xs text-gray-500 mb-1">/ 10 promedio</p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Métrica 2 -->
-                                <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/30 shadow-sm">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Servicio en Mesa</p>
-                                        <i data-lucide="users" class="w-4 h-4 text-[#C5A059]"></i>
-                                    </div>
-                                    <div class="flex items-end gap-2">
-                                        <p class="font-serif text-3xl font-bold text-[#4A0E17]">9.5</p>
-                                        <p class="text-xs text-gray-500 mb-1">/ 10 promedio</p>
-                                    </div>
-                                </div>
-
-                                <!-- Métrica 3 -->
-                                <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/30 shadow-sm md:col-span-2">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Comentarios Destacados</p>
-                                        <i data-lucide="message-square" class="w-4 h-4 text-[#C5A059]"></i>
-                                    </div>
-                                    <div class="space-y-3 mt-3">
-                                        <div class="bg-white p-3 rounded text-sm italic text-[#362017] border-l-4 border-[#C5A059] shadow-sm">
-                                            "El pulpo estaba en su punto exacto, la fusión de sabores me pareció excelente."
+                            <!-- Categoría 1: Logística y Recepción -->
+                            <div>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
+                                    <i data-lucide="map" class="w-5 h-5 text-[#C5A059]"></i> Logística y Recepción
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Impresión Inicial</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#596827]">9.7</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#596827] w-[97%] result-bar-fill"></div></div>
                                         </div>
-                                        <div class="bg-white p-3 rounded text-sm italic text-[#362017] border-l-4 border-[#4A0E17] shadow-sm">
-                                            "La organización para entrar con el código QR fue muy rápida y moderna, felicidades."
+                                    </div>
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Invitación y Reserva</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#596827]">9.9</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#596827] w-[99%] result-bar-fill"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Recepción en Evento</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#596827]">9.6</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#596827] w-[96%] result-bar-fill"></div></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                            <!-- Categoría 2: Servicio y Tiempos -->
+                            <div>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
+                                    <i data-lucide="clock" class="w-5 h-5 text-[#C5A059]"></i> Servicio y Tiempos
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Atención en Mesa</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#596827]">9.8</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#596827] w-[98%] result-bar-fill"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Ritmo de Espera</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#C5A059]">9.4</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#C5A059] w-[94%] result-bar-fill"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Desarrollo del Programa</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#596827]">9.5</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#596827] w-[95%] result-bar-fill"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Categoría 3: Alimentos y Bebidas -->
+                            <div>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
+                                    <i data-lucide="utensils" class="w-5 h-5 text-[#C5A059]"></i> Evaluación Gastronómica
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Menú -->
+                                    <div class="bg-[#F8F5F2] border border-[#C5A059]/30 rounded p-4">
+                                        <p class="text-xs font-bold text-[#4A0E17] mb-3 uppercase tracking-widest text-center">Platillos</p>
+                                        <div class="space-y-3">
+                                            <div class="flex justify-between items-center bg-white p-2 rounded shadow-sm text-sm font-serif">
+                                                <span>Carpaccio (Antipasto)</span><span class="font-bold text-[#596827]">9.6</span>
+                                            </div>
+                                            <div class="flex justify-between items-center bg-white p-2 rounded shadow-sm text-sm font-serif">
+                                                <span>Ravioli (Primo Piatto)</span><span class="font-bold text-[#596827]">9.7</span>
+                                            </div>
+                                            <div class="flex justify-between items-center bg-white p-2 rounded shadow-sm text-sm font-serif">
+                                                <span>Pulpo (Plato Fuerte)</span><span class="font-bold text-[#596827]">9.9</span>
+                                            </div>
+                                            <div class="flex justify-between items-center bg-white p-2 rounded shadow-sm text-sm font-serif">
+                                                <span>Tarta de Chocolate (Dolce)</span><span class="font-bold text-[#596827]">9.8</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Bebidas -->
+                                    <div class="bg-[#F8F5F2] border border-[#C5A059]/30 rounded p-4">
+                                        <p class="text-xs font-bold text-[#4A0E17] mb-3 uppercase tracking-widest text-center">Bebidas y Maridaje</p>
+                                        <div class="space-y-3">
+                                            <div class="flex justify-between items-center bg-white p-2 rounded shadow-sm text-sm font-serif">
+                                                <span>Lichi Tónico</span><span class="font-bold text-[#596827]">9.5</span>
+                                            </div>
+                                            <div class="flex justify-between items-center bg-white p-2 rounded shadow-sm text-sm font-serif">
+                                                <span>Aroma Blanco</span><span class="font-bold text-[#596827]">9.7</span>
+                                            </div>
+                                            <div class="flex justify-between items-center bg-white p-2 rounded shadow-sm text-sm font-serif">
+                                                <span>Anís Spice</span><span class="font-bold text-[#596827]">9.8</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Categoría 4: Entretenimiento y Calificación Final -->
+                            <div>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
+                                    <i data-lucide="music" class="w-5 h-5 text-[#C5A059]"></i> Entretenimiento y Conclusión
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Música / Ambientación</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#596827]">9.6</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#596827] w-[96%] result-bar-fill"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border border-gray-100 shadow-sm">
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Ballet de Danza</p>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl font-black text-[#596827]">9.7</span>
+                                            <div class="flex-grow bg-gray-200 h-2 rounded-full overflow-hidden result-bar-bg"><div class="h-full bg-[#596827] w-[97%] result-bar-fill"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-[#4A0E17] p-3 rounded border border-[#C5A059] shadow-md flex flex-col justify-center items-center">
+                                        <p class="text-[10px] text-[#E5DACE] uppercase tracking-widest font-bold mb-1">Calificación Final del Evento</p>
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="star" class="w-5 h-5 text-[#C5A059] fill-[#C5A059]"></i>
+                                            <span class="text-3xl font-black text-white">9.8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comentarios Destacados -->
+                            <div class="bg-white p-5 rounded border-l-4 border-[#C5A059] shadow-md">
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-4 flex items-center gap-2">
+                                    <i data-lucide="message-square" class="w-5 h-5 text-[#C5A059]"></i> Comentarios Destacados
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-[#F8F5F2] p-3 rounded text-sm italic text-[#362017] shadow-sm border border-gray-100">
+                                        "El pulpo estaba en su punto exacto de cocción, la fusión de sabores y el puré de plátano me parecieron un éxito absoluto."
+                                    </div>
+                                    <div class="bg-[#F8F5F2] p-3 rounded text-sm italic text-[#362017] shadow-sm border border-gray-100">
+                                        "La organización para entrar con el código QR fue muy rápida y moderna, le dio un toque muy profesional desde el inicio."
+                                    </div>
+                                    <div class="bg-[#F8F5F2] p-3 rounded text-sm italic text-[#362017] shadow-sm border border-gray-100">
+                                        "El servicio en nuestra mesa fue impecable, los meseros siempre atentos a los detalles y explicando muy bien cada platillo."
+                                    </div>
+                                    <div class="bg-[#F8F5F2] p-3 rounded text-sm italic text-[#362017] shadow-sm border border-gray-100">
+                                        "La tarta de chocolate con mole es una locura, nunca imaginé que esos sabores combinaran tan bien. Excelente cierre."
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
