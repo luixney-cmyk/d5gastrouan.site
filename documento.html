@@ -336,7 +336,14 @@
                             </li>
                             <li>
                                 <button onclick="changeView('resultados')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XIII. Resultados y Evaluación</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XIII. Resultados de Satisfacción</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('conclusiones')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XIV. Conclusiones Generales</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
@@ -1113,10 +1120,10 @@
                     </div>
                 </div>
 
-                <!-- VISTA: RESULTADOS Y EVALUACIÓN (NUEVO DASHBOARD) -->
+                <!-- VISTA: RESULTADOS DE SATISFACCIÓN -->
                 <div id="view-resultados" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
-                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Resultados y Evaluación</h2>
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Resultados de Evaluación</h2>
                     </div>
                     
                     <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-4xl mx-auto w-full px-2 sm:px-6 pb-6">
@@ -1307,6 +1314,52 @@
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
                         <button onclick="changeView('invitacion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('conclusiones')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: CONCLUSIONES GENERALES -->
+                <div id="view-conclusiones" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Conclusiones Generales</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-3xl mx-auto w-full px-2 sm:px-6 pb-6">
+                        
+                        <!-- Manifiesto -->
+                        <div class="relative bg-white p-8 sm:p-10 border border-[#C5A059]/40 shadow-xl mt-4">
+                            <!-- Elemento decorativo esquina -->
+                            <div class="absolute -top-3 -left-3 text-[#C5A059] bg-[#F2EDE8] p-1"><i data-lucide="quote" class="w-8 h-8 fill-current"></i></div>
+                            <div class="absolute -bottom-3 -right-3 text-[#C5A059] bg-[#F2EDE8] p-1 rotate-180"><i data-lucide="quote" class="w-8 h-8 fill-current"></i></div>
+
+                            <h3 class="font-cinzel text-xl text-[#4A0E17] font-bold text-center mb-6 uppercase tracking-widest">El Cierre del Telón</h3>
+                            
+                            <div class="space-y-5 font-serif text-sm sm:text-base leading-loose text-justify text-[#362017]/90">
+                                <p>
+                                    La culminación de <strong>"La Dualidad del Sabor"</strong> representa mucho más que el término de un evento académico; es la materialización tangible de cuatro años de esfuerzo, aprendizaje continuo y evolución culinaria. Lograr alimentar, servir y maravillar a 147 comensales bajo la presión de un servicio real, nos ha demostrado de qué estamos hechos.
+                                </p>
+                                <p>
+                                    Este proyecto integrador nos exigió abandonar nuestra zona de confort. Entendimos que la gastronomía profesional no solo reside en la habilidad frente al fogón, sino en la <strong>gestión milimétrica</strong>: desde el cálculo exacto de un presupuesto de $16,000 pesos, la negociación con proveedores, hasta la implementación de tecnologías modernas como los códigos QR para el control de aforo.
+                                </p>
+                                <p>
+                                    La sinergia entre las brigadas —alimentos, bebidas, servicio y logística— comprobó que una cocina es, fundamentalmente, un equipo humano. Cada error cometido durante las pruebas de menú se transformó en una lección invaluable que garantizó el éxito y la calificación casi perfecta (9.8/10) obtenida durante la gala.
+                                </p>
+                                <p>
+                                    Hoy, como el <strong>Grupo D5</strong> de la Licenciatura en Gastronomía, podemos afirmar que estamos preparados. Hemos cruzado la línea que separa a los estudiantes de los profesionales. "La Dualidad del Sabor" no es nuestro trabajo final, es nuestra carta de presentación ante la industria culinaria global.
+                                </p>
+                            </div>
+
+                            <div class="mt-12 flex flex-col items-center justify-center border-t border-[#C5A059]/30 pt-6">
+                                <p class="font-script text-4xl sm:text-5xl text-[#596827] mb-2">Grupo D5</p>
+                                <p class="font-cinzel text-[10px] sm:text-xs uppercase tracking-[0.3em] text-[#4A0E17] font-bold">Generación 2022 - 2026</p>
+                                <p class="font-serif text-xs italic text-gray-500 mt-1">UAN • Unidad Académica de Turismo y Gastronomía</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('resultados')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('indice')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Volver al Índice <i data-lucide="list" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
@@ -1342,7 +1395,7 @@
 
         // --- LÓGICA DE LA SECCIÓN DE INSUMOS (SIN REACT, VANILLA JS) ---
 
-        // Configuración Firebase
+        // Configuración Firebase (Usando las tuyas)
         const firebaseConfig = {
             apiKey: "AIzaSyBPhh_5QenZ1B_2hyk6tOlC3R2_xSS8XHs",
             authDomain: "compras-evento.firebaseapp.com",
@@ -1365,7 +1418,7 @@
         let groupedItemsList = [];
         let categoriesData = {};
 
-        // Datos Iniciales
+        // Datos Iniciales (Igual que en tu código)
         const INITIAL_DATA = [
             { id: 1, category: 'Carpaccio', name: 'Atun', neededQty: 5, unit: 'kilos' },
             { id: 2, category: 'Carpaccio', name: 'Salmon', neededQty: 5, unit: 'kilos' },
