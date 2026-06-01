@@ -8,8 +8,13 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Iconos de Lucide -->
+    <!-- Iconos de Lucide y FontAwesome (para la nueva sección) -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- LIBRERÍAS DE FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -68,6 +73,12 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
 
+        /* Estilos específicos para la sección de inventario/insumos */
+        .tab-btn { transition: all 0.3s ease; }
+        .tab-active { background-color: #E5DACE; color: #4A0E17; border-bottom: 2px solid #4A0E17; }
+        .tab-inactive { background-color: transparent; color: #596827; }
+        .tab-inactive:hover { background-color: rgba(229, 218, 206, 0.3); }
+
         /* --- ESTILOS DE IMPRESIÓN --- */
         @media print {
             body, html {
@@ -78,10 +89,8 @@
                 font-size: 12pt;
             }
             
-            /* Ocultar barra de navegación al imprimir */
             nav { display: none !important; }
             
-            /* Limpiar el contenedor principal para que no parezca una tarjeta */
             .w-full.max-w-4xl.h-\[85vh\].h-\[85dvh\],
             .card-shadow, .inner-border {
                 height: auto !important;
@@ -94,10 +103,7 @@
                 outline: none !important;
             }
 
-            /* Ocultar elementos decorativos SVG de fondo que no aportan a la lectura */
             svg.pointer-events-none { display: none !important; }
-
-            /* Ocultar botones de navegación internos en la impresión */
             button { display: none !important; }
             
             #content-area {
@@ -106,7 +112,6 @@
                 padding: 0 !important;
             }
 
-            /* Mostrar TODAS las vistas secuencialmente y forzar salto de página (Tamaño Carta) */
             .view-section {
                 display: flex !important;
                 min-height: auto !important;
@@ -114,13 +119,11 @@
                 page-break-after: always;
                 page-break-inside: avoid;
                 padding: 30px 20px !important;
-                opacity: 1 !important; /* Desactivar animaciones */
+                opacity: 1 !important; 
             }
             
-            /* El último elemento no necesita salto de página forzado */
             .view-section:last-child { page-break-after: auto; }
 
-            /* Ajustes de color para ahorro de tinta y mejor contraste */
             * { color: black !important; }
             h1, h2, h3, .font-cinzel { color: #333 !important; }
             .bg-\[\#F8F5F2\], .bg-\[\#F2EDE8\], .bg-\[\#E5DACE\]\/20, .bg-\[\#E5DACE\]\/30, .bg-white {
@@ -128,7 +131,6 @@
                 border: 1px solid #ccc !important;
             }
             
-            /* Mostrar el enlace real debajo del botón que no se puede clickear en papel */
             .print-url::after {
                 content: " (Enlace: " attr(href) ")";
                 font-size: 0.9em;
@@ -139,9 +141,15 @@
                 text-transform: none;
             }
             
-            /* Ocultar mockup del celular en la impresión (ocupa mucha tinta y no aporta al texto) */
             #mockup-celular { display: none !important; }
             .md\:w-1\/2 { width: 100% !important; }
+
+            /* Estilos de impresión específicos para el inventario */
+            #inventory-tabs, #inventory-search-container { display: none !important; }
+            .inventory-item { border-left: 2px solid #ccc !important; padding: 10px !important; margin-bottom: 10px !important; page-break-inside: avoid; }
+            .inventory-inputs { display: none !important; }
+            .inventory-print-fields { display: block !important; margin-top: 5px; border-top: 1px dashed #ccc; padding-top: 5px; }
+            #budget-header { border-bottom: 2px solid #333 !important; margin-bottom: 20px !important; padding-bottom: 10px !important; }
         }
     </style>
 </head>
@@ -154,14 +162,12 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <!-- Botón de Imprimir Documento -->
             <button onclick="window.print()" class="flex items-center gap-2 text-[#C5A059] hover:text-[#F8F5F2] transition-colors duration-300 text-xs uppercase tracking-widest font-bold group">
                 <i data-lucide="printer" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"></i>
                 <span class="hidden sm:inline">Imprimir PDF</span>
                 <span class="sm:hidden">Imprimir</span>
             </button>
             <div class="h-4 w-px bg-[#C5A059]/40"></div>
-            <!-- Botón de Inicio -->
             <button onclick="changeView('caratula')" class="flex items-center gap-2 text-[#C5A059] hover:text-[#F8F5F2] transition-colors duration-300 text-xs uppercase tracking-widest font-bold group">
                 <i data-lucide="home" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"></i>
                 Inicio
@@ -193,11 +199,9 @@
                 <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
             </svg>
 
-            <!-- pb-24 permite deslizar hacia arriba en celulares sin que el botón de abajo se esconda -->
             <div class="relative z-10 w-full h-full p-6 pb-24 sm:p-12 sm:pb-12 overflow-y-auto custom-scrollbar" id="content-area">
 
                 <!-- VISTA: CARÁTULA -->
-                <!-- min-h-full permite que el contenedor crezca si hay mucho contenido -->
                 <div id="view-caratula" class="view-section view-active flex-col justify-center items-center min-h-full text-center fade-in">
                     <div class="mb-8">
                         <h2 class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold text-[#4A0E17] tracking-widest leading-tight">
@@ -292,8 +296,15 @@
                                 </button>
                             </li>
                             <li>
+                                <button onclick="changeView('insumos')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VIII. Control de Insumos y Costos</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
                                 <button onclick="changeView('invitacion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VIII. La Invitación Digital</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IX. La Invitación Digital</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
@@ -654,6 +665,78 @@
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
                         <button onclick="changeView('ficha-tecnica')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('insumos')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: INSUMOS Y COSTOS (NUEVA SECCIÓN INTEGRADA) -->
+                <div id="view-insumos" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Control de Insumos</h2>
+                    </div>
+
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] w-full max-w-3xl mx-auto py-2">
+                        <p class="font-serif text-sm sm:text-base leading-relaxed text-justify mb-4 px-2">
+                            La planeación financiera y el abastecimiento son pilares de un evento exitoso. Para <strong>La Dualidad del Sabor</strong>, desarrollamos un sistema en tiempo real para gestionar el presupuesto y las compras de insumos para cada tiempo del menú.
+                        </p>
+
+                        <!-- Cabecera de Presupuesto -->
+                        <div id="budget-header" class="grid grid-cols-2 gap-4 mb-6 px-2">
+                            <div class="bg-white p-3 rounded shadow-sm border border-[#C5A059]/30">
+                                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Presupuesto</p>
+                                <p class="text-xl font-bold text-[#4A0E17]" id="display-budget">$16,000.00</p>
+                            </div>
+                            <div id="budget-remaining-box" class="bg-[#596827] text-[#F2EDE8] p-3 rounded shadow-sm border border-[#596827]">
+                                <p class="text-[10px] uppercase tracking-widest font-bold opacity-90" id="display-remaining-label">Disponible</p>
+                                <p class="text-xl font-bold" id="display-remaining">$16,000.00</p>
+                            </div>
+                            <div class="col-span-2 text-right">
+                                <p class="text-xs font-semibold text-[#362017]">
+                                    Gastado total: <span class="font-bold text-sm" id="display-spent">$0.00</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Pestañas de Navegación del Inventario -->
+                        <div id="inventory-tabs" class="flex border-b border-[#C5A059]/30 mb-4 mx-2">
+                            <button onclick="setInventoryTab('pending')" id="tab-pending" class="tab-btn tab-active flex-1 py-2 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                                <i class="fas fa-list"></i> Pendientes
+                            </button>
+                            <button onclick="setInventoryTab('completed')" id="tab-completed" class="tab-btn tab-inactive flex-1 py-2 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                                <i class="fas fa-check-double"></i> Comprados
+                            </button>
+                            <button onclick="setInventoryTab('recipes')" id="tab-recipes" class="tab-btn tab-inactive flex-1 py-2 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                                <i class="fas fa-utensils"></i> Por Receta
+                            </button>
+                        </div>
+
+                        <!-- Buscador -->
+                        <div id="inventory-search-container" class="px-2 mb-4">
+                            <div class="bg-white p-2 rounded border border-[#C5A059]/30 flex items-center">
+                                <i class="fas fa-search text-[#C5A059] mr-2"></i>
+                                <input type="text" id="inventory-search" placeholder="Buscar ingrediente..." class="w-full bg-transparent outline-none text-[#362017] font-serif text-sm" oninput="renderInventory()">
+                            </div>
+                        </div>
+
+                        <!-- Estado de Carga -->
+                        <div id="inventory-loading" class="text-center p-8 text-[#C5A059] font-bold">
+                            <i class="fas fa-spinner fa-spin mr-2 text-2xl"></i> Conectando base de datos...
+                        </div>
+
+                        <!-- Contenedor de Listas -->
+                        <div id="inventory-list" class="space-y-3 px-2 hidden">
+                            <!-- Los items se inyectan aquí con JS -->
+                        </div>
+
+                        <div id="inventory-empty" class="text-center p-8 bg-white/50 border border-[#C5A059]/20 mt-4 rounded hidden mx-2">
+                            <i id="empty-icon" class="fas fa-check-circle text-[#596827] text-3xl mb-2"></i>
+                            <p id="empty-text" class="text-[#362017] font-serif text-sm"></p>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('menu')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('invitacion')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
@@ -726,7 +809,7 @@
                     </div>
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
-                        <button onclick="changeView('menu')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('insumos')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('indice')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Volver al Índice <i data-lucide="list" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
@@ -735,11 +818,12 @@
         </div>
     </div>
 
+    <!-- SCRIPT DE NAVEGACIÓN Y LÓGICA DE INVENTARIO -->
     <script>
         // Inicializar iconos de Lucide
         lucide.createIcons();
 
-        // Función global para cambiar entre vistas
+        // --- SISTEMA DE VISTAS PRINCIPALES ---
         window.changeView = (newViewId) => {
             const currentActive = document.querySelector('.view-active');
             
@@ -753,12 +837,334 @@
                     const nextView = document.getElementById(`view-${newViewId}`);
                     if (nextView) {
                         nextView.classList.add('view-active', 'fade-in');
-                        // Regresar el scroll hacia arriba al cambiar de vista
                         document.getElementById('content-area').scrollTop = 0;
                     }
                 }, 500);
             }
         };
+
+        // --- LÓGICA DE LA SECCIÓN DE INSUMOS (SIN REACT, VANILLA JS) ---
+
+        // Configuración Firebase (Usando las tuyas)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPhh_5QenZ1B_2hyk6tOlC3R2_xSS8XHs",
+            authDomain: "compras-evento.firebaseapp.com",
+            databaseURL: "https://compras-evento-default-rtdb.firebaseio.com",
+            projectId: "compras-evento",
+            storageBucket: "compras-evento.firebasestorage.app",
+            messagingSenderId: "811688553516",
+            appId: "1:811688553516:web:82725e3fad77ddc3077589"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+
+        // Variables Globales
+        const BUDGET = 16000;
+        let purchasesData = {};
+        let activeInventoryTab = 'pending';
+        let groupedItemsList = [];
+        let categoriesData = {};
+
+        // Datos Iniciales (Igual que en tu código)
+        const INITIAL_DATA = [
+            { id: 1, category: 'Carpaccio', name: 'Atun', neededQty: 5, unit: 'kilos' },
+            { id: 2, category: 'Carpaccio', name: 'Salmon', neededQty: 5, unit: 'kilos' },
+            { id: 3, category: 'Carpaccio', name: 'Salsa de soya', neededQty: 7, unit: 'litros' },
+            { id: 4, category: 'Carpaccio', name: 'Limon', neededQty: 1, unit: 'kilos' },
+            { id: 5, category: 'Carpaccio', name: 'Chile piquin', neededQty: 100, unit: 'gramos' },
+            { id: 6, category: 'Carpaccio', name: 'Miel', neededQty: 500, unit: 'gramos' },
+            { id: 7, category: 'Carpaccio', name: 'Agar agar', neededQty: 100, unit: 'gramos' },
+            { id: 8, category: 'Carpaccio', name: 'Flores comestibles', neededQty: 1, unit: 'piezas' },
+            { id: 9, category: 'Raviolis', name: 'Harina', neededQty: 6, unit: 'kilos' },
+            { id: 10, category: 'Raviolis', name: 'Huevos', neededQty: 108, unit: 'piezas' },
+            { id: 11, category: 'Raviolis', name: 'Queso parmesano', neededQty: 2, unit: 'kilos' },
+            { id: 12, category: 'Raviolis', name: 'Leche evaporada', neededQty: 7, unit: 'litros' },
+            { id: 13, category: 'Raviolis', name: 'Cabeza de ajo', neededQty: 4, unit: 'piezas' },
+            { id: 14, category: 'Raviolis', name: 'Espinaca', neededQty: 3, unit: 'kilos' },
+            { id: 15, category: 'Raviolis', name: 'Requeson', neededQty: 5, unit: 'kilos' },
+            { id: 16, category: 'Raviolis', name: 'Media crema', neededQty: 2.5, unit: 'litros' },
+            { id: 17, category: 'Raviolis', name: 'Chile poblano', neededQty: 5, unit: 'piezas' },
+            { id: 18, category: 'Raviolis', name: 'Cilantro', neededQty: 150, unit: 'gramos' },
+            { id: 19, category: 'Raviolis', name: 'Lecitina de soya', neededQty: 100, unit: 'gramos' },
+            { id: 20, category: 'Raviolis', name: 'Brotes rabano', neededQty: 1, unit: 'piezas' },
+            { id: 21, category: 'Pulpo', name: 'Pulpo', neededQty: 19, unit: 'piezas' },
+            { id: 22, category: 'Pulpo', name: 'Mayonesa', neededQty: 500, unit: 'gramos' },
+            { id: 23, category: 'Pulpo', name: 'Salsa huichol', neededQty: 1, unit: 'pieza' },
+            { id: 24, category: 'Pulpo', name: 'Chile morita', neededQty: 50, unit: 'gramos' },
+            { id: 25, category: 'Pulpo', name: 'Cilantro', neededQty: 50, unit: 'gramos' },
+            { id: 26, category: 'Pulpo', name: 'Naranja', neededQty: 1, unit: 'kilos' },
+            { id: 27, category: 'Pulpo', name: 'Cabeza de ajo', neededQty: 4, unit: 'piezas' },
+            { id: 28, category: 'Pulpo', name: 'Cebolla blanca', neededQty: 4, unit: 'piezas' },
+            { id: 29, category: 'Pulpo', name: 'Sal', neededQty: 2, unit: 'kilos' },
+            { id: 30, category: 'Pulpo', name: 'Apio', neededQty: 500, unit: 'gramos' },
+            { id: 31, category: 'Pulpo', name: 'Salsa de soya', neededQty: 0.05, unit: 'litros' },
+            { id: 32, category: 'Pulpo', name: 'Repollo morado', neededQty: 4, unit: 'piezas' },
+            { id: 33, category: 'Pulpo', name: 'Platano macho', neededQty: 8, unit: 'kilos' },
+            { id: 34, category: 'Pulpo', name: 'Mantequilla', neededQty: 500, unit: 'gramos' },
+            { id: 35, category: 'Pulpo', name: 'Espinaca', neededQty: 1, unit: 'kilos' },
+            { id: 36, category: 'Pulpo', name: 'Lechuga', neededQty: 5, unit: 'piezas' },
+            { id: 37, category: 'Pulpo', name: 'Arugula', neededQty: 2, unit: 'piezas' },
+            { id: 38, category: 'Pulpo', name: 'Platano deshidratado', neededQty: 1, unit: 'kilos' },
+            { id: 39, category: 'Pulpo', name: 'Carbon', neededQty: 3, unit: 'bolsas' },
+            { id: 40, category: 'Galleta Postre', name: 'Mantequilla', neededQty: 1128, unit: 'gramos' },
+            { id: 41, category: 'Galleta Postre', name: 'Azucar', neededQty: 450, unit: 'gramos' },
+            { id: 42, category: 'Galleta Postre', name: 'Huevos', neededQty: 20, unit: 'piezas' },
+            { id: 43, category: 'Galleta Postre', name: 'Harina', neededQty: 2, unit: 'kilos' },
+            { id: 44, category: 'Galleta Postre', name: 'Cocoa', neededQty: 625, unit: 'gramos' },
+            { id: 45, category: 'Galleta Postre', name: 'Leche', neededQty: 1, unit: 'litros' },
+            { id: 46, category: 'Galleta Postre', name: 'Azucar glass', neededQty: 250, unit: 'gramos' },
+            { id: 47, category: 'Galleta Postre', name: 'Fecula de maiz', neededQty: 75, unit: 'gramos' },
+            { id: 48, category: 'Galleta Postre', name: 'Mole preparado', neededQty: 1, unit: 'kilos' },
+            { id: 49, category: 'Galleta Postre', name: 'Top cream chocolate', neededQty: 1, unit: 'litros' },
+            { id: 50, category: 'Nieve de Queso', name: 'Queso crema', neededQty: 1, unit: 'kilos' },
+            { id: 51, category: 'Nieve de Queso', name: 'Queso cotija', neededQty: 200, unit: 'gramos' },
+            { id: 52, category: 'Nieve de Queso', name: 'Leche', neededQty: 1.5, unit: 'litros' },
+            { id: 53, category: 'Nieve de Queso', name: 'Top cream nata', neededQty: 1, unit: 'litros' },
+            { id: 54, category: 'Nieve de Queso', name: 'Azucar', neededQty: 550, unit: 'gramos' },
+            { id: 55, category: 'Nieve de Queso', name: 'Glucosa', neededQty: 80, unit: 'gramos' },
+            { id: 56, category: 'Nieve de Queso', name: 'Cmc', neededQty: 1, unit: 'bote' },
+            { id: 57, category: 'Nieve de Queso', name: 'Huevos', neededQty: 12, unit: 'piezas' },
+            { id: 58, category: 'Nieve de Queso', name: 'Laminas de oro', neededQty: 2, unit: 'botes' },
+            { id: 59, category: 'Bebida Flauta Romero', name: 'Agua Mineral', neededQty: 16, unit: 'litros' },
+            { id: 60, category: 'Bebida Flauta Romero', name: 'Vino blanco', neededQty: 5, unit: 'litros' },
+            { id: 61, category: 'Bebida Flauta Romero', name: 'Limon', neededQty: 6, unit: 'kilos' },
+            { id: 62, category: 'Bebida Flauta Romero', name: 'Azucar', neededQty: 2250, unit: 'gramos' },
+            { id: 63, category: 'Bebida Flauta Romero', name: 'Romero', neededQty: 2, unit: 'piezas' },
+            { id: 64, category: 'Lychee', name: 'Jarabe Lichee', neededQty: 3, unit: 'litros' },
+            { id: 65, category: 'Lychee', name: 'Jugo de arandano', neededQty: 10, unit: 'litros' },
+            { id: 66, category: 'Lychee', name: 'Agua Mineral', neededQty: 10, unit: 'litros' },
+            { id: 67, category: 'Lychee', name: 'Azucar', neededQty: 3000, unit: 'gramos' }, 
+            { id: 68, category: 'Lychee', name: 'Hierbabuena', neededQty: 2, unit: 'manojos' },
+            { id: 69, category: 'Bebida Postre', name: 'Leche', neededQty: 23, unit: 'litros' },
+            { id: 70, category: 'Bebida Postre', name: 'Leche evaporada', neededQty: 4, unit: 'litros' },
+            { id: 71, category: 'Bebida Postre', name: 'Ron blanco', neededQty: 4, unit: 'litros' },
+            { id: 72, category: 'Bebida Postre', name: 'Café soluble', neededQty: 350, unit: 'gramos' },
+            { id: 73, category: 'Bebida Postre', name: 'Polvo pumkin spice', neededQty: 500, unit: 'gramos' },
+            { id: 74, category: 'Bebida Postre', name: 'Azucar Moreno', neededQty: 5, unit: 'kilos' },
+            { id: 75, category: 'Bebida Postre', name: 'Anis estrella', neededQty: 1, unit: 'kilos' },
+            { id: 76, category: 'Bebida Postre', name: 'Canela', neededQty: 3, unit: 'piezas' },
+            { id: 77, category: 'Bebida Postre', name: 'Hielo', neededQty: 3, unit: 'paquetes' },
+            { id: 78, category: 'Extras', name: 'Azucar', neededQty: 4000, unit: 'gramos' }, 
+            { id: 79, category: 'Extras', name: 'Aceite', neededQty: 2, unit: 'litros' },
+            { id: 80, category: 'Extras', name: 'Naranjas', neededQty: 6, unit: 'piezas' },
+            { id: 81, category: 'Extras', name: 'sal', neededQty: 2, unit: 'kilos' }
+        ];
+
+        // Inicializar Agrupación
+        function initInventory() {
+            const map = {};
+            INITIAL_DATA.forEach(item => {
+                const key = item.name.toLowerCase().trim().replace(/[\.\#\$\[\]]/g, "");
+                if (!map[key]) {
+                    map[key] = { key: key, name: item.name, unit: item.unit, neededQty: 0, usedIn: new Set() };
+                }
+                map[key].neededQty += item.neededQty;
+                map[key].usedIn.add(item.category);
+            });
+            groupedItemsList = Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
+
+            INITIAL_DATA.forEach(item => {
+                if (!categoriesData[item.category]) categoriesData[item.category] = [];
+                categoriesData[item.category].push(item);
+            });
+
+            // Escuchar a Firebase
+            database.ref('purchases').on('value', (snapshot) => {
+                purchasesData = snapshot.val() || {};
+                document.getElementById('inventory-loading').classList.add('hidden');
+                document.getElementById('inventory-list').classList.remove('hidden');
+                updateBudgetDisplay();
+                renderInventory();
+            });
+        }
+
+        // Formatear Moneda
+        const formatMoney = (amount) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
+
+        // Actualizar Cabecera
+        function updateBudgetDisplay() {
+            let totalSpent = 0;
+            for (let key in purchasesData) {
+                totalSpent += parseFloat(purchasesData[key].spent) || 0;
+            }
+            const remaining = BUDGET - totalSpent;
+            const isOver = remaining < 0;
+
+            document.getElementById('display-spent').textContent = formatMoney(totalSpent);
+            
+            const remainingBox = document.getElementById('budget-remaining-box');
+            const remainingLabel = document.getElementById('display-remaining-label');
+            const remainingValue = document.getElementById('display-remaining');
+
+            remainingValue.textContent = formatMoney(Math.abs(remaining));
+            
+            if (isOver) {
+                remainingBox.className = "bg-[#8B0000] text-[#F2EDE8] p-3 rounded shadow-sm border border-[#8B0000]";
+                remainingLabel.textContent = "Excedente";
+            } else {
+                remainingBox.className = "bg-[#596827] text-[#F2EDE8] p-3 rounded shadow-sm border border-[#596827]";
+                remainingLabel.textContent = "Disponible";
+            }
+        }
+
+        // Cambiar Pestañas
+        window.setInventoryTab = (tab) => {
+            activeInventoryTab = tab;
+            
+            ['pending', 'completed', 'recipes'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    btn.classList.replace('tab-inactive', 'tab-active');
+                } else {
+                    btn.classList.replace('tab-active', 'tab-inactive');
+                }
+            });
+
+            document.getElementById('inventory-search-container').style.display = tab === 'recipes' ? 'none' : 'block';
+            document.getElementById('inventory-search').value = '';
+            
+            renderInventory();
+        };
+
+        // Guardar en Firebase
+        window.handlePurchaseInput = (key, field, value) => {
+            if(!purchasesData[key]) purchasesData[key] = { boughtQty: '', spent: '' };
+            purchasesData[key][field] = value;
+            database.ref(`purchases/${key}/${field}`).set(value);
+            // La UI se actualizará sola gracias al listener on('value')
+        };
+
+        // Renderizar Lista
+        window.renderInventory = () => {
+            const listContainer = document.getElementById('inventory-list');
+            const emptyContainer = document.getElementById('inventory-empty');
+            listContainer.innerHTML = '';
+            let hasItems = false;
+
+            if (activeInventoryTab === 'recipes') {
+                // RENDERIZAR REPORTE POR RECETA
+                emptyContainer.classList.add('hidden');
+                listContainer.classList.remove('hidden');
+
+                for (const catName in categoriesData) {
+                    let catHtml = `<div class="bg-white rounded border-l-4 border-[#4A0E17] shadow-sm mb-4 overflow-hidden inventory-item">
+                                    <div class="bg-[#F8F5F2] p-2 border-b border-[#C5A059]/30">
+                                        <h3 class="font-cinzel font-bold text-[#4A0E17] uppercase text-sm">${catName}</h3>
+                                    </div>
+                                    <div class="p-3 space-y-2">`;
+                    
+                    let catTotal = 0;
+
+                    categoriesData[catName].forEach(item => {
+                        const key = item.name.toLowerCase().trim().replace(/[\.\#\$\[\]]/g, "");
+                        const purchase = purchasesData[key] || { boughtQty: 0, spent: 0 };
+                        const group = groupedItemsList.find(g => g.key === key);
+                        
+                        const proportion = group.neededQty > 0 ? (item.neededQty / group.neededQty) : 0;
+                        const allocatedQty = (parseFloat(purchase.boughtQty) || 0) * proportion;
+                        const allocatedSpent = (parseFloat(purchase.spent) || 0) * proportion;
+                        catTotal += allocatedSpent;
+
+                        catHtml += `
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-1 text-sm">
+                                <div>
+                                    <p class="font-serif font-semibold text-[#362017] capitalize">${item.name}</p>
+                                    <p class="text-[10px] text-gray-500">Req: ${item.neededQty} ${item.unit}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-[#596827]">${formatMoney(allocatedSpent)}</p>
+                                    <p class="text-[10px] text-gray-500">Cubierto: ${allocatedQty.toFixed(1)} ${item.unit.substring(0,3)}</p>
+                                </div>
+                            </div>`;
+                    });
+
+                    catHtml += `</div>
+                                <div class="bg-[#4A0E17] text-[#F2EDE8] p-2 flex justify-between text-sm">
+                                    <span>Costo receta:</span>
+                                    <span class="font-bold">${formatMoney(catTotal)}</span>
+                                </div>
+                            </div>`;
+                    listContainer.insertAdjacentHTML('beforeend', catHtml);
+                }
+
+            } else {
+                // RENDERIZAR PENDIENTES / COMPLETADOS
+                const searchTerm = document.getElementById('inventory-search').value.toLowerCase();
+
+                groupedItemsList.forEach(item => {
+                    const purchase = purchasesData[item.key] || { boughtQty: '', spent: '' };
+                    const isCompleted = (parseFloat(purchase.boughtQty) || 0) >= item.neededQty && purchase.spent !== '' && purchase.spent !== undefined;
+                    
+                    if (!item.name.toLowerCase().includes(searchTerm)) return;
+                    if (activeInventoryTab === 'pending' && isCompleted) return;
+                    if (activeInventoryTab === 'completed' && !isCompleted) return;
+
+                    hasItems = true;
+                    
+                    const borderColor = isCompleted ? 'border-[#596827]' : 'border-[#C5A059]';
+                    const bgColor = isCompleted ? 'bg-white opacity-80' : 'bg-white';
+
+                    const html = `
+                        <div class="${bgColor} rounded shadow-sm border-l-4 ${borderColor} p-4 inventory-item">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h3 class="font-serif font-bold text-[#362017] text-base capitalize">${item.name}</h3>
+                                    <p class="text-[10px] font-bold text-white bg-[#C5A059] px-2 py-0.5 rounded mt-1 inline-block">Req: ${item.neededQty} ${item.unit}</p>
+                                </div>
+                                ${isCompleted ? '<i class="fas fa-check-circle text-[#596827] text-xl"></i>' : ''}
+                            </div>
+                            <p class="text-[10px] text-gray-500 italic mb-3 font-serif">Para: ${Array.from(item.usedIn).join(', ')}</p>
+                            
+                            <div class="grid grid-cols-2 gap-2 inventory-inputs">
+                                <div class="bg-[#F8F5F2] p-2 rounded border border-[#C5A059]/30">
+                                    <label class="block text-[10px] uppercase font-bold text-[#596827] mb-1">Comprado</label>
+                                    <div class="flex items-center">
+                                        <input type="number" step="any" min="0" value="${purchase.boughtQty}" 
+                                            oninput="handlePurchaseInput('${item.key}', 'boughtQty', this.value)"
+                                            class="w-full bg-transparent outline-none font-bold text-[#4A0E17]" placeholder="0">
+                                        <span class="text-[10px] text-gray-400">${item.unit.substring(0,3)}</span>
+                                    </div>
+                                </div>
+                                <div class="bg-[#F8F5F2] p-2 rounded border border-[#C5A059]/30">
+                                    <label class="block text-[10px] uppercase font-bold text-[#596827] mb-1">Costo ($)</label>
+                                    <div class="flex items-center">
+                                        <input type="number" step="any" min="0" value="${purchase.spent}" 
+                                            oninput="handlePurchaseInput('${item.key}', 'spent', this.value)"
+                                            class="w-full bg-transparent outline-none font-bold text-[#4A0E17]" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Vista Impresión Física -->
+                            <div class="hidden inventory-print-fields">
+                                <span class="text-xs flex justify-between">
+                                    <span>Comprado: __________</span>
+                                    <span>Costo: $__________</span>
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                    listContainer.insertAdjacentHTML('beforeend', html);
+                });
+
+                if (!hasItems) {
+                    listContainer.classList.add('hidden');
+                    emptyContainer.classList.remove('hidden');
+                    document.getElementById('empty-text').textContent = activeInventoryTab === 'pending' ? '¡Todo comprado! No hay pendientes.' : 'Aún no hay compras completadas.';
+                    document.getElementById('empty-icon').className = activeInventoryTab === 'pending' ? 'fas fa-glass-cheers text-[#C5A059] text-3xl mb-2' : 'fas fa-box-open text-gray-400 text-3xl mb-2';
+                } else {
+                    listContainer.classList.remove('hidden');
+                    emptyContainer.classList.add('hidden');
+                }
+            }
+        };
+
+        // Arrancar el sistema de inventario al cargar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            initInventory();
+        });
     </script>
 </body>
 </html>
