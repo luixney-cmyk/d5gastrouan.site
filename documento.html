@@ -25,7 +25,7 @@
             margin: 0;
             padding: 0;
             height: 100vh;
-            height: 100dvh; /* Soporte para altura dinámica en celulares */
+            height: 100dvh; 
             font-family: 'Montserrat', sans-serif;
             overflow: hidden; 
         }
@@ -73,13 +73,11 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
 
-        /* Estilos específicos para la sección de inventario/insumos */
         .tab-btn { transition: all 0.3s ease; }
         .tab-active { background-color: #E5DACE; color: #4A0E17; border-bottom: 2px solid #4A0E17; }
         .tab-inactive { background-color: transparent; color: #596827; }
         .tab-inactive:hover { background-color: rgba(229, 218, 206, 0.3); }
 
-        /* --- ESTILOS DE IMPRESIÓN --- */
         @media print {
             body, html {
                 height: auto !important;
@@ -144,16 +142,11 @@
             #mockup-celular { display: none !important; }
             .md\:w-1\/2 { width: 100% !important; }
 
-            /* Estilos de impresión específicos para el inventario */
             #inventory-tabs, #inventory-search-container { display: none !important; }
             .inventory-item { border-left: 2px solid #ccc !important; padding: 10px !important; margin-bottom: 10px !important; page-break-inside: avoid; }
             .inventory-inputs { display: none !important; }
             .inventory-print-fields { display: block !important; margin-top: 5px; border-top: 1px dashed #ccc; padding-top: 5px; }
             #budget-header { border-bottom: 2px solid #333 !important; margin-bottom: 20px !important; padding-bottom: 10px !important; }
-            
-            /* Ajustes para la gráfica de resultados en impresión */
-            .result-bar-bg { background-color: #eee !important; border: 1px solid #ccc; }
-            .result-bar-fill { background-color: #4A0E17 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
@@ -348,6 +341,20 @@
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
+                            <li>
+                                <button onclick="changeView('evidencias')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XV. Evidencias Videográficas</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('contraportada')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XVI. Contraportada</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -456,7 +463,6 @@
                     
                     <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-3xl mx-auto px-2 sm:px-6 pb-6">
                         
-                        <!-- Bloque 1: Significado y Origen -->
                         <div class="space-y-4">
                             <h3 class="font-cinzel text-lg font-bold text-[#596827] flex items-center gap-2">
                                 <i data-lucide="lightbulb" class="w-5 h-5"></i> El Origen de la Idea
@@ -483,7 +489,6 @@
                             </div>
                         </div>
 
-                        <!-- Bloque 2: Ambientación y Temática -->
                         <div class="space-y-4 mt-6">
                             <h3 class="font-cinzel text-lg font-bold text-[#596827] flex items-center gap-2">
                                 <i data-lucide="tent" class="w-5 h-5"></i> La Atmósfera del Evento
@@ -512,34 +517,29 @@
                             </div>
                         </div>
 
-                        <!-- Bloque 3: Paleta de Colores -->
                         <div class="space-y-4 mt-6">
                             <h3 class="font-cinzel text-lg font-bold text-[#596827] flex items-center gap-2">
                                 <i data-lucide="palette" class="w-5 h-5"></i> Paleta de Colores
                             </h3>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                <!-- Color 1 -->
                                 <div class="flex flex-col items-center">
                                     <div class="w-16 h-16 rounded-full bg-[#4A0E17] shadow-md border-2 border-white mb-2"></div>
                                     <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Sangre de Toro</p>
                                     <p class="text-[8px] text-gray-500 font-mono">#4A0E17</p>
                                     <p class="font-serif text-[10px] text-center mt-1 italic text-gray-600">Pasión, telón de circo y vino tinto.</p>
                                 </div>
-                                <!-- Color 2 -->
                                 <div class="flex flex-col items-center">
                                     <div class="w-16 h-16 rounded-full bg-[#C5A059] shadow-md border-2 border-white mb-2"></div>
                                     <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Dorado Vintage</p>
                                     <p class="text-[8px] text-gray-500 font-mono">#C5A059</p>
                                     <p class="font-serif text-[10px] text-center mt-1 italic text-gray-600">Elegancia, glamour y acentos de lujo.</p>
                                 </div>
-                                <!-- Color 3 -->
                                 <div class="flex flex-col items-center">
                                     <div class="w-16 h-16 rounded-full bg-[#596827] shadow-md border-2 border-white mb-2"></div>
                                     <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Olivo Toscano</p>
                                     <p class="text-[8px] text-gray-500 font-mono">#596827</p>
                                     <p class="font-serif text-[10px] text-center mt-1 italic text-gray-600">Hierbas italianas y arraigo a la tierra.</p>
                                 </div>
-                                <!-- Color 4 -->
                                 <div class="flex flex-col items-center">
                                     <div class="w-16 h-16 rounded-full bg-[#F2EDE8] shadow-md border-2 border-gray-200 mb-2"></div>
                                     <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Lienzo Crudo</p>
@@ -565,7 +565,6 @@
                     
                     <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-3xl mx-auto px-2 sm:px-6">
                         
-                        <!-- Objetivo General -->
                         <div>
                             <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-2 flex items-center gap-2">
                                 <i data-lucide="target" class="w-5 h-5"></i> Objetivo General
@@ -577,7 +576,6 @@
                             </div>
                         </div>
 
-                        <!-- Objetivos Específicos -->
                         <div>
                             <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-3 flex items-center gap-2">
                                 <i data-lucide="check-circle" class="w-5 h-5"></i> Objetivos Específicos
@@ -617,7 +615,6 @@
                     
                     <div class="flex-grow flex flex-col justify-center text-[#362017] space-y-8 max-w-3xl mx-auto px-2 sm:px-6">
                         
-                        <!-- Misión -->
                         <div class="relative bg-white p-6 sm:p-8 shadow-md border-l-4 border-[#4A0E17] group hover:border-[#C5A059] transition-colors">
                             <i data-lucide="compass" class="absolute top-4 right-4 w-10 h-10 text-[#C5A059] opacity-20 group-hover:opacity-100 transition-opacity"></i>
                             <h3 class="font-cinzel text-xl font-bold text-[#4A0E17] mb-3 uppercase tracking-widest">Nuestra Misión</h3>
@@ -626,7 +623,6 @@
                             </p>
                         </div>
 
-                        <!-- Visión -->
                         <div class="relative bg-white p-6 sm:p-8 shadow-md border-l-4 border-[#596827] group hover:border-[#C5A059] transition-colors">
                             <i data-lucide="eye" class="absolute top-4 right-4 w-10 h-10 text-[#C5A059] opacity-20 group-hover:opacity-100 transition-opacity"></i>
                             <h3 class="font-cinzel text-xl font-bold text-[#596827] mb-3 uppercase tracking-widest">Nuestra Visión</h3>
@@ -657,44 +653,37 @@
                             </p>
                         </div>
 
-                        <!-- Fases del Proyecto (Cronograma Vertical) -->
                         <div class="mb-8">
                             <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-4 flex items-center gap-2">
                                 <i data-lucide="clock" class="w-5 h-5"></i> Fases del Proyecto
                             </h3>
                             
                             <div class="relative border-l-2 border-[#C5A059]/50 ml-3 md:ml-4 space-y-6">
-                                <!-- Etapa 1 -->
                                 <div class="relative pl-6 sm:pl-8">
                                     <div class="absolute w-4 h-4 bg-[#4A0E17] rounded-full -left-[9px] top-1 border-2 border-[#F2EDE8]"></div>
                                     <h4 class="font-cinzel font-bold text-[#4A0E17] text-sm sm:text-base">1. Planeación</h4>
                                     <p class="font-serif text-xs sm:text-sm text-[#362017]/80 mt-1">Desarrollo del concepto creativo, definición de la temática (Dualidad) y estructuración de los objetivos generales del banquete.</p>
                                 </div>
-                                <!-- Etapa 2 -->
                                 <div class="relative pl-6 sm:pl-8">
                                     <div class="absolute w-4 h-4 bg-[#C5A059] rounded-full -left-[9px] top-1 border-2 border-[#F2EDE8]"></div>
                                     <h4 class="font-cinzel font-bold text-[#4A0E17] text-sm sm:text-base">2. Diseño</h4>
                                     <p class="font-serif text-xs sm:text-sm text-[#362017]/80 mt-1">Estructuración del menú mediante la "Prueba de Menú", diseño de la experiencia sensorial y maridaje.</p>
                                 </div>
-                                <!-- Etapa 3 -->
                                 <div class="relative pl-6 sm:pl-8">
                                     <div class="absolute w-4 h-4 bg-[#596827] rounded-full -left-[9px] top-1 border-2 border-[#F2EDE8]"></div>
                                     <h4 class="font-cinzel font-bold text-[#4A0E17] text-sm sm:text-base">3. Gestión</h4>
                                     <p class="font-serif text-xs sm:text-sm text-[#362017]/80 mt-1">Búsqueda de locaciones, negociación con proveedores locales, gestión de compras y administración de los recursos financieros.</p>
                                 </div>
-                                <!-- Etapa 4 -->
                                 <div class="relative pl-6 sm:pl-8">
                                     <div class="absolute w-4 h-4 bg-[#C5A059] rounded-full -left-[9px] top-1 border-2 border-[#F2EDE8]"></div>
                                     <h4 class="font-cinzel font-bold text-[#4A0E17] text-sm sm:text-base">4. Producción</h4>
                                     <p class="font-serif text-xs sm:text-sm text-[#362017]/80 mt-1">Procesos de <em>Mise en place</em> intensivo, pre-producción de alimentos en cocinas de la universidad y traslado logístico al casino.</p>
                                 </div>
-                                <!-- Etapa 5 -->
                                 <div class="relative pl-6 sm:pl-8">
                                     <div class="absolute w-4 h-4 bg-[#4A0E17] rounded-full -left-[9px] top-1 border-2 border-[#F2EDE8]"></div>
                                     <h4 class="font-cinzel font-bold text-[#4A0E17] text-sm sm:text-base">5. Ejecución</h4>
                                     <p class="font-serif text-xs sm:text-sm text-[#362017]/80 mt-1">Montaje de salón, protocolo de recepción mediante códigos QR y servicio sincronizado de alimentos y bebidas del evento.</p>
                                 </div>
-                                <!-- Etapa 6 -->
                                 <div class="relative pl-6 sm:pl-8">
                                     <div class="absolute w-4 h-4 bg-[#596827] rounded-full -left-[9px] top-1 border-2 border-[#F2EDE8]"></div>
                                     <h4 class="font-cinzel font-bold text-[#4A0E17] text-sm sm:text-base">6. Evaluación</h4>
@@ -703,9 +692,7 @@
                             </div>
                         </div>
 
-                        <!-- Distribución y Herramientas -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Responsabilidades -->
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-3 flex items-center gap-2">
                                     <i data-lucide="users" class="w-5 h-5"></i> Organización
@@ -726,7 +713,6 @@
                                 </ul>
                             </div>
                             
-                            <!-- Herramientas -->
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-3 flex items-center gap-2">
                                     <i data-lucide="wrench" class="w-5 h-5"></i> Herramientas
@@ -778,19 +764,17 @@
                                 Un banquete de esta magnitud no puede sostenerse en la improvisación. La creación de un <strong>organigrama jerárquico y estructurado</strong> fue fundamental para asegurar el éxito operativo de <em>La Dualidad del Sabor</em>. 
                             </p>
                             <p class="font-serif text-sm sm:text-base leading-relaxed mt-3">
-                                Establecer líneas de mando claras, desde la Chef Ejecutiva hasta los Commis de cada estación y el equipo de servicio, permitió evitar la duplicidad de esfuerzos, mantener un control estricto sobre el <em>timing</em> del servicio y garantizar que cada platillo saliera de cocina con la calidad estandarizada requerida. <strong>En la cocina profesional, la organización es sinónimo de eficiencia.</strong>
+                                Establecer líneas de mando claras, desde el Chef Ejecutivo hasta los Commis de cada estación y el equipo de servicio, permitió evitar la duplicidad de esfuerzos, mantener un control estricto sobre el <em>timing</em> del servicio y garantizar que cada platillo saliera de cocina con la calidad estandarizada requerida. <strong>En la cocina profesional, la organización es sinónimo de eficiencia.</strong>
                             </p>
                         </div>
 
-                        <!-- Imagen del Organigrama -->
+                        <!-- Imagen del Organigrama (.png) -->
                         <div class="w-full flex justify-center items-center bg-[#F2EDE8] border-2 border-[#C5A059]/30 rounded p-2 sm:p-4 shadow-inner mb-6 relative group">
-                            <!-- Overlay que aparece si la imagen no carga de inmediato (o en caso de error) -->
                             <div class="absolute inset-0 flex items-center justify-center bg-[#F2EDE8] z-0 opacity-50">
                                 <i class="fas fa-sitemap text-[#C5A059] text-6xl opacity-30"></i>
                             </div>
                             
-                            <!-- La imagen del usuario -->
-                            <img src="orga.jpg" alt="Organigrama Operativo del Grupo D5" class="w-full max-w-3xl h-auto rounded object-contain shadow-md relative z-10 transition-transform duration-500 hover:scale-[1.02]" onerror="this.onerror=null; this.src='https://placehold.co/800x600/F2EDE8/4A0E17?text=Organigrama+D5';">
+                            <img src="orga.png" alt="Organigrama Operativo del Grupo D5" class="w-full max-w-3xl h-auto rounded object-contain shadow-md relative z-10 transition-transform duration-500 hover:scale-[1.02]" onerror="this.onerror=null; this.src='https://placehold.co/800x600/F2EDE8/4A0E17?text=Organigrama+D5';">
                         </div>
 
                     </div>
@@ -813,7 +797,6 @@
                         </p>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4">
-                            <!-- Item Nombre -->
                             <div class="bg-white p-4 border-l-4 border-[#4A0E17] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
                                 <i data-lucide="star" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -822,7 +805,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Item Concepto -->
                             <div class="bg-white p-4 border-l-4 border-[#C5A059] shadow-sm flex items-start gap-3 hover:border-[#4A0E17] transition-colors">
                                 <i data-lucide="palette" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -831,7 +813,6 @@
                                 </div>
                             </div>
 
-                            <!-- Item Fecha -->
                             <div class="bg-white p-4 border-l-4 border-[#596827] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
                                 <i data-lucide="calendar" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -840,7 +821,6 @@
                                 </div>
                             </div>
 
-                            <!-- Item Sede -->
                             <div class="bg-white p-4 border-l-4 border-[#4A0E17] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
                                 <i data-lucide="map-pin" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -849,7 +829,6 @@
                                 </div>
                             </div>
 
-                            <!-- Item Aforo -->
                             <div class="bg-white p-4 border-l-4 border-[#C5A059] shadow-sm flex items-start gap-3 hover:border-[#596827] transition-colors">
                                 <i data-lucide="users" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -858,7 +837,6 @@
                                 </div>
                             </div>
 
-                            <!-- Item Servicio -->
                             <div class="bg-white p-4 border-l-4 border-[#596827] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
                                 <i data-lucide="utensils" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -867,7 +845,6 @@
                                 </div>
                             </div>
 
-                            <!-- Item Asistentes -->
                             <div class="bg-white p-4 border-l-4 border-[#4A0E17] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
                                 <i data-lucide="user-check" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -876,7 +853,6 @@
                                 </div>
                             </div>
 
-                            <!-- Item Vestimenta -->
                             <div class="bg-white p-4 border-l-4 border-[#C5A059] shadow-sm flex items-start gap-3 hover:border-[#4A0E17] transition-colors">
                                 <i data-lucide="shirt" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
@@ -901,7 +877,6 @@
                     
                     <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-3xl mx-auto w-full px-2 sm:px-6 pb-6">
                         
-                        <!-- Texto Introductorio -->
                         <div class="bg-white p-4 sm:p-5 border-l-4 border-[#C5A059] shadow-sm mb-6">
                             <p class="font-serif text-sm sm:text-base leading-relaxed text-justify">
                                 La consolidación de la oferta gastronómica de <strong>La Dualidad del Sabor</strong> es el resultado directo de la culminación de nuestras prácticas en las materias de Cultura y Gastronomía Italiana y Cocina de Autor. El proceso de selección se llevó a cabo mediante una rigurosa <strong>"Prueba de Menú"</strong>.
@@ -911,10 +886,8 @@
                             </p>
                         </div>
                         
-                        <!-- Lista del Menú -->
                         <div class="space-y-4 text-left">
                             
-                            <!-- ANTIPASTO -->
                             <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
                                 <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Antipasto <span class="font-normal opacity-70">| Cocina de Autor</span></p>
                                 <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Carpaccio de Salmón y Atún Curados</p>
@@ -929,14 +902,12 @@
                                 </div>
                             </div>
 
-                            <!-- PRIMO PIATTO -->
                             <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
                                 <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Primo Piatto <span class="font-normal opacity-70">| Cocina Italiana / Fusión de Autor</span></p>
                                 <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Ravioli de Requesón y Espinaca</p>
                                 <p class="font-serif text-xs sm:text-sm opacity-80 mt-1 leading-relaxed">Raviolis artesanales rellenos de requesón, espinaca y queso parmesano, bañados en una salsa cremosa al parmesano y coronados con espuma de chile poblano y cilantro.</p>
                             </div>
 
-                            <!-- PLATO FUERTE -->
                             <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
                                 <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Plato Fuerte <span class="font-normal opacity-70">| Fusión Ítalo-Contemporánea</span></p>
                                 <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Pulpo a las Brasas con Acentos Mediterráneos</p>
@@ -951,7 +922,6 @@
                                 </div>
                             </div>
 
-                            <!-- POSTRE -->
                             <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
                                 <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Dolce <span class="font-normal opacity-70">| Cocina de Autor</span></p>
                                 <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Tarta de Chocolate y Mole Poblano</p>
@@ -986,7 +956,6 @@
                             La planeación financiera y el abastecimiento son pilares de un evento exitoso. Para <strong>La Dualidad del Sabor</strong>, desarrollamos un sistema en tiempo real para gestionar el presupuesto y las compras de insumos para cada tiempo del menú.
                         </p>
 
-                        <!-- Cabecera de Presupuesto -->
                         <div id="budget-header" class="grid grid-cols-2 gap-4 mb-6 px-2">
                             <div class="bg-white p-3 rounded shadow-sm border border-[#C5A059]/30">
                                 <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Presupuesto</p>
@@ -1003,7 +972,6 @@
                             </div>
                         </div>
 
-                        <!-- Pestañas de Navegación del Inventario -->
                         <div id="inventory-tabs" class="flex border-b border-[#C5A059]/30 mb-4 mx-2">
                             <button onclick="setInventoryTab('pending')" id="tab-pending" class="tab-btn tab-active flex-1 py-2 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
                                 <i class="fas fa-list"></i> Pendientes
@@ -1016,7 +984,6 @@
                             </button>
                         </div>
 
-                        <!-- Buscador -->
                         <div id="inventory-search-container" class="px-2 mb-4">
                             <div class="bg-white p-2 rounded border border-[#C5A059]/30 flex items-center">
                                 <i class="fas fa-search text-[#C5A059] mr-2"></i>
@@ -1024,14 +991,11 @@
                             </div>
                         </div>
 
-                        <!-- Estado de Carga -->
                         <div id="inventory-loading" class="text-center p-8 text-[#C5A059] font-bold">
                             <i class="fas fa-spinner fa-spin mr-2 text-2xl"></i> Conectando base de datos...
                         </div>
 
-                        <!-- Contenedor de Listas -->
                         <div id="inventory-list" class="space-y-3 px-2 hidden">
-                            <!-- Los items se inyectan aquí con JS -->
                         </div>
 
                         <div id="inventory-empty" class="text-center p-8 bg-white/50 border border-[#C5A059]/20 mt-4 rounded hidden mx-2">
@@ -1055,7 +1019,6 @@
                     
                     <div class="flex-grow flex flex-col md:flex-row justify-center items-center text-[#362017] max-w-4xl mx-auto w-full px-2 sm:px-6 gap-6 md:gap-8 overflow-y-auto">
                         
-                        <!-- Columna de Texto -->
                         <div class="w-full md:w-1/2 space-y-4 text-justify">
                             <p class="font-serif text-sm sm:text-base leading-relaxed">
                                 Para elevar el nivel de profesionalismo y la elegancia del evento, decidimos revolucionar la manera tradicional de convocar a nuestros asistentes. En lugar de utilizar invitaciones impresas, desarrollamos una <strong>plataforma web interactiva</strong> conectada a una base de datos en tiempo real.
@@ -1082,19 +1045,14 @@
                                 <a href="https://d5gastrouan.site/" target="_blank" class="print-url inline-flex bg-[#C5A059] text-[#1A0F0A] py-3 px-6 hover:bg-[#AA771C] transition-all duration-300 tracking-[0.2em] text-xs sm:text-sm uppercase font-bold items-center justify-center gap-2 border-2 border-[#C5A059] shadow-lg hover:shadow-xl w-full sm:w-auto rounded-sm">
                                     <i data-lucide="external-link" class="w-4 h-4"></i> Ver Plataforma Web
                                 </a>
-                                <!-- Texto visible solo en móvil o pantallas pequeñas que muestra la URL por si acaso -->
                                 <p class="text-xs text-[#362017] opacity-70 mt-2 block sm:hidden">Enlace web: https://d5gastrouan.site/</p>
                             </div>
                         </div>
 
-                        <!-- Columna de Imagen / Mockup del Celular -->
                         <div id="mockup-celular" class="w-full md:w-1/2 flex justify-center items-center py-4">
-                            <!-- Marco estilo teléfono/tarjeta -->
                             <div class="relative w-64 h-[26rem] bg-[#1A0F0A] rounded-[2rem] border-4 border-[#362017] shadow-2xl overflow-hidden flex flex-col items-center p-4">
-                                <!-- Efecto de la cámara / top del cel -->
                                 <div class="absolute top-0 w-32 h-6 bg-[#362017] rounded-b-xl z-20"></div>
                                 
-                                <!-- Contenido simulado de la invitación -->
                                 <div class="w-full h-full border border-[#C5A059]/50 bg-[#F2EDE8] rounded-xl flex flex-col items-center justify-center text-center p-4 relative overflow-hidden">
                                     <div class="absolute inset-0 bg-custom opacity-10"></div>
                                     <p class="font-script text-3xl text-[#596827] relative z-10">La Dualidad</p>
@@ -1102,7 +1060,6 @@
                                     <div class="h-px w-16 bg-[#C5A059] mb-4 relative z-10"></div>
                                     <p class="font-cinzel text-[#4A0E17] text-[10px] uppercase tracking-widest font-bold mb-4 relative z-10">Pase Dinámico VIP</p>
                                     
-                                    <!-- QR Simulado -->
                                     <div class="w-20 h-20 bg-white border-2 border-[#C5A059] p-1 flex items-center justify-center mb-4 relative z-10">
                                         <i data-lucide="qr-code" class="w-16 h-16 text-[#1A0F0A]"></i>
                                     </div>
@@ -1134,9 +1091,7 @@
                             </p>
                         </div>
 
-                        <!-- Banner Promocional de la Encuesta -->
                         <div class="w-full bg-[#1A0F0A] border-2 border-[#C5A059] rounded p-6 shadow-xl relative overflow-hidden group mb-8 flex flex-col items-center text-center">
-                            <!-- SVG Fondo -->
                             <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <polygon points="0,100 100,0 100,100" fill="#4A0E17" />
                             </svg>
@@ -1152,10 +1107,8 @@
                             </a>
                         </div>
 
-                        <!-- DASHBOARD DE RESULTADOS (Todas las preguntas) -->
                         <div class="space-y-8">
                             
-                            <!-- Categoría 1: Logística y Recepción -->
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
                                     <i data-lucide="map" class="w-5 h-5 text-[#C5A059]"></i> Logística y Recepción
@@ -1185,7 +1138,6 @@
                                 </div>
                             </div>
 
-                            <!-- Categoría 2: Servicio y Tiempos -->
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
                                     <i data-lucide="clock" class="w-5 h-5 text-[#C5A059]"></i> Servicio y Tiempos
@@ -1215,13 +1167,11 @@
                                 </div>
                             </div>
 
-                            <!-- Categoría 3: Alimentos y Bebidas -->
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
                                     <i data-lucide="utensils" class="w-5 h-5 text-[#C5A059]"></i> Evaluación Gastronómica
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <!-- Menú -->
                                     <div class="bg-[#F8F5F2] border border-[#C5A059]/30 rounded p-4">
                                         <p class="text-xs font-bold text-[#4A0E17] mb-3 uppercase tracking-widest text-center">Platillos</p>
                                         <div class="space-y-3">
@@ -1240,7 +1190,6 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Bebidas -->
                                     <div class="bg-[#F8F5F2] border border-[#C5A059]/30 rounded p-4">
                                         <p class="text-xs font-bold text-[#4A0E17] mb-3 uppercase tracking-widest text-center">Bebidas y Maridaje</p>
                                         <div class="space-y-3">
@@ -1258,7 +1207,6 @@
                                 </div>
                             </div>
 
-                            <!-- Categoría 4: Entretenimiento y Calificación Final -->
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-3 flex items-center gap-2 border-b border-[#C5A059]/40 pb-2">
                                     <i data-lucide="music" class="w-5 h-5 text-[#C5A059]"></i> Entretenimiento y Conclusión
@@ -1288,7 +1236,6 @@
                                 </div>
                             </div>
 
-                            <!-- Comentarios Destacados -->
                             <div class="bg-white p-5 rounded border-l-4 border-[#C5A059] shadow-md">
                                 <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-4 flex items-center gap-2">
                                     <i data-lucide="message-square" class="w-5 h-5 text-[#C5A059]"></i> Comentarios Destacados
@@ -1326,9 +1273,7 @@
                     
                     <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-3xl mx-auto w-full px-2 sm:px-6 pb-6">
                         
-                        <!-- Manifiesto -->
                         <div class="relative bg-white p-8 sm:p-10 border border-[#C5A059]/40 shadow-xl mt-4">
-                            <!-- Elemento decorativo esquina -->
                             <div class="absolute -top-3 -left-3 text-[#C5A059] bg-[#F2EDE8] p-1"><i data-lucide="quote" class="w-8 h-8 fill-current"></i></div>
                             <div class="absolute -bottom-3 -right-3 text-[#C5A059] bg-[#F2EDE8] p-1 rotate-180"><i data-lucide="quote" class="w-8 h-8 fill-current"></i></div>
 
@@ -1360,7 +1305,79 @@
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
                         <button onclick="changeView('resultados')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
-                        <button onclick="changeView('indice')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Volver al Índice <i data-lucide="list" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                        <button onclick="changeView('evidencias')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: EVIDENCIAS VIDEOGRÁFICAS -->
+                <div id="view-evidencias" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Evidencias Videográficas</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-center items-center w-full max-w-3xl mx-auto px-2 sm:px-6 pb-6">
+                        
+                        <div class="relative w-full aspect-video rounded-lg overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-4 border-[#C5A059]/60 bg-black flex justify-center items-center group">
+                            <!-- El video cargará localmente -->
+                            <video id="evidence-video" src="vid.mp4" controls muted class="w-full h-full object-cover">
+                                Tu navegador no soporta el formato de video.
+                            </video>
+                        </div>
+                        
+                        <div class="mt-6 text-center">
+                            <p class="font-serif italic text-sm sm:text-base text-[#596827]">
+                                Resumen videográfico de la operación, montaje y ejecución del banquete "La Dualidad del Sabor".
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('conclusiones')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('contraportada')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: CONTRAPORTADA -->
+                <div id="view-contraportada" class="view-section flex-col justify-center items-center min-h-full text-center fade-in pb-10">
+                    
+                    <div class="mb-6 flex flex-col items-center justify-center space-y-4">
+                        <div class="h-16 w-px bg-gradient-to-b from-transparent to-[#C5A059]"></div>
+                        <i data-lucide="award" class="w-10 h-10 text-[#C5A059]"></i>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="font-cinzel text-xl sm:text-2xl font-bold text-[#4A0E17] tracking-widest leading-tight">
+                            Universidad Autónoma<br>de Nayarit
+                        </h2>
+                        <h3 class="font-serif uppercase tracking-[0.2em] text-[#362017] text-xs sm:text-sm font-semibold mt-4 mb-2">
+                            Unidad Académica de Turismo y Gastronomía
+                        </h3>
+                        <p class="font-serif italic text-[#596827] text-sm">
+                            Licenciatura en Gastronomía • Grupo D5
+                        </p>
+                    </div>
+
+                    <div class="my-6">
+                        <p class="font-cinzel text-[#4A0E17] text-xs tracking-[0.4em] uppercase font-bold mb-2">
+                            Proyecto Integrador
+                        </p>
+                        <h2 class="font-script text-4xl sm:text-5xl text-[#596827] drop-shadow-sm">
+                            La Dualidad del Sabor
+                        </h2>
+                    </div>
+
+                    <div class="mt-8 mb-4">
+                        <h1 class="font-script text-7xl sm:text-9xl text-[#4A0E17] leading-none drop-shadow-md transform -rotate-2">
+                            ¡Gracias!
+                        </h1>
+                    </div>
+                    
+                    <div class="h-16 w-px bg-gradient-to-t from-transparent to-[#C5A059] mt-6"></div>
+
+                    <div class="mt-auto pt-8 w-full flex justify-between items-center border-t border-[#C5A059]/30">
+                        <button onclick="changeView('evidencias')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('caratula')" class="bg-transparent text-[#4A0E17] py-2 px-6 hover:bg-[#E5DACE] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 border border-[#4A0E17] rounded-sm">Volver al Inicio <i data-lucide="home" class="w-4 h-4"></i></button>
                     </div>
                 </div>
 
@@ -1373,13 +1390,19 @@
         // Inicializar iconos de Lucide
         lucide.createIcons();
 
-        // --- SISTEMA DE VISTAS PRINCIPALES ---
+        // --- SISTEMA DE VISTAS PRINCIPALES Y CONTROL DE VIDEO ---
         window.changeView = (newViewId) => {
             const currentActive = document.querySelector('.view-active');
             
             if (currentActive) {
                 currentActive.classList.remove('fade-in');
                 currentActive.classList.add('fade-out');
+                
+                // Pausar el video si salimos de la vista de evidencias
+                if (currentActive.id === 'view-evidencias') {
+                    const videoEl = document.getElementById('evidence-video');
+                    if(videoEl) videoEl.pause();
+                }
                 
                 setTimeout(() => {
                     currentActive.classList.remove('view-active', 'fade-out');
@@ -1388,6 +1411,17 @@
                     if (nextView) {
                         nextView.classList.add('view-active', 'fade-in');
                         document.getElementById('content-area').scrollTop = 0;
+                        
+                        // Reproducir video automáticamente al entrar a la vista de evidencias
+                        if (newViewId === 'evidencias') {
+                            const videoEl = document.getElementById('evidence-video');
+                            if(videoEl) {
+                                videoEl.currentTime = 0; // Reiniciar video
+                                // Autoplay (puede ser bloqueado por algunos navegadores si no está silenciado, 
+                                // pero le pusimos el atributo 'muted' en el HTML para evitarlo).
+                                videoEl.play().catch(e => console.log("Autoplay prevenido por el navegador:", e));
+                            }
+                        }
                     }
                 }, 500);
             }
@@ -1395,7 +1429,7 @@
 
         // --- LÓGICA DE LA SECCIÓN DE INSUMOS (SIN REACT, VANILLA JS) ---
 
-        // Configuración Firebase (Usando las tuyas)
+        // Configuración Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBPhh_5QenZ1B_2hyk6tOlC3R2_xSS8XHs",
             authDomain: "compras-evento.firebaseapp.com",
@@ -1418,7 +1452,7 @@
         let groupedItemsList = [];
         let categoriesData = {};
 
-        // Datos Iniciales (Igual que en tu código)
+        // Datos Iniciales
         const INITIAL_DATA = [
             { id: 1, category: 'Carpaccio', name: 'Atun', neededQty: 5, unit: 'kilos' },
             { id: 2, category: 'Carpaccio', name: 'Salmon', neededQty: 5, unit: 'kilos' },
@@ -1503,7 +1537,6 @@
             { id: 81, category: 'Extras', name: 'sal', neededQty: 2, unit: 'kilos' }
         ];
 
-        // Inicializar Agrupación
         function initInventory() {
             const map = {};
             INITIAL_DATA.forEach(item => {
@@ -1521,7 +1554,6 @@
                 categoriesData[item.category].push(item);
             });
 
-            // Escuchar a Firebase
             database.ref('purchases').on('value', (snapshot) => {
                 purchasesData = snapshot.val() || {};
                 document.getElementById('inventory-loading').classList.add('hidden');
@@ -1531,10 +1563,8 @@
             });
         }
 
-        // Formatear Moneda
         const formatMoney = (amount) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
 
-        // Actualizar Cabecera
         function updateBudgetDisplay() {
             let totalSpent = 0;
             for (let key in purchasesData) {
@@ -1560,7 +1590,6 @@
             }
         }
 
-        // Cambiar Pestañas
         window.setInventoryTab = (tab) => {
             activeInventoryTab = tab;
             
@@ -1579,14 +1608,12 @@
             renderInventory();
         };
 
-        // Guardar en Firebase
         window.handlePurchaseInput = (key, field, value) => {
             if(!purchasesData[key]) purchasesData[key] = { boughtQty: '', spent: '' };
             purchasesData[key][field] = value;
             database.ref(`purchases/${key}/${field}`).set(value);
         };
 
-        // Renderizar Lista
         window.renderInventory = () => {
             const listContainer = document.getElementById('inventory-list');
             const emptyContainer = document.getElementById('inventory-empty');
@@ -1594,7 +1621,6 @@
             let hasItems = false;
 
             if (activeInventoryTab === 'recipes') {
-                // RENDERIZAR REPORTE POR RECETA
                 emptyContainer.classList.add('hidden');
                 listContainer.classList.remove('hidden');
 
@@ -1640,7 +1666,6 @@
                 }
 
             } else {
-                // RENDERIZAR PENDIENTES / COMPLETADOS
                 const searchTerm = document.getElementById('inventory-search').value.toLowerCase();
 
                 groupedItemsList.forEach(item => {
@@ -1686,7 +1711,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Vista Impresión Física -->
                             <div class="hidden inventory-print-fields">
                                 <span class="text-xs flex justify-between">
                                     <span>Comprado: __________</span>
@@ -1710,7 +1734,6 @@
             }
         };
 
-        // Arrancar el sistema de inventario al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
             initInventory();
         });
