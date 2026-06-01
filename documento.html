@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Dualidad del Sabor - Proyecto Integrador</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconos de Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        body, html { 
+            background-color: #1A0F0A; 
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden; 
+        }
+
+        .bg-custom {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 14, 23, 0.5) 0%, #1A0F0A 40%),
+                radial-gradient(circle at 90% 80%, rgba(89, 104, 39, 0.3) 0%, #1A0F0A 40%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .fade-out { animation: fadeOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .slide-up { animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.98); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        
+        .card-shadow { box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(74, 14, 23, 0.3); }
+
+        .inner-border {
+          border: 1px solid rgba(197, 160, 89, 0.4);
+          outline: 1px solid rgba(197, 160, 89, 0.4);
+          outline-offset: -4px;
+        }
+
+        .view-section { display: none; }
+        .view-active { display: flex; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-custom flex flex-col items-center justify-center relative">
+
+    <nav class="absolute top-0 left-0 w-full z-50 bg-[#1A0F0A]/90 backdrop-blur-md border-b border-[#C5A059]/40 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-3">
+            <span class="text-[#C5A059]"><i data-lucide="book-open" class="w-5 h-5"></i></span>
+            <p class="font-cinzel text-[#F8F5F2] tracking-widest text-sm hidden sm:block">Proyecto Integrador</p>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button onclick="changeView('caratula')" class="flex items-center gap-2 text-[#C5A059] hover:text-[#F8F5F2] transition-colors duration-300 text-xs uppercase tracking-widest font-bold group">
+                <i data-lucide="home" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"></i>
+                Inicio
+            </button>
+        </div>
+    </nav>
+
+    <div class="w-full max-w-4xl h-[85vh] mt-16 bg-[#F8F5F2] card-shadow p-2 sm:p-3 relative z-10 mx-4 slide-up">
+        <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col overflow-hidden bg-[#F2EDE8] inner-border">
+            
+            <svg class="absolute -top-4 -left-4 w-28 sm:w-36 h-28 sm:h-36 pointer-events-none opacity-30 z-0 drop-shadow-sm" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <path d="M20 100 Q 50 20 120 40" stroke="#C5A059" stroke-width="1" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <svg class="absolute -bottom-4 -right-4 w-32 sm:w-40 h-32 sm:h-40 pointer-events-none opacity-30 z-0 drop-shadow-sm transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <div class="relative z-10 w-full h-full p-6 sm:p-12 overflow-y-auto custom-scrollbar" id="content-area">
+
+                <!-- VISTA: CARÁTULA -->
+                <div id="view-caratula" class="view-section view-active flex-col justify-center items-center h-full text-center fade-in">
+                    <div class="mb-8">
+                        <h2 class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold text-[#4A0E17] tracking-widest leading-tight">
+                            Universidad Autónoma<br>de Nayarit
+                        </h2>
+                        <div class="flex items-center justify-center gap-3 my-4">
+                            <div class="h-[1px] bg-[#C5A059] w-12 sm:w-20"></div>
+                            <span class="text-[#C5A059] text-xs">♦</span>
+                            <div class="h-[1px] bg-[#C5A059] w-12 sm:w-20"></div>
+                        </div>
+                        <h3 class="font-serif uppercase tracking-[0.2em] text-[#362017] text-xs sm:text-sm font-semibold mb-2">
+                            Unidad Académica de Turismo y Gastronomía
+                        </h3>
+                        <p class="font-serif italic text-[#596827] text-base sm:text-lg">
+                            Licenciatura en Gastronomía • VIII Semestre • Grupo D5
+                        </p>
+                    </div>
+
+                    <div class="my-10 sm:my-14 space-y-4">
+                        <p class="font-cinzel text-[#4A0E17] text-sm sm:text-base tracking-[0.4em] uppercase font-bold">
+                            Proyecto Integrador
+                        </p>
+                        <h1 class="font-script text-6xl sm:text-8xl text-[#596827] drop-shadow-sm leading-tight px-4">
+                            La Dualidad del Sabor
+                        </h1>
+                    </div>
+
+                    <div class="mt-auto">
+                        <button onclick="changeView('indice')" class="bg-[#4A0E17] text-[#F2EDE8] py-3 sm:py-4 px-8 hover:bg-[#3A0D11] transition-all duration-500 tracking-[0.2em] text-xs sm:text-sm uppercase font-bold flex items-center justify-center gap-3 group border border-[#4A0E17] hover:border-[#C5A059] shadow-lg mx-auto">
+                            Comenzar Lectura
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VISTA: ÍNDICE -->
+                <div id="view-indice" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-8 flex items-center justify-between">
+                        <h2 class="font-cinzel text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Índice</h2>
+                        <i data-lucide="list" class="text-[#C5A059] w-8 h-8"></i>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start items-center text-[#362017] w-full max-w-2xl mx-auto py-4">
+                        <ul class="w-full space-y-2">
+                            <li>
+                                <button onclick="changeView('presentacion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">I. Presentación</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('introduccion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">II. Introducción</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('justificacion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">III. Justificación</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('objetivos')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IV. Objetivos Generales y Específicos</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('mision-vision')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">V. Identidad (Misión y Visión)</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('ficha-tecnica')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VI. Ficha Técnica</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('menu')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VII. Definición del Menú</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('invitacion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VIII. La Invitación Digital</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- VISTA: PRESENTACIÓN -->
+                <div id="view-presentacion" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Presentación</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-center text-[#362017] space-y-6 max-w-3xl mx-auto text-justify px-2 sm:px-6">
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            El <strong>viernes 29 de mayo de 2026</strong>, el Casino La Lomita fue el escenario donde la teoría académica se transformó en una experiencia sensorial tangible. Esa noche nació <strong>"La Dualidad del Sabor"</strong>, un banquete de gala diseñado, operado y ejecutado en su totalidad por el Grupo D5.
+                        </p>
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            Frente a una expectativa de 150 comensales, tuvimos el honor de recibir a <strong>147 invitados</strong>, logrando un éxito rotundo en la convocatoria. Este evento fue la plataforma definitiva donde pusimos a prueba todo lo aprendido durante nuestro trayecto formativo en el octavo semestre de la Licenciatura en Gastronomía.
+                        </p>
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            A través de un menú a cuatro tiempos, fusionamos la elegancia, confort y tradición de la cocina italiana con la técnica, disrupción y creatividad de la cocina de autor, logrando un maridaje perfecto entre platillos y bebidas creadas especialmente para la ocasión.
+                        </p>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('indice')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Índice</button>
+                        <button onclick="changeView('introduccion')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: INTRODUCCIÓN -->
+                <div id="view-introduccion" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Introducción</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-4 max-w-3xl mx-auto text-justify px-2 sm:px-6">
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            El proceso detrás de este Proyecto Integrador fue un camino de evolución creativa y profesional. Nuestro objetivo principal fue amalgamar, en un solo evento, las competencias desarrolladas en cuatro materias clave de este semestre, guiadas por docentes excepcionales:
+                        </p>
+                        
+                        <div class="bg-[#E5DACE] bg-opacity-30 p-4 sm:p-5 rounded-sm border-l-2 border-[#C5A059] my-2 shadow-sm">
+                            <ul class="space-y-3 font-serif text-sm text-[#4A0E17]">
+                                <li class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
+                                    <span class="font-bold">Gestión y Operación de Servicios de A&B</span>
+                                    <span class="italic text-xs opacity-90 sm:text-right">Lic. Dalia Elizabeth Gutiérrez</span>
+                                </li>
+                                <div class="h-px bg-[#C5A059]/20 w-full"></div>
+                                <li class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
+                                    <span class="font-bold">Organización de Banquetes y Eventos</span>
+                                    <span class="italic text-xs opacity-90 sm:text-right">Lic. Ena Janet Gómez Olguín</span>
+                                </li>
+                                <div class="h-px bg-[#C5A059]/20 w-full"></div>
+                                <li class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
+                                    <span class="font-bold">Cultura y Gastronomía Italiana</span>
+                                    <span class="italic text-xs opacity-90 sm:text-right">Chef Martha Jazmín Acero García</span>
+                                </li>
+                                <div class="h-px bg-[#C5A059]/20 w-full"></div>
+                                <li class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
+                                    <span class="font-bold">Cocina de Autor</span>
+                                    <span class="italic text-xs opacity-90 sm:text-right">Chef Kevin Alejandro Flores Carrillo</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            Conjugarlas no fue tarea sencilla. Las primeras ideas sobre la mesa fueron grandilocuentes; se planteó una cena inspirada en <em>"Las 4 Estaciones de Vivaldi"</em>, y posteriormente un vibrante <em>"Circus Veneciano"</em>. Sin embargo, decidimos destilar nuestra visión hacia un concepto que demostrara maestría técnica sin distracciones. Así llegamos a <strong>La Dualidad del Sabor</strong>.
+                        </p>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('presentacion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('justificacion')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: JUSTIFICACIÓN -->
+                <div id="view-justificacion" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Justificación</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-4 max-w-3xl mx-auto text-justify px-2 sm:px-6">
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            En el ámbito académico, el Proyecto Integrador es mucho más que un requisito estandarizado para culminar el semestre; es el instrumento definitivo de evaluación formativa. Su propósito es retirar al estudiante de la simulación teórica y colocarlo en un escenario operativo con implicaciones reales, presupuestos reales y clientes reales.
+                        </p>
+                        
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            Al cursar el octavo semestre, este proyecto funge como un punto de inflexión. Es la plataforma mediante la cual el Grupo D5 demuestra la asimilación y maduración de los conocimientos adquiridos a lo largo de los siete semestres anteriores. Es el escenario que valida nuestras competencias resolutivas, administrativas y de liderazgo bajo presión.
+                        </p>
+                        
+                        <p class="font-serif text-sm sm:text-base leading-relaxed">
+                            La planeación, operación y ejecución de este banquete de gala para 150 comensales no solo evidencia nuestro nivel técnico actual, sino que nos proporciona un diagnóstico crítico de nuestras capacidades gerenciales. Representa el puente final que nos prepara para la transición entre nuestro último proyecto integrador (próximo semestre) y la inserción definitiva en la industria gastronómica profesional.
+                        </p>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('introduccion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('objetivos')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: OBJETIVOS -->
+                <div id="view-objetivos" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Objetivos</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-3xl mx-auto px-2 sm:px-6">
+                        
+                        <!-- Objetivo General -->
+                        <div>
+                            <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-2 flex items-center gap-2">
+                                <i data-lucide="target" class="w-5 h-5"></i> Objetivo General
+                            </h3>
+                            <div class="bg-[#E5DACE]/20 p-4 rounded border border-[#C5A059]/30 shadow-sm">
+                                <p class="font-serif text-sm sm:text-base leading-relaxed text-justify">
+                                    Diseñar, operar y ejecutar un banquete de gala de cuatro tiempos que fusione magistralmente la elegancia y confort de la cocina italiana con la disrupción y técnica de la cocina de autor, garantizando un servicio de alimentos y bebidas de excelencia para demostrar nuestra capacidad integral como futuros profesionales de la gastronomía.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Objetivos Específicos -->
+                        <div>
+                            <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-3 flex items-center gap-2">
+                                <i data-lucide="check-circle" class="w-5 h-5"></i> Objetivos Específicos
+                            </h3>
+                            <ul class="space-y-3 font-serif text-sm sm:text-base text-justify">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-[#C5A059] mt-1">✦</span>
+                                    <span><strong>Gestión Operativa:</strong> Demostrar capacidad de organización mediante la búsqueda de proveedores, gestión de la locación (Casino La Lomita) y estructuración de la logística del evento.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-[#C5A059] mt-1">✦</span>
+                                    <span><strong>Control Administrativo y Financiero:</strong> Planear y ejecutar rigurosamente los costeos, cálculo de insumos, fijación del límite de invitados y la administración de las aportaciones económicas por estudiante.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-[#C5A059] mt-1">✦</span>
+                                    <span><strong>Destreza Culinaria:</strong> Exhibir un alto dominio técnico en la preparación de recetas estandarizadas, montaje de platillos de autor e integración de ingredientes tradicionales italianos.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-[#C5A059] mt-1">✦</span>
+                                    <span><strong>Diseño de Experiencia:</strong> Desarrollar el concepto visual del banquete, desde la creación de las invitaciones oficiales hasta el montaje de mesas, diseño de atmósferas y arreglos florales.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('justificacion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('mision-vision')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: MISIÓN Y VISIÓN -->
+                <div id="view-mision-vision" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Identidad</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-center text-[#362017] space-y-8 max-w-3xl mx-auto px-2 sm:px-6">
+                        
+                        <!-- Misión -->
+                        <div class="relative bg-white p-6 sm:p-8 shadow-md border-l-4 border-[#4A0E17] group hover:border-[#C5A059] transition-colors">
+                            <i data-lucide="compass" class="absolute top-4 right-4 w-10 h-10 text-[#C5A059] opacity-20 group-hover:opacity-100 transition-opacity"></i>
+                            <h3 class="font-cinzel text-xl font-bold text-[#4A0E17] mb-3 uppercase tracking-widest">Nuestra Misión</h3>
+                            <p class="font-serif text-base sm:text-lg leading-relaxed text-justify">
+                                Ejecutar un evento gastronómico de alto nivel que amalgama la tradición culinaria italiana con la vanguardia de la cocina de autor, brindando a nuestros comensales una experiencia sensorial memorable y evidenciando el dominio técnico, operativo y humano adquirido durante nuestra formación académica.
+                            </p>
+                        </div>
+
+                        <!-- Visión -->
+                        <div class="relative bg-white p-6 sm:p-8 shadow-md border-l-4 border-[#596827] group hover:border-[#C5A059] transition-colors">
+                            <i data-lucide="eye" class="absolute top-4 right-4 w-10 h-10 text-[#C5A059] opacity-20 group-hover:opacity-100 transition-opacity"></i>
+                            <h3 class="font-cinzel text-xl font-bold text-[#596827] mb-3 uppercase tracking-widest">Nuestra Visión</h3>
+                            <p class="font-serif text-base sm:text-lg leading-relaxed text-justify">
+                                Consolidarnos como el grupo de excelencia (D5) de la Unidad Académica de Turismo y Gastronomía, reconocidos por nuestra capacidad de innovar, planear y operar eventos profesionales que establezcan nuevos estándares de calidad, abriendo así las puertas hacia nuestra exitosa incursión en la industria culinaria global.
+                            </p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('objetivos')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('ficha-tecnica')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: FICHA TÉCNICA -->
+                <div id="view-ficha-tecnica" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Ficha Técnica</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-3xl mx-auto w-full px-2 sm:px-6">
+                        <p class="font-serif text-sm sm:text-base leading-relaxed text-center mb-6">
+                            Para la materialización del proyecto integrador, se han definido los siguientes lineamientos operativos que garantizan la viabilidad de la ejecución en un entorno profesional externo:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4">
+                            <!-- Item Nombre -->
+                            <div class="bg-white p-4 border-l-4 border-[#4A0E17] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
+                                <i data-lucide="star" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Nombre del Evento</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1">La Dualidad del Sabor</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Item Concepto -->
+                            <div class="bg-white p-4 border-l-4 border-[#C5A059] shadow-sm flex items-start gap-3 hover:border-[#4A0E17] transition-colors">
+                                <i data-lucide="palette" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Concepto Creativo</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1 leading-tight">Cocina de Autor con base en Cultura y Gastronomía Italiana bajo una temática de Circo Clásico.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item Fecha -->
+                            <div class="bg-white p-4 border-l-4 border-[#596827] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
+                                <i data-lucide="calendar" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Fecha y Hora</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1">Viernes 29 de Mayo<br><span class="text-xs font-normal">Recepción: 18:30 hrs.</span></p>
+                                </div>
+                            </div>
+
+                            <!-- Item Sede -->
+                            <div class="bg-white p-4 border-l-4 border-[#4A0E17] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Sede / Dirección</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1 leading-tight">Casino La Lomita<br><span class="text-[11px] font-normal opacity-80">Blvd. Tepic Xalisco #110, Curva del Guayabo, Xalisco, Nayarit</span></p>
+                                </div>
+                            </div>
+
+                            <!-- Item Aforo -->
+                            <div class="bg-white p-4 border-l-4 border-[#C5A059] shadow-sm flex items-start gap-3 hover:border-[#596827] transition-colors">
+                                <i data-lucide="users" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Aforo</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1">150 comensales</p>
+                                </div>
+                            </div>
+
+                            <!-- Item Servicio -->
+                            <div class="bg-white p-4 border-l-4 border-[#596827] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
+                                <i data-lucide="utensils" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Tipo de Servicio</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1 leading-tight">Banquete servido a 4 tiempos con maridaje</p>
+                                </div>
+                            </div>
+
+                            <!-- Item Asistentes -->
+                            <div class="bg-white p-4 border-l-4 border-[#4A0E17] shadow-sm flex items-start gap-3 hover:border-[#C5A059] transition-colors">
+                                <i data-lucide="user-check" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Perfil del Asistente</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1 leading-tight">Familiares, docentes e invitados de los alumnos del grupo</p>
+                                </div>
+                            </div>
+
+                            <!-- Item Vestimenta -->
+                            <div class="bg-white p-4 border-l-4 border-[#C5A059] shadow-sm flex items-start gap-3 hover:border-[#4A0E17] transition-colors">
+                                <i data-lucide="shirt" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                <div>
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Código de Vestimenta</h4>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1">Casual-elegante</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('mision-vision')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('menu')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: MENÚ -->
+                <div id="view-menu" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Definición del Menú</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-3xl mx-auto w-full px-2 sm:px-6 pb-6">
+                        
+                        <!-- Texto Introductorio -->
+                        <div class="bg-white p-4 sm:p-5 border-l-4 border-[#C5A059] shadow-sm mb-6">
+                            <p class="font-serif text-sm sm:text-base leading-relaxed text-justify">
+                                La consolidación de la oferta gastronómica de <strong>La Dualidad del Sabor</strong> es el resultado directo de la culminación de nuestras prácticas en las materias de Cultura y Gastronomía Italiana y Cocina de Autor. El proceso de selección se llevó a cabo mediante una rigurosa <strong>"Prueba de Menú"</strong>.
+                            </p>
+                            <p class="font-serif text-sm sm:text-base leading-relaxed text-justify mt-2">
+                                Las cuatro brigadas operativas presentaron propuestas completas de cuatro tiempos y bebidas. Tras la degustación por parte de nuestros docentes y chefs instructores, se seleccionaron minuciosamente los platillos de mayor excelencia técnica y conceptual para estructurar la experiencia final:
+                            </p>
+                        </div>
+                        
+                        <!-- Lista del Menú -->
+                        <div class="space-y-4 text-left">
+                            
+                            <!-- ANTIPASTO -->
+                            <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
+                                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Antipasto <span class="font-normal opacity-70">| Cocina de Autor</span></p>
+                                <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Carpaccio de Salmón y Atún Curados</p>
+                                <p class="font-serif text-xs sm:text-sm opacity-80 mt-1 mb-3 leading-relaxed">Corte fino de pescado seleccionado, de textura sedosa y sabor limpio, acompañado de una esferificación de soya, miel, limón y chile piquín que estalla en boca, liberando un equilibrio de matices umami, dulces, cítricos y sutilmente picantes.</p>
+                                <div class="bg-[#E5DACE]/30 p-2 rounded border-l-2 border-[#C5A059] flex items-start gap-2">
+                                    <i data-lucide="glass-water" class="w-4 h-4 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                    <div>
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-[#C5A059] mb-0.5">Maridaje de Bienvenida</p>
+                                        <p class="font-serif font-bold text-[#362017] text-xs">Lichi Tónico</p>
+                                        <p class="text-[10px] opacity-75 leading-tight mt-0.5">Bebida a base de lichi y agua mineral, de perfil fresco y ligeramente cítrico.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PRIMO PIATTO -->
+                            <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
+                                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Primo Piatto <span class="font-normal opacity-70">| Cocina Italiana / Fusión de Autor</span></p>
+                                <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Ravioli de Requesón y Espinaca</p>
+                                <p class="font-serif text-xs sm:text-sm opacity-80 mt-1 leading-relaxed">Raviolis artesanales rellenos de requesón, espinaca y queso parmesano, bañados en una salsa cremosa al parmesano y coronados con espuma de chile poblano y cilantro.</p>
+                            </div>
+
+                            <!-- PLATO FUERTE -->
+                            <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
+                                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Plato Fuerte <span class="font-normal opacity-70">| Fusión Ítalo-Contemporánea</span></p>
+                                <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Pulpo a las Brasas con Acentos Mediterráneos</p>
+                                <p class="font-serif text-xs sm:text-sm opacity-80 mt-1 mb-3 leading-relaxed">Pulpo asado a las brasas, acompañado de una emulsión especiada, puré de plátano macho y ensalada de hojas frescas con repollo morado fermentado, que aporta acidez y equilibrio al conjunto.</p>
+                                <div class="bg-[#E5DACE]/30 p-2 rounded border-l-2 border-[#C5A059] flex items-start gap-2">
+                                    <i data-lucide="wine" class="w-4 h-4 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                    <div>
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-[#C5A059] mb-0.5">Maridaje</p>
+                                        <p class="font-serif font-bold text-[#362017] text-xs">Aroma Blanco</p>
+                                        <p class="text-[10px] opacity-75 leading-tight mt-0.5">Vino blanco con notas cítricas de limón y matices herbales de romero, de burbuja ligera.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- POSTRE -->
+                            <div class="bg-[#F8F5F2] border border-[#C5A059]/30 p-4 rounded shadow-sm hover:border-[#4A0E17] transition-colors">
+                                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Dolce <span class="font-normal opacity-70">| Cocina de Autor</span></p>
+                                <p class="font-cinzel text-[#4A0E17] text-lg font-bold leading-tight">Tarta de Chocolate y Mole Poblano</p>
+                                <p class="font-serif text-xs sm:text-sm opacity-80 mt-1 mb-3 leading-relaxed">Un diálogo entre la profundidad del cacao y la complejidad del mole poblano. Base crujiente de cocoa con relleno de chocolate semiamargo infusionado con mole casero. Se complementa con ganache, cremoso de queso de cabra y crocante de sésamo tostado.</p>
+                                <div class="bg-[#E5DACE]/30 p-2 rounded border-l-2 border-[#C5A059] flex items-start gap-2">
+                                    <i data-lucide="coffee" class="w-4 h-4 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                    <div>
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-[#C5A059] mb-0.5">Café de Sobremesa</p>
+                                        <p class="font-serif font-bold text-[#362017] text-xs">Anís Spice</p>
+                                        <p class="text-[10px] opacity-75 leading-tight mt-0.5">Latte frío a base de leche infusionada en especias de otoño, espresso y jarabe botánico de anís estrella.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('ficha-tecnica')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('invitacion')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: INVITACIÓN DIGITAL -->
+                <div id="view-invitacion" class="view-section flex-col h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">La Invitación Digital</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col md:flex-row justify-center items-center text-[#362017] max-w-4xl mx-auto w-full px-2 sm:px-6 gap-6 md:gap-8 overflow-y-auto">
+                        
+                        <!-- Columna de Texto -->
+                        <div class="w-full md:w-1/2 space-y-4 text-justify">
+                            <p class="font-serif text-sm sm:text-base leading-relaxed">
+                                Para elevar el nivel de profesionalismo y la elegancia del evento, decidimos revolucionar la manera tradicional de convocar a nuestros asistentes. En lugar de utilizar invitaciones impresas, desarrollamos una <strong>plataforma web interactiva</strong> conectada a una base de datos en tiempo real.
+                            </p>
+                            
+                            <div class="bg-[#E5DACE]/30 p-4 border-l-4 border-[#596827] shadow-sm">
+                                <ul class="space-y-2 font-serif text-sm">
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check" class="w-4 h-4 text-[#596827] mt-0.5 shrink-0"></i>
+                                        <span><strong>Control de Aforo:</strong> Asignación exacta de 6 invitados por alumno, más pases VIP para docentes y autoridades, limitando el sistema a los 150 comensales permitidos.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check" class="w-4 h-4 text-[#596827] mt-0.5 shrink-0"></i>
+                                        <span><strong>Sustentabilidad y Costos:</strong> Se eliminaron por completo los gastos y el desperdicio de papel derivados de la impresión física.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check" class="w-4 h-4 text-[#596827] mt-0.5 shrink-0"></i>
+                                        <span><strong>Experiencia Fluida:</strong> Generación automática de Pases VIP y Códigos QR personalizados para el ingreso rápido y tecnológico al casino.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="pt-4 text-center">
+                                <a href="https://d5gastrouan.site/" target="_blank" class="inline-flex bg-[#C5A059] text-[#1A0F0A] py-3 px-6 hover:bg-[#AA771C] transition-all duration-300 tracking-[0.2em] text-xs sm:text-sm uppercase font-bold items-center justify-center gap-2 border-2 border-[#C5A059] shadow-lg hover:shadow-xl w-full sm:w-auto rounded-sm">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i> Ver Plataforma Web
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Columna de Imagen / Mockup del Celular -->
+                        <div class="w-full md:w-1/2 flex justify-center items-center py-4">
+                            <!-- Marco estilo teléfono/tarjeta -->
+                            <div class="relative w-64 h-[26rem] bg-[#1A0F0A] rounded-[2rem] border-4 border-[#362017] shadow-2xl overflow-hidden flex flex-col items-center p-4">
+                                <!-- Efecto de la cámara / top del cel -->
+                                <div class="absolute top-0 w-32 h-6 bg-[#362017] rounded-b-xl z-20"></div>
+                                
+                                <!-- Contenido simulado de la invitación -->
+                                <div class="w-full h-full border border-[#C5A059]/50 bg-[#F2EDE8] rounded-xl flex flex-col items-center justify-center text-center p-4 relative overflow-hidden">
+                                    <div class="absolute inset-0 bg-custom opacity-10"></div>
+                                    <p class="font-script text-3xl text-[#596827] relative z-10">La Dualidad</p>
+                                    <p class="font-script text-3xl text-[#596827] relative z-10 mb-2">del Sabor</p>
+                                    <div class="h-px w-16 bg-[#C5A059] mb-4 relative z-10"></div>
+                                    <p class="font-cinzel text-[#4A0E17] text-[10px] uppercase tracking-widest font-bold mb-4 relative z-10">Pase Dinámico VIP</p>
+                                    
+                                    <!-- QR Simulado -->
+                                    <div class="w-20 h-20 bg-white border-2 border-[#C5A059] p-1 flex items-center justify-center mb-4 relative z-10">
+                                        <i data-lucide="qr-code" class="w-16 h-16 text-[#1A0F0A]"></i>
+                                    </div>
+                                    
+                                    <button class="bg-[#4A0E17] text-white text-[8px] uppercase tracking-widest py-2 px-4 rounded w-full relative z-10 shadow-md">Confirmar Asistencia</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('menu')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('indice')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Volver al Índice <i data-lucide="list" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // Función global para cambiar entre vistas
+        window.changeView = (newViewId) => {
+            const currentActive = document.querySelector('.view-active');
+            
+            if (currentActive) {
+                currentActive.classList.remove('fade-in');
+                currentActive.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    currentActive.classList.remove('view-active', 'fade-out');
+                    
+                    const nextView = document.getElementById(`view-${newViewId}`);
+                    if (nextView) {
+                        nextView.classList.add('view-active', 'fade-in');
+                        // Regresar el scroll hacia arriba al cambiar de vista
+                        document.getElementById('content-area').scrollTop = 0;
+                    }
+                }, 500);
+            }
+        };
+    </script>
+</body>
+</html>
