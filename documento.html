@@ -330,6 +330,13 @@
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
+                            <li>
+                                <button onclick="changeView('resultados')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XIII. Resultados y Evaluación</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -430,7 +437,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: CONCEPTUALIZACIÓN (NUEVA) -->
+                <!-- VISTA: CONCEPTUALIZACIÓN -->
                 <div id="view-conceptualizacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Conceptualización</h2>
@@ -1098,6 +1105,95 @@
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
                         <button onclick="changeView('insumos')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('resultados')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: RESULTADOS Y EVALUACIÓN (NUEVA SECCIÓN) -->
+                <div id="view-resultados" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Resultados y Evaluación</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-3xl mx-auto w-full px-2 sm:px-6 pb-6">
+                        
+                        <div class="bg-white p-4 sm:p-5 border-l-4 border-[#C5A059] shadow-sm mb-6 text-justify">
+                            <p class="font-serif text-sm sm:text-base leading-relaxed">
+                                Un proyecto integrador no está completo sin una evaluación objetiva. Para medir el nivel de satisfacción de nuestros invitados y la efectividad de nuestra operación, desarrollamos una <strong>encuesta digital de satisfacción</strong> accesible mediante un código QR colocado en cada mesa al finalizar el evento.
+                            </p>
+                        </div>
+
+                        <!-- Banner Promocional de la Encuesta -->
+                        <div class="w-full bg-[#1A0F0A] border-2 border-[#C5A059] rounded p-6 shadow-xl relative overflow-hidden group mb-8 flex flex-col items-center text-center">
+                            <!-- SVG Fondo -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polygon points="0,100 100,0 100,100" fill="#4A0E17" />
+                            </svg>
+                            
+                            <i data-lucide="clipboard-check" class="w-12 h-12 text-[#C5A059] mb-3 relative z-10 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="font-cinzel text-[#F8F5F2] text-xl font-bold tracking-widest uppercase relative z-10 mb-2">Encuesta Interactiva D5</h3>
+                            <p class="font-serif text-sm text-[#E5DACE] opacity-80 mb-6 relative z-10 max-w-lg">
+                                La plataforma permitía a los comensales calificar del 5 al 10 diversos aspectos del banquete: logística, servicio, sabor de los platillos y entretenimiento.
+                            </p>
+                            
+                            <a href="https://d5gastrouan.site/encuesta" target="_blank" class="relative z-10 print-url inline-flex bg-[#C5A059] text-[#1A0F0A] py-2 px-6 hover:bg-[#AA771C] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold items-center justify-center gap-2 shadow-lg hover:shadow-xl rounded-sm">
+                                <i data-lucide="external-link" class="w-4 h-4"></i> Ver Plataforma de Encuesta
+                            </a>
+                        </div>
+
+                        <!-- Resumen de Resultados -->
+                        <div>
+                            <h3 class="font-cinzel text-lg font-bold text-[#596827] mb-4 flex items-center gap-2">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i> Resumen de Evaluación
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Métrica 1 -->
+                                <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/30 shadow-sm">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Satisfacción General</p>
+                                        <i data-lucide="star" class="w-4 h-4 text-[#C5A059] fill-[#C5A059]"></i>
+                                    </div>
+                                    <div class="flex items-end gap-2">
+                                        <p class="font-serif text-3xl font-bold text-[#4A0E17]">9.8</p>
+                                        <p class="text-xs text-gray-500 mb-1">/ 10 promedio</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Métrica 2 -->
+                                <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/30 shadow-sm">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Servicio en Mesa</p>
+                                        <i data-lucide="users" class="w-4 h-4 text-[#C5A059]"></i>
+                                    </div>
+                                    <div class="flex items-end gap-2">
+                                        <p class="font-serif text-3xl font-bold text-[#4A0E17]">9.5</p>
+                                        <p class="text-xs text-gray-500 mb-1">/ 10 promedio</p>
+                                    </div>
+                                </div>
+
+                                <!-- Métrica 3 -->
+                                <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/30 shadow-sm md:col-span-2">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Comentarios Destacados</p>
+                                        <i data-lucide="message-square" class="w-4 h-4 text-[#C5A059]"></i>
+                                    </div>
+                                    <div class="space-y-3 mt-3">
+                                        <div class="bg-white p-3 rounded text-sm italic text-[#362017] border-l-4 border-[#C5A059] shadow-sm">
+                                            "El pulpo estaba en su punto exacto, la fusión de sabores me pareció excelente."
+                                        </div>
+                                        <div class="bg-white p-3 rounded text-sm italic text-[#362017] border-l-4 border-[#4A0E17] shadow-sm">
+                                            "La organización para entrar con el código QR fue muy rápida y moderna, felicidades."
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('invitacion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('indice')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Volver al Índice <i data-lucide="list" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
