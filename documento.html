@@ -155,6 +155,7 @@
 </head>
 <body class="bg-custom flex flex-col items-center justify-center relative">
 
+    <!-- Navegación -->
     <nav class="absolute top-0 left-0 w-full z-50 bg-[#1A0F0A]/90 backdrop-blur-md border-b border-[#C5A059]/40 px-6 py-4 flex justify-between items-center shadow-lg">
         <div class="flex items-center gap-3">
             <span class="text-[#C5A059]"><i data-lucide="book-open" class="w-5 h-5"></i></span>
@@ -175,9 +176,11 @@
         </div>
     </nav>
 
+    <!-- Contenedor Principal -->
     <div class="w-full max-w-4xl h-[85vh] h-[85dvh] mt-16 bg-[#F8F5F2] card-shadow p-2 sm:p-3 relative z-10 mx-4 slide-up">
         <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col overflow-hidden bg-[#F2EDE8] inner-border">
             
+            <!-- Decoraciones SVG -->
             <svg class="absolute -top-4 -left-4 w-28 sm:w-36 h-28 sm:h-36 pointer-events-none opacity-30 z-0 drop-shadow-sm" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
                 <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
@@ -199,9 +202,10 @@
                 <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
             </svg>
 
+            <!-- Área de Contenido Principal -->
             <div class="relative z-10 w-full h-full p-6 pb-24 sm:p-12 sm:pb-12 overflow-y-auto custom-scrollbar" id="content-area">
 
-                <!-- VISTA: CARÁTULA -->
+                <!-- VISTA 0: CARÁTULA -->
                 <div id="view-caratula" class="view-section view-active flex-col justify-center items-center min-h-full text-center fade-in">
                     <div class="mb-8">
                         <h2 class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold text-[#4A0E17] tracking-widest leading-tight">
@@ -237,7 +241,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: ÍNDICE -->
+                <!-- VISTA 1: ÍNDICE -->
                 <div id="view-indice" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-8 flex items-center justify-between">
                         <h2 class="font-cinzel text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Índice</h2>
@@ -289,29 +293,36 @@
                                 </button>
                             </li>
                             <li>
+                                <button onclick="changeView('organigrama')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VII. Estructura Organizacional</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
                                 <button onclick="changeView('ficha-tecnica')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VII. Ficha Técnica</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VIII. Ficha Técnica</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('menu')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VIII. Definición del Menú</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IX. Definición del Menú</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('insumos')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IX. Control de Insumos y Costos</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">X. Control de Insumos y Costos</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('invitacion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">X. La Invitación Digital</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XI. La Invitación Digital</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
@@ -320,7 +331,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: PRESENTACIÓN -->
+                <!-- VISTA 2: PRESENTACIÓN -->
                 <div id="view-presentacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Presentación</h2>
@@ -344,7 +355,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: INTRODUCCIÓN -->
+                <!-- VISTA 3: INTRODUCCIÓN -->
                 <div id="view-introduccion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Introducción</h2>
@@ -390,7 +401,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: JUSTIFICACIÓN -->
+                <!-- VISTA 4: JUSTIFICACIÓN -->
                 <div id="view-justificacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Justificación</h2>
@@ -416,7 +427,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: OBJETIVOS -->
+                <!-- VISTA 5: OBJETIVOS -->
                 <div id="view-objetivos" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Objetivos</h2>
@@ -468,7 +479,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: MISIÓN Y VISIÓN -->
+                <!-- VISTA 6: MISIÓN Y VISIÓN -->
                 <div id="view-mision-vision" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Identidad</h2>
@@ -502,7 +513,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: MARCO METODOLÓGICO (NUEVA SECCIÓN) -->
+                <!-- VISTA 7: MARCO METODOLÓGICO -->
                 <div id="view-metodologia" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Marco Metodológico</h2>
@@ -620,11 +631,41 @@
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
                         <button onclick="changeView('mision-vision')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('organigrama')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA 8: ESTRUCTURA ORGANIZACIONAL (NUEVA SECCIÓN ORGANIGRAMA) -->
+                <div id="view-organigrama" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Estructura Organizacional</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] max-w-4xl mx-auto w-full px-2 sm:px-6 pb-6">
+                        
+                        <div class="bg-white p-4 sm:p-5 border-l-4 border-[#C5A059] shadow-sm mb-6 text-justify">
+                            <p class="font-serif text-sm sm:text-base leading-relaxed">
+                                Un banquete de esta magnitud no puede sostenerse en la improvisación. La creación de un <strong>organigrama jerárquico y estructurado</strong> fue fundamental para asegurar el éxito operativo de <em>La Dualidad del Sabor</em>. 
+                            </p>
+                            <p class="font-serif text-sm sm:text-base leading-relaxed mt-3">
+                                Establecer líneas de mando claras, desde la Chef Ejecutiva hasta los Commis de cada estación y el equipo de servicio, permitió evitar la duplicidad de esfuerzos, mantener un control estricto sobre el <em>timing</em> del servicio y garantizar que cada platillo saliera de cocina con la calidad estandarizada requerida. <strong>En la cocina profesional, la organización es sinónimo de eficiencia.</strong>
+                            </p>
+                        </div>
+
+                        <!-- Imagen del Organigrama -->
+                        <div class="w-full flex justify-center items-center bg-[#F2EDE8] border-2 border-[#C5A059]/30 rounded p-2 sm:p-4 shadow-inner mb-6">
+                            <img src="orga.jpg" alt="Organigrama Operativo del Grupo D5" class="w-full max-w-3xl h-auto rounded object-contain shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/800x600/F2EDE8/4A0E17?text=Organigrama+D5';">
+                        </div>
+
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('metodologia')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('ficha-tecnica')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
 
-                <!-- VISTA: FICHA TÉCNICA -->
+                <!-- VISTA 9: FICHA TÉCNICA -->
                 <div id="view-ficha-tecnica" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Ficha Técnica</h2>
@@ -650,7 +691,7 @@
                                 <i data-lucide="palette" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
                                 <div>
                                     <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Concepto Creativo</h4>
-                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1 leading-tight">Cocina de Autor con base en Cultura y Gastronomía Italiana.</p>
+                                    <p class="font-serif font-semibold text-[#362017] text-sm mt-1 leading-tight">Cocina de Autor con base en Cultura y Gastronomía Italiana bajo una temática de Circo Clásico.</p>
                                 </div>
                             </div>
 
@@ -711,12 +752,12 @@
                     </div>
 
                     <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
-                        <button onclick="changeView('metodologia')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('organigrama')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('menu')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
 
-                <!-- VISTA: MENÚ -->
+                <!-- VISTA 10: MENÚ -->
                 <div id="view-menu" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Definición del Menú</h2>
@@ -798,7 +839,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: INSUMOS Y COSTOS (SECCIÓN INTEGRADA) -->
+                <!-- VISTA 11: INSUMOS Y COSTOS -->
                 <div id="view-insumos" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Control de Insumos</h2>
@@ -870,7 +911,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA: INVITACIÓN DIGITAL -->
+                <!-- VISTA 12: INVITACIÓN DIGITAL -->
                 <div id="view-invitacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">La Invitación Digital</h2>
@@ -974,7 +1015,7 @@
 
         // --- LÓGICA DE LA SECCIÓN DE INSUMOS (SIN REACT, VANILLA JS) ---
 
-        // Configuración Firebase
+        // Configuración Firebase (Usando las tuyas)
         const firebaseConfig = {
             apiKey: "AIzaSyBPhh_5QenZ1B_2hyk6tOlC3R2_xSS8XHs",
             authDomain: "compras-evento.firebaseapp.com",
@@ -997,7 +1038,7 @@
         let groupedItemsList = [];
         let categoriesData = {};
 
-        // Datos Iniciales
+        // Datos Iniciales (Igual que en tu código)
         const INITIAL_DATA = [
             { id: 1, category: 'Carpaccio', name: 'Atun', neededQty: 5, unit: 'kilos' },
             { id: 2, category: 'Carpaccio', name: 'Salmon', neededQty: 5, unit: 'kilos' },
@@ -1163,6 +1204,7 @@
             if(!purchasesData[key]) purchasesData[key] = { boughtQty: '', spent: '' };
             purchasesData[key][field] = value;
             database.ref(`purchases/${key}/${field}`).set(value);
+            // La UI se actualizará sola gracias al listener on('value')
         };
 
         // Renderizar Lista
