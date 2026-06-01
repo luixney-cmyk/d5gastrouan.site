@@ -155,7 +155,6 @@
 </head>
 <body class="bg-custom flex flex-col items-center justify-center relative">
 
-    <!-- Navegación -->
     <nav class="absolute top-0 left-0 w-full z-50 bg-[#1A0F0A]/90 backdrop-blur-md border-b border-[#C5A059]/40 px-6 py-4 flex justify-between items-center shadow-lg">
         <div class="flex items-center gap-3">
             <span class="text-[#C5A059]"><i data-lucide="book-open" class="w-5 h-5"></i></span>
@@ -176,11 +175,9 @@
         </div>
     </nav>
 
-    <!-- Contenedor Principal -->
     <div class="w-full max-w-4xl h-[85vh] h-[85dvh] mt-16 bg-[#F8F5F2] card-shadow p-2 sm:p-3 relative z-10 mx-4 slide-up">
         <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col overflow-hidden bg-[#F2EDE8] inner-border">
             
-            <!-- Decoraciones SVG -->
             <svg class="absolute -top-4 -left-4 w-28 sm:w-36 h-28 sm:h-36 pointer-events-none opacity-30 z-0 drop-shadow-sm" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
                 <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
@@ -202,10 +199,9 @@
                 <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
             </svg>
 
-            <!-- Área de Contenido Principal -->
             <div class="relative z-10 w-full h-full p-6 pb-24 sm:p-12 sm:pb-12 overflow-y-auto custom-scrollbar" id="content-area">
 
-                <!-- VISTA 0: CARÁTULA -->
+                <!-- VISTA: CARÁTULA -->
                 <div id="view-caratula" class="view-section view-active flex-col justify-center items-center min-h-full text-center fade-in">
                     <div class="mb-8">
                         <h2 class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold text-[#4A0E17] tracking-widest leading-tight">
@@ -241,7 +237,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 1: ÍNDICE -->
+                <!-- VISTA: ÍNDICE -->
                 <div id="view-indice" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-8 flex items-center justify-between">
                         <h2 class="font-cinzel text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Índice</h2>
@@ -272,57 +268,64 @@
                                 </button>
                             </li>
                             <li>
+                                <button onclick="changeView('conceptualizacion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IV. Conceptualización del Evento</span>
+                                    <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
                                 <button onclick="changeView('objetivos')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IV. Objetivos Generales y Específicos</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">V. Objetivos Generales y Específicos</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('mision-vision')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">V. Identidad (Misión y Visión)</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VI. Identidad (Misión y Visión)</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('metodologia')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VI. Marco Metodológico</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VII. Marco Metodológico</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('organigrama')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VII. Estructura Organizacional</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VIII. Estructura Organizacional</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('ficha-tecnica')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">VIII. Ficha Técnica</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IX. Ficha Técnica</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('menu')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">IX. Definición del Menú</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">X. Definición del Menú</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('insumos')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">X. Control de Insumos y Costos</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XI. Control de Insumos y Costos</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </li>
                             <li>
                                 <button onclick="changeView('invitacion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
-                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XI. La Invitación Digital</span>
+                                    <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">XII. La Invitación Digital</span>
                                     <div class="flex-grow border-b border-dotted border-[#C5A059] mx-4 opacity-50"></div>
                                     <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
@@ -331,7 +334,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 2: PRESENTACIÓN -->
+                <!-- VISTA: PRESENTACIÓN -->
                 <div id="view-presentacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Presentación</h2>
@@ -355,7 +358,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 3: INTRODUCCIÓN -->
+                <!-- VISTA: INTRODUCCIÓN -->
                 <div id="view-introduccion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Introducción</h2>
@@ -401,7 +404,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 4: JUSTIFICACIÓN -->
+                <!-- VISTA: JUSTIFICACIÓN -->
                 <div id="view-justificacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Justificación</h2>
@@ -423,11 +426,120 @@
 
                     <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
                         <button onclick="changeView('introduccion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('conceptualizacion')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <!-- VISTA: CONCEPTUALIZACIÓN (NUEVA) -->
+                <div id="view-conceptualizacion" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Conceptualización</h2>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-3xl mx-auto px-2 sm:px-6 pb-6">
+                        
+                        <!-- Bloque 1: Significado y Origen -->
+                        <div class="space-y-4">
+                            <h3 class="font-cinzel text-lg font-bold text-[#596827] flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="w-5 h-5"></i> El Origen de la Idea
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 border-l-4 border-[#4A0E17] shadow-sm">
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#4A0E17] mb-1">¿Qué representa la Dualidad?</h4>
+                                    <p class="font-serif text-sm leading-relaxed text-justify">
+                                        Representa el diálogo constante entre lo tradicional y lo moderno. Es el punto de encuentro donde el rigor académico clásico abraza la innovación. En cada platillo, demostramos que para deconstruir y crear (Autor), primero hay que dominar y respetar las bases (Clásico).
+                                    </p>
+                                </div>
+                                <div class="bg-white p-4 border-l-4 border-[#C5A059] shadow-sm">
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#C5A059] mb-1">¿Por qué Italia?</h4>
+                                    <p class="font-serif text-sm leading-relaxed text-justify">
+                                        La gastronomía italiana es el pilar de la cocina reconfortante (<em>comfort food</em>) y la técnica pura. Utilizarla como lienzo nos permitió asegurar sabores que abrazan al comensal, pero sirviendo como vehículo seguro para nuestras técnicas de vanguardia.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-4 border-l-4 border-[#596827] shadow-sm md:col-span-2">
+                                    <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">El papel de la Cocina de Autor</h4>
+                                    <p class="font-serif text-sm leading-relaxed text-justify">
+                                        La cocina de autor es nuestra firma. Fue el mecanismo para imprimir la identidad del <strong>Grupo D5</strong> en el evento. A través de esferificaciones, espumas, fermentos y emplatados asimétricos, demostramos nuestra evolución técnica y nuestra visión personal de la gastronomía contemporánea.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 2: Ambientación y Temática -->
+                        <div class="space-y-4 mt-6">
+                            <h3 class="font-cinzel text-lg font-bold text-[#596827] flex items-center gap-2">
+                                <i data-lucide="tent" class="w-5 h-5"></i> La Atmósfera del Evento
+                            </h3>
+                            <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/30 shadow-sm text-justify">
+                                <h4 class="font-serif font-bold text-[#4A0E17] mb-2">Temática: El Circo Clásico / Vintage</h4>
+                                <p class="font-serif text-sm sm:text-base leading-relaxed mb-4">
+                                    Decidimos arropar nuestra comida en una temática de Circo Vintage. El circo históricamente representa espectáculo, magia y lo inesperado. Queríamos que nuestros comensales sintieran que entraban a un show donde la comida era el acto principal, lleno de sorpresas visuales y gustativas.
+                                </p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="sparkles" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Elementos Decorativos</p>
+                                            <p class="font-serif text-xs text-[#362017] mt-1">Uso de tickets vintage como invitación, centros de mesa rústicos con toques dorados, iluminación cálida (tipo carpa) y música instrumental envolvente para acentuar el drama.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="ticket" class="w-5 h-5 text-[#C5A059] mt-0.5 shrink-0"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827]">Diseño Gráfico</p>
+                                            <p class="font-serif text-xs text-[#362017] mt-1">Aplicado en invitaciones, gafetes y los menús físicos, combinando tipografías clásicas (Serif) con estilos caligráficos que evocan el glamour de antaño.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 3: Paleta de Colores -->
+                        <div class="space-y-4 mt-6">
+                            <h3 class="font-cinzel text-lg font-bold text-[#596827] flex items-center gap-2">
+                                <i data-lucide="palette" class="w-5 h-5"></i> Paleta de Colores
+                            </h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <!-- Color 1 -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 rounded-full bg-[#4A0E17] shadow-md border-2 border-white mb-2"></div>
+                                    <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Sangre de Toro</p>
+                                    <p class="text-[8px] text-gray-500 font-mono">#4A0E17</p>
+                                    <p class="font-serif text-[10px] text-center mt-1 italic text-gray-600">Pasión, telón de circo y vino tinto.</p>
+                                </div>
+                                <!-- Color 2 -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 rounded-full bg-[#C5A059] shadow-md border-2 border-white mb-2"></div>
+                                    <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Dorado Vintage</p>
+                                    <p class="text-[8px] text-gray-500 font-mono">#C5A059</p>
+                                    <p class="font-serif text-[10px] text-center mt-1 italic text-gray-600">Elegancia, glamour y acentos de lujo.</p>
+                                </div>
+                                <!-- Color 3 -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 rounded-full bg-[#596827] shadow-md border-2 border-white mb-2"></div>
+                                    <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Olivo Toscano</p>
+                                    <p class="text-[8px] text-gray-500 font-mono">#596827</p>
+                                    <p class="font-serif text-[10px] text-center mt-1 italic text-gray-600">Hierbas italianas y arraigo a la tierra.</p>
+                                </div>
+                                <!-- Color 4 -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-16 h-16 rounded-full bg-[#F2EDE8] shadow-md border-2 border-gray-200 mb-2"></div>
+                                    <p class="text-[9px] uppercase font-bold text-[#362017] text-center">Lienzo Crudo</p>
+                                    <p class="text-[8px] text-gray-500 font-mono">#F2EDE8</p>
+                                    <p class="font-serif text-[10px] text-center mt-1 italic text-gray-600">La lona del circo y la base de las pastas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('justificacion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('objetivos')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
 
-                <!-- VISTA 5: OBJETIVOS -->
+                <!-- VISTA: OBJETIVOS -->
                 <div id="view-objetivos" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Objetivos</h2>
@@ -474,12 +586,12 @@
                     </div>
 
                     <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
-                        <button onclick="changeView('justificacion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('conceptualizacion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
                         <button onclick="changeView('mision-vision')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
                     </div>
                 </div>
 
-                <!-- VISTA 6: MISIÓN Y VISIÓN -->
+                <!-- VISTA: MISIÓN Y VISIÓN -->
                 <div id="view-mision-vision" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Identidad</h2>
@@ -513,7 +625,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 7: MARCO METODOLÓGICO -->
+                <!-- VISTA: MARCO METODOLÓGICO -->
                 <div id="view-metodologia" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Marco Metodológico</h2>
@@ -635,7 +747,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 8: ESTRUCTURA ORGANIZACIONAL (NUEVA SECCIÓN ORGANIGRAMA) -->
+                <!-- VISTA: ESTRUCTURA ORGANIZACIONAL -->
                 <div id="view-organigrama" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Estructura Organizacional</h2>
@@ -653,8 +765,14 @@
                         </div>
 
                         <!-- Imagen del Organigrama -->
-                        <div class="w-full flex justify-center items-center bg-[#F2EDE8] border-2 border-[#C5A059]/30 rounded p-2 sm:p-4 shadow-inner mb-6">
-                            <img src="orga.png" alt="Organigrama Operativo del Grupo D5" class="w-full max-w-3xl h-auto rounded object-contain shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/800x600/F2EDE8/4A0E17?text=Organigrama+D5';">
+                        <div class="w-full flex justify-center items-center bg-[#F2EDE8] border-2 border-[#C5A059]/30 rounded p-2 sm:p-4 shadow-inner mb-6 relative group">
+                            <!-- Overlay que aparece si la imagen no carga de inmediato (o en caso de error) -->
+                            <div class="absolute inset-0 flex items-center justify-center bg-[#F2EDE8] z-0 opacity-50">
+                                <i class="fas fa-sitemap text-[#C5A059] text-6xl opacity-30"></i>
+                            </div>
+                            
+                            <!-- La imagen del usuario -->
+                            <img src="orga.jpg" alt="Organigrama Operativo del Grupo D5" class="w-full max-w-3xl h-auto rounded object-contain shadow-md relative z-10 transition-transform duration-500 hover:scale-[1.02]" onerror="this.onerror=null; this.src='https://placehold.co/800x600/F2EDE8/4A0E17?text=Organigrama+D5';">
                         </div>
 
                     </div>
@@ -665,7 +783,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 9: FICHA TÉCNICA -->
+                <!-- VISTA: FICHA TÉCNICA -->
                 <div id="view-ficha-tecnica" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Ficha Técnica</h2>
@@ -757,7 +875,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 10: MENÚ -->
+                <!-- VISTA: MENÚ -->
                 <div id="view-menu" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Definición del Menú</h2>
@@ -839,7 +957,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 11: INSUMOS Y COSTOS -->
+                <!-- VISTA: INSUMOS Y COSTOS -->
                 <div id="view-insumos" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Control de Insumos</h2>
@@ -911,7 +1029,7 @@
                     </div>
                 </div>
 
-                <!-- VISTA 12: INVITACIÓN DIGITAL -->
+                <!-- VISTA: INVITACIÓN DIGITAL -->
                 <div id="view-invitacion" class="view-section flex-col min-h-full fade-in">
                     <div class="border-b-2 border-[#C5A059] pb-4 mb-4 text-center">
                         <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">La Invitación Digital</h2>
@@ -1015,7 +1133,7 @@
 
         // --- LÓGICA DE LA SECCIÓN DE INSUMOS (SIN REACT, VANILLA JS) ---
 
-        // Configuración Firebase (Usando las tuyas)
+        // Configuración Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBPhh_5QenZ1B_2hyk6tOlC3R2_xSS8XHs",
             authDomain: "compras-evento.firebaseapp.com",
@@ -1038,7 +1156,7 @@
         let groupedItemsList = [];
         let categoriesData = {};
 
-        // Datos Iniciales (Igual que en tu código)
+        // Datos Iniciales
         const INITIAL_DATA = [
             { id: 1, category: 'Carpaccio', name: 'Atun', neededQty: 5, unit: 'kilos' },
             { id: 2, category: 'Carpaccio', name: 'Salmon', neededQty: 5, unit: 'kilos' },
@@ -1204,7 +1322,6 @@
             if(!purchasesData[key]) purchasesData[key] = { boughtQty: '', spent: '' };
             purchasesData[key][field] = value;
             database.ref(`purchases/${key}/${field}`).set(value);
-            // La UI se actualizará sola gracias al listener on('value')
         };
 
         // Renderizar Lista
