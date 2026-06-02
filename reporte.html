@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - La Dualidad del Sabor</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconos de Lucide y FontAwesome -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        body, html { 
+            background-color: #1A0F0A; 
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            height: 100dvh; 
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden; 
+        }
+
+        .bg-custom {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 14, 23, 0.5) 0%, #1A0F0A 40%),
+                radial-gradient(circle at 90% 80%, rgba(89, 104, 39, 0.3) 0%, #1A0F0A 40%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .fade-out { animation: fadeOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .slide-up { animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.98); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        
+        .card-shadow { box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(74, 14, 23, 0.3); }
+
+        .inner-border {
+          border: 1px solid rgba(197, 160, 89, 0.4);
+          outline: 1px solid rgba(197, 160, 89, 0.4);
+          outline-offset: -4px;
+        }
+
+        .view-section { display: none; }
+        .view-active { display: flex; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+
+        @media print {
+            body, html {
+                height: auto !important;
+                background-color: white !important;
+                background-image: none !important;
+                overflow: visible !important;
+                font-size: 12pt;
+            }
+            nav, button, svg.pointer-events-none { display: none !important; }
+            .w-full.max-w-4xl.h-\[85vh\].h-\[85dvh\],
+            .card-shadow, .inner-border {
+                height: auto !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+                box-shadow: none !important;
+                border: none !important;
+                outline: none !important;
+            }
+            #content-area { height: auto !important; overflow: visible !important; padding: 0 !important; }
+            .view-section { display: flex !important; height: auto !important; page-break-after: always; padding: 30px 20px !important; opacity: 1 !important; }
+            * { color: black !important; }
+        }
+    </style>
+</head>
+<body class="bg-custom flex flex-col items-center justify-center relative">
+
+    <nav class="absolute top-0 left-0 w-full z-50 bg-[#1A0F0A]/90 backdrop-blur-md border-b border-[#C5A059]/40 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-3">
+            <span class="text-[#C5A059]"><i data-lucide="clipboard-list" class="w-5 h-5"></i></span>
+            <p class="font-cinzel text-[#F8F5F2] tracking-widest text-sm hidden sm:block">Reportes Operativos</p>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button onclick="window.print()" class="flex items-center gap-2 text-[#C5A059] hover:text-[#F8F5F2] transition-colors duration-300 text-xs uppercase tracking-widest font-bold group">
+                <i data-lucide="printer" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform"></i>
+                <span class="hidden sm:inline">Imprimir PDF</span>
+            </button>
+            <div class="h-4 w-px bg-[#C5A059]/40"></div>
+            <!-- Enlace al Index principal -->
+            <a href="index (1).html" class="flex items-center gap-2 text-[#C5A059] hover:text-[#F8F5F2] transition-colors duration-300 text-xs uppercase tracking-widest font-bold group">
+                <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                Volver al Proyecto
+            </a>
+        </div>
+    </nav>
+
+    <div class="w-full max-w-4xl h-[85vh] h-[85dvh] mt-16 bg-[#F8F5F2] card-shadow p-2 sm:p-3 relative z-10 mx-4 slide-up">
+        <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col overflow-hidden bg-[#F2EDE8] inner-border">
+            
+            <svg class="absolute -top-4 -left-4 w-28 sm:w-36 h-28 sm:h-36 pointer-events-none opacity-30 z-0 drop-shadow-sm" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <svg class="absolute -bottom-4 -right-4 w-32 sm:w-40 h-32 sm:h-40 pointer-events-none opacity-30 z-0 drop-shadow-sm transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <div class="relative z-10 w-full h-full p-6 pb-24 sm:p-12 sm:pb-12 overflow-y-auto custom-scrollbar" id="content-area">
+
+                <div id="view-caratula" class="view-section view-active flex-col justify-center items-center min-h-full text-center fade-in">
+                    <div class="mb-8">
+                        <i data-lucide="folder-open" class="w-16 h-16 text-[#C5A059] mx-auto mb-4"></i>
+                        <h2 class="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold text-[#4A0E17] tracking-widest leading-tight">
+                            Anexo Documental
+                        </h2>
+                        <div class="flex items-center justify-center gap-3 my-4">
+                            <div class="h-[1px] bg-[#C5A059] w-12 sm:w-20"></div>
+                            <span class="text-[#C5A059] text-xs">♦</span>
+                            <div class="h-[1px] bg-[#C5A059] w-12 sm:w-20"></div>
+                        </div>
+                        <h3 class="font-serif uppercase tracking-[0.2em] text-[#362017] text-xs sm:text-sm font-semibold mb-2">
+                            Dictámenes y Evaluaciones de Brigadas
+                        </h3>
+                    </div>
+
+                    <div class="my-10 sm:my-14 space-y-4">
+                        <p class="font-cinzel text-[#4A0E17] text-sm sm:text-base tracking-[0.4em] uppercase font-bold">
+                            Proyecto: La Dualidad del Sabor
+                        </p>
+                        <h1 class="font-script text-6xl sm:text-7xl text-[#596827] drop-shadow-sm leading-tight px-4">
+                            Reportes de Actividades
+                        </h1>
+                    </div>
+
+                    <div class="mt-8 sm:mt-auto">
+                        <button onclick="changeView('indice')" class="bg-[#4A0E17] text-[#F2EDE8] py-3 sm:py-4 px-8 hover:bg-[#3A0D11] transition-all duration-500 tracking-[0.2em] text-xs sm:text-sm uppercase font-bold flex items-center justify-center gap-3 group border border-[#4A0E17] hover:border-[#C5A059] shadow-lg mx-auto">
+                            Ver Reportes
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="view-indice" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-8 flex items-center justify-between">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">Índice de Reportes</h2>
+                        <i data-lucide="list-checks" class="text-[#C5A059] w-8 h-8"></i>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start items-center text-[#362017] w-full max-w-2xl mx-auto py-4">
+                        <ul class="w-full space-y-3">
+                            <li>
+                                <button onclick="changeView('cotizaciones')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="search" class="w-5 h-5 text-[#C5A059]"></i>
+                                        <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">1. Cotizaciones y Gestión</span>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('previo')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="clock" class="w-5 h-5 text-[#C5A059]"></i>
+                                        <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">2. Reportes Previos al Evento</span>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('ejecucion')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="play-circle" class="w-5 h-5 text-[#C5A059]"></i>
+                                        <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">3. Ejecución y Disciplina (Cocina)</span>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('servicio')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="concierge-bell" class="w-5 h-5 text-[#C5A059]"></i>
+                                        <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">4. Servicio en Sala</span>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="changeView('dictamen')" class="w-full flex items-center justify-between p-3 sm:p-4 bg-[#E5DACE]/20 hover:bg-[#E5DACE]/60 border border-transparent hover:border-[#C5A059] transition-all duration-300 group rounded">
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="check-square" class="w-5 h-5 text-[#C5A059]"></i>
+                                        <span class="font-serif text-base sm:text-lg font-semibold tracking-wide group-hover:text-[#4A0E17] transition-colors">5. Dictamen General</span>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="text-[#C5A059] w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-8 flex justify-start items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('caratula')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a Portada</button>
+                    </div>
+                </div>
+
+                <div id="view-cotizaciones" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">1. Cotizaciones y Gestión</h2>
+                        <p class="font-serif text-sm text-[#596827] mt-1">Investigación de mercado previa al evento</p>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-4xl mx-auto px-2 sm:px-4 w-full">
+                        <p class="font-serif text-sm sm:text-base leading-relaxed text-justify mb-2">
+                            Análisis financiero y logístico de las opciones evaluadas por el grupo D5 durante el semestre para garantizar la viabilidad del banquete.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            <!-- Tarjeta Salones (Ocupa todo el ancho) -->
+                            <div class="bg-white p-5 border-t-4 border-[#4A0E17] shadow-sm relative overflow-hidden group md:col-span-2">
+                                <i data-lucide="tent" class="absolute -bottom-4 -right-4 w-32 h-32 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] flex items-center gap-2 mb-3">
+                                    <i data-lucide="map-pin" class="w-5 h-5"></i> Locaciones Evaluadas
+                                </h3>
+                                <p class="font-serif text-xs text-gray-600 mb-4 leading-relaxed">
+                                    La brigada asignada a la logística realizó una búsqueda exhaustiva, topándose con tres opciones definitivas para albergar a nuestros invitados.
+                                </p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <!-- Opción 1 -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col justify-between">
+                                        <div>
+                                            <p class="font-bold text-[#4A0E17] text-sm uppercase tracking-wider mb-1">Finca House</p>
+                                            <p class="text-[10px] text-gray-500 mb-2 leading-tight">Colinas del Rey, Tepic</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Préstamo de 6 mesas grandes de madera</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Muy buena cocina equipada</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="x" class="w-3 h-3 text-red-600 shrink-0 mt-0.5"></i> <span class="text-gray-500">Ubicación un poco complicada</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2 pt-2 border-t border-[#C5A059]/20 text-right font-bold text-[#362017] text-sm">
+                                            $15,000 MXN
+                                        </div>
+                                    </div>
+                    
+                                    <!-- Opción 3 -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col justify-between">
+                                        <div>
+                                            <p class="font-bold text-[#4A0E17] text-sm uppercase tracking-wider mb-1">Terraza Mi Lola</p>
+                                            <p class="text-[10px] text-gray-500 mb-2 leading-tight">El Armadillo, cerca de Pantanal</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Uso de cocina pequeña</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Estufas y asadores disponibles</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="x" class="w-3 h-3 text-red-600 shrink-0 mt-0.5"></i> <span class="text-gray-500">No incluye ningún tipo de mobiliario</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2 pt-2 border-t border-[#C5A059]/20 text-right font-bold text-[#362017] text-sm">
+                                            $15,000 MXN
+                                        </div>
+                                    </div>
+                    
+                                    <!-- Opción 2 (Elegida) -->
+                                    <div class="bg-[#596827]/10 p-3 rounded border-2 border-[#596827] flex flex-col justify-between relative overflow-hidden shadow-md">
+                                        <div class="absolute -right-8 top-3 bg-[#596827] text-white text-[8px] font-bold py-1 px-10 transform rotate-45 tracking-widest shadow-sm">ELEGIDA</div>
+                                        <div>
+                                            <p class="font-bold text-[#596827] text-sm uppercase tracking-wider mb-1">Casino La Lomita</p>
+                                            <p class="text-[10px] text-gray-500 mb-2 leading-tight">Curva del Guayabo, Xalisco</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Mobiliario para 150 personas</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Mantelería y cubre mantelería</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Servicio de luces decorativas</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Auto de servicio para traslados en la loma</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Cocina adecuada para servicio</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2 pt-2 border-t border-[#596827]/30 text-right font-bold text-[#4A0E17] text-sm">
+                                            $16,000 MXN
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-[#F8F5F2] p-2 mt-4 rounded border-l-2 border-[#C5A059] text-xs font-serif italic text-gray-600 text-center">
+                                    <strong>Dictamen:</strong> Se decidió por "La Lomita" debido a su inmejorable relación entre precio, oportunidad y calidad. Por solo $1,000 adicionales, resolvió la necesidad de mobiliario completo, accesibilidad y ambientación luminosa.
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta Cristalería (Ocupa todo el ancho) -->
+                            <div class="bg-white p-5 border-t-4 border-[#C5A059] shadow-sm relative overflow-hidden group md:col-span-2">
+                                <i data-lucide="wine" class="absolute -bottom-4 -right-4 w-32 h-32 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] flex items-center gap-2 mb-3">
+                                    <i data-lucide="glass-water" class="w-5 h-5"></i> Cristalería y Loza
+                                </h3>
+                                <p class="font-serif text-xs text-gray-600 mb-4 leading-relaxed">
+                                    Se evaluaron tres opciones para el arrendamiento de equipo requerido para cubrir los cuatro tiempos de alimentos y tres bebidas.
+                                </p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <!-- Opción 1: Mobe -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col justify-between">
+                                        <div>
+                                            <p class="font-bold text-[#4A0E17] text-sm uppercase tracking-wider mb-1">Mobe Cristalería</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Catálogo más elegante, bonito y actualizado</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Incluía vajilla completa, vasos, copas y bajo plato</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="x" class="w-3 h-3 text-red-600 shrink-0 mt-0.5"></i> <span class="text-gray-500">Excedía considerablemente el presupuesto</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2 pt-2 border-t border-[#C5A059]/20 text-right font-bold text-[#362017] text-sm">
+                                            $24,000 MXN
+                                        </div>
+                                    </div>
+                    
+                                    <!-- Opción 2: Gala -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col justify-between">
+                                        <div>
+                                            <p class="font-bold text-[#4A0E17] text-sm uppercase tracking-wider mb-1">Cristalería Gala</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Catálogo moderno y amplio</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Excelentes opciones para bajo plato</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="x" class="w-3 h-3 text-red-600 shrink-0 mt-0.5"></i> <span class="text-gray-500">Poca variedad en vajilla general, vasos y copas</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2 pt-2 border-t border-[#C5A059]/20 text-right font-bold text-[#362017] text-sm">
+                                            $17,650 MXN
+                                        </div>
+                                    </div>
+                    
+                                    <!-- Opción 3 (Elegida): Margarita -->
+                                    <div class="bg-[#596827]/10 p-3 rounded border-2 border-[#596827] flex flex-col justify-between relative overflow-hidden shadow-md">
+                                        <div class="absolute -right-8 top-3 bg-[#596827] text-white text-[8px] font-bold py-1 px-10 transform rotate-45 tracking-widest shadow-sm">ELEGIDA</div>
+                                        <div>
+                                            <p class="font-bold text-[#596827] text-sm uppercase tracking-wider mb-1">Cristalería Margarita</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Proveedor de confianza por semestres anteriores</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>10% de descuento en el costo total de renta</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Material funcional y en buen estado</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="x" class="w-3 h-3 text-red-600 shrink-0 mt-0.5"></i> <span class="text-gray-500">Estilo menos moderno y elegante que las otras opciones</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2 pt-2 border-t border-[#596827]/30 text-right font-bold text-[#4A0E17] text-sm">
+                                            $14,250 MXN
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-[#F8F5F2] p-2 mt-4 rounded border-l-2 border-[#C5A059] text-xs font-serif italic text-gray-600 text-center">
+                                    <strong>Dictamen:</strong> Se descartó Mobe por alto costo y Gala por falta de variedad en el servicio general. Margarita resultó la opción ganadora al brindar funcionalidad, un historial de confianza y un precio ajustado al presupuesto con descuento incluido.
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta Ambientación y Entretenimiento (Ocupa todo el ancho) -->
+                            <div class="bg-white p-5 border-t-4 border-[#596827] shadow-sm relative overflow-hidden group md:col-span-2">
+                                <i data-lucide="sparkles" class="absolute -bottom-4 -right-4 w-32 h-32 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                                    <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] flex items-center gap-2">
+                                        <i data-lucide="music" class="w-5 h-5"></i> Ambientación y Entretenimiento
+                                    </h3>
+                                    <span class="bg-[#596827]/10 text-[#596827] text-[10px] font-bold px-2 py-1 uppercase tracking-widest rounded border border-[#596827]/20 whitespace-nowrap">Contratación Directa</span>
+                                </div>
+                                
+                                <p class="font-serif text-xs text-gray-600 mb-4 leading-relaxed">
+                                    Para estos rubros no se realizó un proceso de cotización comparativa. Se optó por la contratación directa de proveedores específicos de confianza y convenios de colaboración.
+                                </p>
+                        
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <!-- Arreglos y Decoración -->
+                                    <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/20 flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2 text-[#4A0E17]">
+                                                <i data-lucide="flower-2" class="w-4 h-4"></i>
+                                                <p class="font-bold text-sm uppercase tracking-wider">Decoración Floral</p>
+                                            </div>
+                                            <p class="text-[10px] text-gray-500 mb-2 leading-tight">Rowy Florería<br>(Blvd. Gobernadores esq. Seúl #55)</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1.5 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>14 centros de mesa florales ($300 c/u)</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Velas flotantes para ambientación ($500)</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="info" class="w-3 h-3 text-[#C5A059] shrink-0 mt-0.5"></i> <span class="italic">El resto de la decoración (cubre mantelería, mobiliario) fue facilitada por La Lomita.</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-3 pt-3 border-t border-[#C5A059]/20 flex justify-between items-center">
+                                            <span class="text-[10px] text-gray-500 font-bold uppercase">Costo Total</span>
+                                            <span class="font-bold text-[#362017] text-sm">$4,700 MXN</span>
+                                        </div>
+                                    </div>
+                        
+                                    <!-- Música -->
+                                    <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/20 flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2 text-[#4A0E17]">
+                                                <i data-lucide="mic" class="w-4 h-4"></i>
+                                                <p class="font-bold text-sm uppercase tracking-wider">Música en Vivo</p>
+                                            </div>
+                                            <p class="text-[10px] text-gray-500 mb-2 leading-tight">Carlos Sotelo Música para Eventos</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1.5 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>2 horas de servicio musical.</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Ensamble: Saxofón, Piano y Violín.</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-3 pt-3 border-t border-[#C5A059]/20 flex justify-between items-center">
+                                            <span class="text-[10px] text-gray-500 font-bold uppercase">Costo Total</span>
+                                            <span class="font-bold text-[#362017] text-sm">$4,800 MXN</span>
+                                        </div>
+                                    </div>
+                        
+                                    <!-- Danza -->
+                                    <div class="bg-[#F8F5F2] p-4 rounded border border-[#C5A059]/20 flex flex-col justify-between relative overflow-hidden">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2 text-[#4A0E17]">
+                                                <i data-lucide="theater" class="w-4 h-4"></i>
+                                                <p class="font-bold text-sm uppercase tracking-wider">Danza y Ballet</p>
+                                            </div>
+                                            <p class="text-[10px] text-gray-500 mb-2 leading-tight">Escuela Danz Art</p>
+                                            <ul class="text-[11px] font-serif text-[#362017] space-y-1.5 mb-2">
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Dos tiempos de presentación de ballet (Al inicio de la velada y a la mitad).</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="check" class="w-3 h-3 text-[#596827] shrink-0 mt-0.5"></i> <span>Servicio brindado de forma gratuita.</span></li>
+                                                <li class="flex gap-1 items-start"><i data-lucide="info" class="w-3 h-3 text-[#C5A059] shrink-0 mt-0.5"></i> <span class="italic">Intercambio: Se cubrió el traslado de las personas y se les ofreció cena.</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-3 pt-3 border-t border-[#C5A059]/20 flex justify-between items-center">
+                                            <span class="text-[10px] text-gray-500 font-bold uppercase">Intercambio</span>
+                                            <span class="font-bold text-[#596827] text-sm">$0 MXN</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('indice')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Índice</button>
+                        <button onclick="changeView('previo')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <div id="view-previo" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">2. Actividades Previas</h2>
+                        <p class="font-serif text-sm text-[#596827] mt-1">Organización y asignación de responsabilidades planificadas en aula</p>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-4xl mx-auto px-2 sm:px-4 w-full">
+                        <p class="font-serif text-sm sm:text-base leading-relaxed text-justify mb-2">
+                            Previo a la fase de producción en cocina y a la ejecución del evento, el Grupo D5 acordó en sesiones académicas la estructura operativa. Se designaron a los encargados de cada área y tiempos del menú para asegurar una logística impecable, estableciendo líneas de mando claras antes de comenzar el trabajo operativo.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            <!-- Tarjeta Dirección y Conducción -->
+                            <div class="bg-white p-5 border-t-4 border-[#4A0E17] shadow-sm relative overflow-hidden group">
+                                <i data-lucide="crown" class="absolute -bottom-4 -right-4 w-24 h-24 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] flex items-center gap-2 mb-4">
+                                    <i data-lucide="mic" class="w-5 h-5"></i> Dirección y Conducción
+                                </h3>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Encargado General del Evento</p>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-[#4A0E17]/10 flex items-center justify-center border border-[#4A0E17]/20">
+                                                <i data-lucide="user" class="w-4 h-4 text-[#4A0E17]"></i>
+                                            </div>
+                                            <p class="font-serif font-bold text-[#362017] text-sm">Luis Armando Santiago González</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Conducción del Evento</p>
+                                        <ul class="space-y-2">
+                                            <li class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded-full bg-[#C5A059]/10 flex items-center justify-center border border-[#C5A059]/30">
+                                                    <i data-lucide="mic-2" class="w-3 h-3 text-[#C5A059]"></i>
+                                                </div>
+                                                <span class="font-serif text-[#362017] text-sm">Luis Armando Santiago González</span>
+                                            </li>
+                                            <li class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded-full bg-[#C5A059]/10 flex items-center justify-center border border-[#C5A059]/30">
+                                                    <i data-lucide="mic-2" class="w-3 h-3 text-[#C5A059]"></i>
+                                                </div>
+                                                <span class="font-serif text-[#362017] text-sm">Daniela Rivera Carrillo</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-4">
+                                <!-- Tarjeta Servicio -->
+                                <div class="bg-white p-5 border-t-4 border-[#C5A059] shadow-sm relative overflow-hidden group flex-grow">
+                                    <i data-lucide="users" class="absolute -bottom-2 -right-2 w-16 h-16 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                    <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] flex items-center gap-2 mb-3">
+                                        <i data-lucide="concierge-bell" class="w-5 h-5"></i> Brigada de Servicio
+                                    </h3>
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Capitán de Meseros</p>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-[#C5A059]/10 flex items-center justify-center border border-[#C5A059]/20">
+                                                <i data-lucide="user-check" class="w-4 h-4 text-[#C5A059]"></i>
+                                            </div>
+                                            <p class="font-serif font-bold text-[#362017] text-sm">Julieta Esmeralda Hernández Arias</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tarjeta Bebidas -->
+                                <div class="bg-white p-5 border-t-4 border-[#C5A059] shadow-sm relative overflow-hidden group flex-grow">
+                                    <i data-lucide="wine" class="absolute -bottom-2 -right-2 w-16 h-16 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                    <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] flex items-center gap-2 mb-3">
+                                        <i data-lucide="glass-water" class="w-5 h-5"></i> Brigada de Bebidas
+                                    </h3>
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Encargados de Barra y Maridaje</p>
+                                        <ul class="space-y-2">
+                                            <li class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded-full bg-[#C5A059]/10 flex items-center justify-center border border-[#C5A059]/30">
+                                                    <i data-lucide="user" class="w-3 h-3 text-[#C5A059]"></i>
+                                                </div>
+                                                <span class="font-serif text-[#362017] text-sm">Leonel Aldair Arroyo Soria</span>
+                                            </li>
+                                            <li class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded-full bg-[#C5A059]/10 flex items-center justify-center border border-[#C5A059]/30">
+                                                    <i data-lucide="user" class="w-3 h-3 text-[#C5A059]"></i>
+                                                </div>
+                                                <span class="font-serif text-[#362017] text-sm">Fatima Lizbeth Gomez</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta Cocina (Ocupa todo el ancho) -->
+                            <div class="bg-white p-5 border-t-4 border-[#596827] shadow-sm relative overflow-hidden group md:col-span-2">
+                                <i data-lucide="chef-hat" class="absolute -bottom-4 -right-4 w-32 h-32 text-[#596827] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] flex items-center gap-2 mb-4">
+                                    <i data-lucide="utensils" class="w-5 h-5 text-[#596827]"></i> Brigada de Cocina (Tiempos del Menú)
+                                </h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <!-- Tiempo 1 -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col">
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-[#596827] mb-1">Primer Tiempo</p>
+                                        <p class="font-serif font-bold text-[#4A0E17] text-sm leading-tight mb-2">Antipasto<br><span class="text-xs font-normal text-gray-600 italic">Carpaccio de atún y salmón</span></p>
+                                        <div class="mt-auto pt-2 border-t border-[#C5A059]/20">
+                                            <p class="text-[9px] text-gray-500 uppercase mb-0.5">Jefe de Estación</p>
+                                            <p class="font-bold text-[#362017] text-xs">Zully Adolfo Gonzales Hernández</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Tiempo 2 -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col">
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-[#596827] mb-1">Segundo Tiempo</p>
+                                        <p class="font-serif font-bold text-[#4A0E17] text-sm leading-tight mb-2">Primo Piatto<br><span class="text-xs font-normal text-gray-600 italic">Raviolis de requesón y espinaca</span></p>
+                                        <div class="mt-auto pt-2 border-t border-[#C5A059]/20">
+                                            <p class="text-[9px] text-gray-500 uppercase mb-0.5">Jefa de Estación</p>
+                                            <p class="font-bold text-[#362017] text-xs">Heidi Gisela Castillo Ramírez</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tiempo 3 -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col">
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-[#596827] mb-1">Tercer Tiempo</p>
+                                        <p class="font-serif font-bold text-[#4A0E17] text-sm leading-tight mb-2">Plato Principal<br><span class="text-xs font-normal text-gray-600 italic">Pulpo a las brasas</span></p>
+                                        <div class="mt-auto pt-2 border-t border-[#C5A059]/20">
+                                            <p class="text-[9px] text-gray-500 uppercase mb-0.5">Jefe de Estación</p>
+                                            <p class="font-bold text-[#362017] text-xs">Diego De La Rosa Torres</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tiempo 4 -->
+                                    <div class="bg-[#F8F5F2] p-3 rounded border border-[#C5A059]/20 flex flex-col">
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-[#596827] mb-1">Cuarto Tiempo</p>
+                                        <p class="font-serif font-bold text-[#4A0E17] text-sm leading-tight mb-2">Dolce<br><span class="text-xs font-normal text-gray-600 italic">Tarta de chocolate y mole</span></p>
+                                        <div class="mt-auto pt-2 border-t border-[#C5A059]/20">
+                                            <p class="text-[9px] text-gray-500 uppercase mb-0.5">Jefa de Estación</p>
+                                            <p class="font-bold text-[#362017] text-xs">Giselle Fabiola Jiménez Silva</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('cotizaciones')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('ejecucion')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <div id="view-ejecucion" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">3. Ejecución del Evento (Cocina)</h2>
+                        <p class="font-serif text-sm text-[#596827] mt-1">Dictamen de operación y producción previa</p>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-4xl mx-auto px-2 sm:px-4 w-full">
+                        
+                        <div class="bg-white p-4 sm:p-5 border-l-4 border-[#596827] shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596827] mb-1">Reporte Emitido Por:</p>
+                                <p class="font-serif font-bold text-[#362017] text-sm">Heidi Gisela Castillo Ramírez & Diego De La Rosa Torres</p>
+                                <p class="text-xs text-gray-500 italic">Encargados de Laboratorio (Turno Previas de Cocina)</p>
+                            </div>
+                            <i data-lucide="clipboard-signature" class="w-8 h-8 text-[#596827] opacity-50"></i>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            <!-- Normativa -->
+                            <div class="bg-white p-4 rounded border border-[#C5A059]/20 shadow-sm relative overflow-hidden group">
+                                <i data-lucide="shield-alert" class="absolute -bottom-4 -right-4 w-20 h-20 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-[#C5A059]/30 pb-2">
+                                    <i data-lucide="shirt" class="w-4 h-4 text-[#C5A059]"></i> Normativa de Laboratorio
+                                </h3>
+                                <p class="font-serif text-xs text-gray-600 mb-2 leading-relaxed text-justify">
+                                    Se estipuló el cumplimiento estricto del reglamento para todo el personal. Obligatorio presentarse con:
+                                </p>
+                                <ul class="text-[11px] font-serif text-[#362017] space-y-1.5 mb-2 grid grid-cols-2">
+                                    <li class="flex gap-1 items-center"><i data-lucide="check-circle" class="w-3 h-3 text-[#596827]"></i> Filipina y Mandil</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="check-circle" class="w-3 h-3 text-[#596827]"></i> Zapatos cocina</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="check-circle" class="w-3 h-3 text-[#596827]"></i> Cofia</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="x-circle" class="w-3 h-3 text-red-600"></i> Cero Maquillaje</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="x-circle" class="w-3 h-3 text-red-600"></i> Cabello recogido</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="x-circle" class="w-3 h-3 text-red-600"></i> Sin barba</li>
+                                </ul>
+                            </div>
+
+                            <!-- Bitácora de Asistencia -->
+                            <div class="bg-white p-4 rounded border border-[#C5A059]/20 shadow-sm relative overflow-hidden group">
+                                <i data-lucide="clock-4" class="absolute -bottom-4 -right-4 w-20 h-20 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-[#C5A059]/30 pb-2">
+                                    <i data-lucide="calendar-clock" class="w-4 h-4 text-[#C5A059]"></i> Bitácora de Ingreso
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-[#596827] text-white text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5">08:00 AM</span>
+                                        <p class="font-serif text-[11px] text-[#362017] leading-tight">Llegada puntual de <strong>Aron, Brandon, Sergio y Cristian</strong>. Apoyo inmediato en producción.</p>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-[#C5A059] text-white text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5">09:00 AM</span>
+                                        <p class="font-serif text-[11px] text-[#362017] leading-tight">Llegada de <strong>Kestin</strong>. <em class="text-gray-500">(Justificada: Compras de insumos faltantes de bebida).</em></p>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-red-800 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5">10:00 AM</span>
+                                        <p class="font-serif text-[11px] text-[#362017] leading-tight">Llegada de <strong>Carlos y Francisco</strong>. <em class="text-red-600 font-semibold">(Sin justificación)</em>. Se ausentaron 1 hora tras su llegada.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tareas y Limpieza -->
+                            <div class="bg-white p-4 rounded border-t-4 border-[#C5A059] shadow-sm md:col-span-2">
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-[#C5A059]/30 pb-2">
+                                    <i data-lucide="spray-can" class="w-4 h-4 text-[#C5A059]"></i> Distribución de Limpieza y Cierre
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-1">
+                                        <span class="font-bold text-[#596827] text-[11px] uppercase">Aron</span>
+                                        <span class="font-serif text-[11px] text-[#362017]">Lavado de tarjas y requisición</span>
+                                    </div>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-1">
+                                        <span class="font-bold text-[#596827] text-[11px] uppercase">Sergio</span>
+                                        <span class="font-serif text-[11px] text-[#362017]">Limpieza de mesas y requisición</span>
+                                    </div>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-1">
+                                        <span class="font-bold text-[#596827] text-[11px] uppercase">Cristian y Equipo</span>
+                                        <span class="font-serif text-[11px] text-[#362017]">Trapear área y lavar requisición</span>
+                                    </div>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-1">
+                                        <span class="font-bold text-[#596827] text-[11px] uppercase">Carlos</span>
+                                        <span class="font-serif text-[11px] text-[#362017]">Barrer laboratorio</span>
+                                    </div>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-1">
+                                        <span class="font-bold text-[#596827] text-[11px] uppercase">Francisco</span>
+                                        <span class="font-serif text-[11px] text-[#362017]">Lavado profundo de estufa</span>
+                                    </div>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-1">
+                                        <span class="font-bold text-[#596827] text-[11px] uppercase">Kestin</span>
+                                        <span class="font-serif text-[11px] text-[#362017]">Producción, limpieza de área y requisición</span>
+                                    </div>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-1 sm:col-span-2">
+                                        <span class="font-bold text-[#C5A059] text-[11px] uppercase">Brandon</span>
+                                        <span class="font-serif text-[11px] text-[#362017]">Apoyo general y traslado de alimentos al salón</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reporte de Incidencias Graves -->
+                            <div class="bg-[#4A0E17]/5 p-4 rounded border-l-4 border-red-800 shadow-sm md:col-span-2 relative">
+                                <h3 class="font-cinzel text-base font-bold text-red-800 flex items-center gap-2 mb-2">
+                                    <i data-lucide="alert-triangle" class="w-5 h-5"></i> Reporte de Incidencia Grave
+                                </h3>
+                                <p class="font-serif text-sm leading-relaxed text-justify text-[#362017]">
+                                    Se levanta reporte disciplinario contra el alumno <strong>Francisco Sepúlveda Paredes (Pancho)</strong> por falta de respeto a la autoridad docente. Al momento en que el <strong>Chef Kevin Alejandro</strong> le cuestionó su llegada tardía y su ausencia posterior del laboratorio, el alumno respondió levantando el tono de voz de manera irrespetuosa. Esta acción es catalogada como una falta grave que afecta el desarrollo y disciplina profesional requerida para el evento.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('previo')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('servicio')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <div id="view-servicio" class="view-section flex-col min-h-full fade-in">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">4. Servicio en Sala</h2>
+                        <p class="font-serif text-sm text-[#596827] mt-1">Dictamen de atención, montaje y desmontaje</p>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-4xl mx-auto px-2 sm:px-4 w-full">
+                        
+                        <div class="bg-white p-4 sm:p-5 border-l-4 border-[#C5A059] shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest font-bold text-[#C5A059] mb-1">Reporte Emitido Por:</p>
+                                <p class="font-serif font-bold text-[#362017] text-sm">Julieta Esmeralda Hernández Arias</p>
+                                <p class="text-xs text-gray-500 italic">Capitán de Meseros</p>
+                            </div>
+                            <i data-lucide="concierge-bell" class="w-8 h-8 text-[#C5A059] opacity-50"></i>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            <!-- Datos Generales y Objetivo -->
+                            <div class="bg-white p-4 rounded border border-[#C5A059]/20 shadow-sm md:col-span-2">
+                                <div class="flex flex-col md:flex-row gap-6">
+                                    <div class="md:w-1/3 border-r border-[#C5A059]/20 pr-4">
+                                        <h3 class="font-cinzel text-sm font-bold text-[#4A0E17] mb-2 uppercase tracking-widest">Datos del Servicio</h3>
+                                        <ul class="text-[11px] font-serif space-y-2">
+                                            <li><strong class="text-[#596827]">Fecha:</strong> Viernes 29 de mayo de 2026</li>
+                                            <li><strong class="text-[#596827]">Convocatoria:</strong> 5:00 p.m.</li>
+                                            <li><strong class="text-[#596827]">Mesas Asignadas:</strong> 15 mesas</li>
+                                            <li><strong class="text-[#596827]">Total Personal:</strong> 12 meseros</li>
+                                        </ul>
+                                    </div>
+                                    <div class="md:w-2/3">
+                                        <h3 class="font-cinzel text-sm font-bold text-[#4A0E17] mb-2 uppercase tracking-widest">1. Objetivo</h3>
+                                        <p class="font-serif text-xs leading-relaxed text-justify">
+                                            Brindar atención eficiente y de calidad a los asistentes del evento mediante la correcta organización, servicio de alimentos y bebidas, así como el apoyo en las actividades de montaje, atención y desmontaje al finalizar el evento.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Personal -->
+                            <div class="bg-white p-4 rounded border border-[#C5A059]/20 shadow-sm relative overflow-hidden group">
+                                <i data-lucide="users" class="absolute -bottom-4 -right-4 w-20 h-20 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-[#C5A059]/30 pb-2">
+                                    <i data-lucide="users" class="w-4 h-4 text-[#C5A059]"></i> 2. Personal Participante
+                                </h3>
+                                <div class="grid grid-cols-2 gap-x-2 gap-y-1 mb-3">
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 1. Esmeralda</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 7. Sergio</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 2. Nazbith</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 8. Karla</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 3. Fernando</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 9. Cristian</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 4. Francisco</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 10. Brandon</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 5. Carlos</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 11. Iván</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 6. Gerardo</span>
+                                    <span class="font-serif text-[11px] text-[#362017] flex items-center gap-1"><i data-lucide="user" class="w-3 h-3 text-[#596827]"></i> 12. Kestin</span>
+                                </div>
+                                <div class="bg-[#F8F5F2] p-2 rounded border-l-2 border-[#C5A059] text-[10px] font-serif italic text-gray-600 leading-tight">
+                                    <strong>Nota Operativa:</strong> Debido a la cantidad de mesas (15) y personal (12), <strong>Esmeralda y Fernando</strong> tuvieron a su cargo la atención de las 3 mesas restantes, garantizando la correcta cobertura y apoyo a todos los invitados.
+                                </div>
+                            </div>
+
+                            <!-- Normativa -->
+                            <div class="bg-white p-4 rounded border border-[#C5A059]/20 shadow-sm relative overflow-hidden group">
+                                <i data-lucide="clipboard-list" class="absolute -bottom-4 -right-4 w-20 h-20 text-[#C5A059] opacity-5 group-hover:opacity-10 transition-opacity"></i>
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-[#C5A059]/30 pb-2">
+                                    <i data-lucide="clipboard-list" class="w-4 h-4 text-[#C5A059]"></i> 3. Normativa y Uniforme
+                                </h3>
+                                <ul class="text-[11px] font-serif text-[#362017] space-y-1.5 mb-3 grid grid-cols-2">
+                                    <li class="flex gap-1 items-center"><i data-lucide="check-circle" class="w-3 h-3 text-[#596827]"></i> Filipina color negro</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="check-circle" class="w-3 h-3 text-[#596827]"></i> Pantalón negro/cocina</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="check-circle" class="w-3 h-3 text-[#596827]"></i> Zapatos negros/cocina</li>
+                                    <li class="flex gap-1 items-center"><i data-lucide="check-circle" class="w-3 h-3 text-[#596827]"></i> Peinado recogido</li>
+                                </ul>
+                                <div class="bg-[#4A0E17]/5 p-2 rounded border-l-2 border-red-800 text-[10px] font-serif text-[#362017] leading-tight">
+                                    <strong class="text-red-800">Observación de Uniforme:</strong> La mayoría cumplió los lineamientos, a excepción de la alumna <strong>Kestin</strong>, quien se presentó con una malla color negro sustituyendo el pantalón de vestir o cocina requerido.
+                                </div>
+                            </div>
+
+                            <!-- Desarrollo y Conclusión -->
+                            <div class="bg-[#F8F5F2] p-4 rounded border-t-4 border-[#596827] shadow-sm md:col-span-2">
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-[#C5A059]/30 pb-2">
+                                    <i data-lucide="star" class="w-4 h-4 text-[#596827]"></i> 4. Desarrollo y Conclusión del Servicio
+                                </h3>
+                                <div class="space-y-3 font-serif text-xs leading-relaxed text-justify text-[#362017]">
+                                    <p>
+                                        <strong>Desarrollo:</strong> Las actividades iniciaron puntualmente a las 5:00 p.m. con el montaje y preparación del salón. Durante el evento, cada mesero atendió sus mesas asignadas de forma oportuna, manteniendo excelente comunicación para apoyarse en otras áreas. El flujo se desarrolló de manera ordenada y sin contratiempos significativos.
+                                    </p>
+                                    <p>
+                                        <strong>Puntualidad e Incidencias:</strong> Los alumnos permanecieron hasta concluir con la recolección y acomodo del material (desmontaje). Durante el desarrollo <strong>no se registraron quejas por parte de los asistentes</strong> ni reportes sobre la atención brindada.
+                                    </p>
+                                    <p class="font-bold text-[#596827] uppercase tracking-widest text-[10px]">
+                                        Dictamen Final:
+                                    </p>
+                                    <p>
+                                        El servicio se llevó a cabo de manera satisfactoria gracias al trabajo coordinado de los 12 integrantes del equipo. Se cumplió con los objetivos y la atención fue adecuada y oportuna. Como área de mejora, se recomienda reforzar la supervisión de la vestimenta antes de futuros eventos para asegurar la presentación completamente uniforme del personal.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('ejecucion')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('dictamen')" class="bg-[#4A0E17] text-[#F2EDE8] py-2 px-6 hover:bg-[#3A0D11] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 group border border-[#4A0E17] hover:border-[#C5A059] shadow-md">Siguiente <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
+                    </div>
+                </div>
+
+                <div id="view-dictamen" class="view-section flex-col min-h-full fade-in pb-10">
+                    <div class="border-b-2 border-[#C5A059] pb-4 mb-6 text-center">
+                        <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-[#4A0E17] tracking-widest uppercase">5. Dictamen General</h2>
+                        <p class="font-serif text-sm text-[#596827] mt-1">Balance operativo, financiero y humano del evento</p>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col justify-start text-[#362017] space-y-6 max-w-4xl mx-auto px-2 sm:px-4 w-full">
+                        
+                        <div class="bg-[#F8F5F2] p-5 border-l-4 border-[#C5A059] shadow-sm flex items-start gap-4">
+                            <i data-lucide="award" class="w-8 h-8 text-[#C5A059] shrink-0 mt-1"></i>
+                            <div>
+                                <h3 class="font-cinzel text-lg font-bold text-[#4A0E17] mb-2">Cobertura Exitosa del Proyecto</h3>
+                                <p class="font-serif text-sm leading-relaxed text-justify">
+                                    A manera de cierre, se reporta la cobertura total de las actividades planeadas. Desde el inicio, se lograron excelentes cotizaciones, asegurando los mejores salones, cristalería funcional, precios competitivos en música y la obtención gratuita del grupo de danza. La distribución de tareas inicial sentó las bases para el desarrollo fluido de todas las áreas involucradas.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            <!-- Compras y Logística -->
+                            <div class="bg-white p-4 rounded border-t-4 border-[#596827] shadow-sm">
+                                <h3 class="font-cinzel text-base font-bold text-[#596827] flex items-center gap-2 mb-3 border-b border-gray-100 pb-2">
+                                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Adquisiciones y Cumplimiento
+                                </h3>
+                                <p class="font-serif text-xs text-justify mb-3">
+                                    Bajo la responsabilidad de <strong>Luis Armando Santiago González</strong>, se gestionaron de manera directa todas las compras de insumos, mismas que fueron entregadas puntualmente a cada una de las brigadas.
+                                </p>
+                                <ul class="text-[11px] font-serif space-y-2">
+                                    <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-[#596827] mt-0.5"></i> <span><strong>Brigada de Postres:</strong> Trabajó de manera sobresaliente y eficiente.</span></li>
+                                    <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-[#596827] mt-0.5"></i> <span><strong>Brigada de Bebidas:</strong> Cumplió cabalmente con lo prometido para el servicio.</span></li>
+                                </ul>
+                            </div>
+
+                            <!-- Mermas y Desperdicios -->
+                            <div class="bg-white p-4 rounded border-t-4 border-[#C5A059] shadow-sm">
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-gray-100 pb-2">
+                                    <i data-lucide="trending-down" class="w-4 h-4 text-[#C5A059]"></i> Mermas e Imprevistos
+                                </h3>
+                                <p class="font-serif text-xs text-justify mb-2">
+                                    Si bien la operación fue exitosa, se registraron ligeros desperdicios debido a cálculos no exactos al 100% en las cotizaciones iniciales:
+                                </p>
+                                <ul class="text-[11px] font-serif space-y-1.5 text-gray-700">
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span> Sobrantes menores de atún curado.</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span> Desperdicio leve de requesón.</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> Derrame de una crema para batir, subsanado mediante compra inmediata.</li>
+                                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span> Compra no prevista de hielo a último momento.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Desempeño y Disciplina -->
+                            <div class="bg-white p-4 rounded border border-gray-200 shadow-sm md:col-span-2">
+                                <h3 class="font-cinzel text-base font-bold text-[#4A0E17] flex items-center gap-2 mb-3 border-b border-gray-100 pb-2">
+                                    <i data-lucide="users-round" class="w-4 h-4 text-[#C5A059]"></i> Desempeño Humano y Reconocimientos
+                                </h3>
+                                <p class="font-serif text-xs text-justify mb-4">
+                                    En la fase previa, todo el grupo trabajó de forma adecuada, a excepción de las menciones disciplinarias ya dictaminadas respecto a <strong>Carlos Luna</strong> y la falta grave de <strong>Francisco Sepúlveda</strong>. Fuera de dichas incidencias, el esfuerzo colectivo fue el motor del evento.
+                                </p>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="bg-[#F8F5F2] p-3 rounded">
+                                        <p class="text-[10px] uppercase font-bold text-[#596827] mb-2 tracking-widest">Apoyos Clave</p>
+                                        <ul class="text-[11px] font-serif space-y-2">
+                                            <li><strong>Brandon Rosas:</strong> Pieza fundamental en el traslado logístico de insumos al salón.</li>
+                                            <li><strong>Julieta Esmeralda:</strong> Demostró un control impecable y excelente desempeño durante el servicio de sala.</li>
+                                            <li><strong>Daniela Rivera:</strong> Extraordinaria capacidad de conducción y presentación del evento.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-[#596827]/10 p-3 rounded border border-[#596827]/20">
+                                        <p class="text-[10px] uppercase font-bold text-[#596827] mb-2 tracking-widest">Excelencia en Emplatado</p>
+                                        <p class="font-serif text-[11px] text-justify">
+                                            Aunque la labor general en la línea de montaje fue correcta por parte de todo el equipo, se extiende un reconocimiento por su destacado ritmo de trabajo, limpieza y precisión al momento de emplatar a:
+                                        </p>
+                                        <p class="font-serif font-bold text-[#4A0E17] text-[11px] mt-2">
+                                            Diego, Heidi, Martín, Aarón, Gisel, David y Zully.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 text-center bg-[#4A0E17] p-6 rounded-lg shadow-lg relative overflow-hidden">
+                            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')]"></div>
+                            <h2 class="font-script text-4xl sm:text-5xl text-[#C5A059] relative z-10 drop-shadow-md">Proyecto Superado</h2>
+                            <p class="font-serif text-sm sm:text-base text-[#F2EDE8] mt-3 relative z-10 px-4">
+                                En general, el dictamen confirma que se logró sacar el proyecto a flote con éxito. Los incidentes fueron resueltos en tiempo real y el resultado entregado a los comensales reflejó la madurez y la excelencia del Grupo D5.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-auto flex justify-between items-center w-full px-4 pt-4 border-t border-[#C5A059]/30">
+                        <button onclick="changeView('servicio')" class="text-[#596827] text-xs uppercase tracking-widest font-bold hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Anterior</button>
+                        <button onclick="changeView('indice')" class="bg-transparent text-[#4A0E17] py-2 px-6 hover:bg-[#E5DACE] transition-all duration-300 tracking-[0.2em] text-xs uppercase font-bold flex items-center justify-center gap-2 border border-[#4A0E17] rounded-sm">Finalizar Reporte <i data-lucide="check" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // Función para cambiar de vista (Secciones de Reportes)
+        window.changeView = (newViewId) => {
+            const currentActive = document.querySelector('.view-active');
+            
+            if (currentActive) {
+                currentActive.classList.remove('fade-in');
+                currentActive.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    currentActive.classList.remove('view-active', 'fade-out');
+                    
+                    const nextView = document.getElementById(`view-${newViewId}`);
+                    if (nextView) {
+                        nextView.classList.add('view-active', 'fade-in');
+                        document.getElementById('content-area').scrollTop = 0;
+                    }
+                }, 500);
+            }
+        };
+    </script>
+</body>
+</html>
