@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gracias por acompañarnos - D5</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fuentes elegantes (Las mismas del proyecto original) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        body, html { 
+            background-color: #1A0F0A; 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Fondo elegante original */
+        .bg-custom {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 14, 23, 0.5) 0%, #1A0F0A 40%),
+                radial-gradient(circle at 90% 80%, rgba(89, 104, 39, 0.3) 0%, #1A0F0A 40%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        
+        .fade-in { animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        /* Clases de tipografía */
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        
+        /* Sombras y bordes */
+        .card-shadow { box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(74, 14, 23, 0.3); }
+
+        .inner-border {
+          border: 1px solid rgba(197, 160, 89, 0.4);
+          outline: 1px solid rgba(197, 160, 89, 0.4);
+          outline-offset: -4px;
+        }
+    </style>
+</head>
+<body class="bg-custom flex items-center justify-center p-4">
+
+    <!-- CONTENEDOR PRINCIPAL DE CLAUSURA -->
+    <div class="relative w-full max-w-md bg-[#F8F5F2] card-shadow p-2 sm:p-3 fade-in" style="min-height: 550px;">
+        <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col justify-center items-center overflow-hidden bg-[#F2EDE8] inner-border py-16 px-6 sm:px-10">
+            
+            <!-- Esquina Floral Superior Izquierda -->
+            <svg class="absolute -top-4 -left-4 w-52 h-52 pointer-events-none opacity-95 z-0 drop-shadow-lg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <path d="M20 100 Q 50 20 120 40" stroke="#C5A059" stroke-width="1" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <!-- Esquina Floral Inferior Derecha -->
+            <svg class="absolute -bottom-4 -right-4 w-60 h-60 pointer-events-none opacity-95 z-0 drop-shadow-lg transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
+                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
+                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
+                <path d="M110 10 Q 160 30 140 90 Q 90 60 110 10 Z" fill="#596827" opacity="0.8"/>
+                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
+                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
+                <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
+                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
+            </svg>
+
+            <div class="relative z-10 text-center flex flex-col items-center">
+                
+                <!-- Encabezado sutil -->
+                <div class="flex items-center justify-center gap-2 mb-6">
+                    <span class="text-[#C5A059] text-[10px]">♦</span>
+                    <p class="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[#362017] font-semibold">
+                        Evento Finalizado
+                    </p>
+                    <span class="text-[#C5A059] text-[10px]">♦</span>
+                </div>
+                
+                <!-- Título Principal -->
+                <h1 class="font-script text-5xl sm:text-6xl text-[#4A0E17] leading-none mb-2 drop-shadow-sm">
+                    La Dualidad<br>del Sabor
+                </h1>
+                
+                <!-- Subtítulo -->
+                <p class="font-serif text-xl sm:text-2xl text-[#596827] italic mb-6">
+                    Grupo D5 Gastronomía
+                </p>
+
+                <!-- Divisor Decorativo -->
+                <div class="flex items-center justify-center my-8 w-full max-w-[200px]">
+                    <div class="h-[1px] bg-gradient-to-r from-[#F8F5F2] via-[#C5A059] to-[#F8F5F2] w-full"></div>
+                    <div class="mx-2 text-[#C5A059] text-xs">✦</div>
+                    <div class="mx-1 w-2 h-2 rotate-45 bg-[#C5A059] border border-[#362017]"></div>
+                    <div class="mx-2 text-[#C5A059] text-xs">✦</div>
+                    <div class="h-[1px] bg-gradient-to-r from-[#C5A059] via-[#C5A059] to-[#F8F5F2] w-full"></div>
+                </div>
+
+                <!-- Mensaje de Agradecimiento -->
+                <p class="font-serif text-lg sm:text-xl text-[#362017] leading-relaxed mb-8 px-2">
+                    Gracias por haber vivido esta experiencia inolvidable con nosotros.
+                </p>
+
+                <!-- Pie de página / Firma -->
+                <div class="mt-4 border-t border-[#C5A059] pt-4 border-opacity-50 inline-block">
+                    <p class="text-[9px] uppercase tracking-[0.3em] font-bold text-[#4A0E17]">
+                        Generación 2022 • 2027
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
