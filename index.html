@@ -3,130 +3,832 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gracias por acompañarnos - D5</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Fuentes elegantes (Las mismas del proyecto original) -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
-
+    <title>HerbaViva | Saborizantes Orgánicos de Hierbas de Olor</title>
     <style>
-        body, html { 
-            background-color: #1A0F0A; 
+        :root {
+            --verde-bosque: #1e3a2f;
+            --verde-salvia: #4a6b5b;
+            --verde-claro: #e9f0ec;
+            --ambar: #d48c46;
+            --ambar-oscuro: #b56e29;
+            --crema: #fbf9f5;
+            --texto: #2c3531;
+            --blanco: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
-        /* Fondo elegante original */
-        .bg-custom {
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(74, 14, 23, 0.5) 0%, #1A0F0A 40%),
-                radial-gradient(circle at 90% 80%, rgba(89, 104, 39, 0.3) 0%, #1A0F0A 40%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        body {
+            background-color: var(--crema);
+            color: var(--texto);
+            line-height: 1.6;
         }
-        
-        .fade-in { animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        /* Barra superior de Estado QR */
+        .qr-status-bar {
+            background: linear-gradient(90deg, var(--verde-bosque), #2d5a47);
+            color: var(--blanco);
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-        
-        /* Clases de tipografía */
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .font-script { font-family: 'Great Vibes', cursive; }
-        .font-cinzel { font-family: 'Cinzel', serif; }
-        
-        /* Sombras y bordes */
-        .card-shadow { box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(74, 14, 23, 0.3); }
 
-        .inner-border {
-          border: 1px solid rgba(197, 160, 89, 0.4);
-          outline: 1px solid rgba(197, 160, 89, 0.4);
-          outline-offset: -4px;
+        .qr-badge {
+            background-color: var(--ambar);
+            color: var(--blanco);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navegación */
+        header {
+            background-color: var(--blanco);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--verde-bosque);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--ambar);
+            font-weight: 400;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--texto);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--ambar);
+        }
+
+        .btn-qr-nav {
+            background-color: var(--verde-bosque);
+            color: var(--blanco) !important;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* Hero Principal */
+        .hero {
+            background: linear-gradient(rgba(30, 58, 47, 0.82), rgba(30, 58, 47, 0.88)),
+                        url('https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=1400&q=80') center/cover;
+            color: var(--blanco);
+            padding: 90px 20px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.92;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: var(--ambar);
+            color: var(--blanco);
+            padding: 14px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--ambar-oscuro);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--blanco);
+            border: 2px solid var(--blanco);
+            padding: 12px 26px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--blanco);
+            color: var(--verde-bosque);
+        }
+
+        /* Sección de Beneficios */
+        .features {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--blanco);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border-bottom: 4px solid var(--ambar);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: var(--verde-bosque);
+            margin-bottom: 10px;
+        }
+
+        /* Catálogo de Sabores */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--verde-bosque);
+            margin-bottom: 10px;
+        }
+
+        .catalog {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--blanco);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px;
+            border: 1px solid #eee;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .herb-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            background-color: var(--verde-claro);
+            color: var(--verde-bosque);
+            width: fit-content;
+        }
+
+        .product-card h3 {
+            font-size: 1.35rem;
+            color: var(--verde-bosque);
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--ambar-oscuro);
+            margin: 12px 0;
+        }
+
+        .btn-filter-recipe {
+            background-color: var(--verde-claro);
+            color: var(--verde-bosque);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-filter-recipe:hover {
+            background-color: var(--verde-bosque);
+            color: var(--blanco);
+        }
+
+        /* Apartado Exclusivo QR de Recetas */
+        .recipes-section {
+            background-color: var(--verde-claro);
+            padding: 80px 20px;
+        }
+
+        .recipes-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .qr-activator-box {
+            background-color: var(--verde-bosque);
+            color: var(--blanco);
+            padding: 25px 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .qr-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .qr-input-group input {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.95rem;
+            min-width: 240px;
+        }
+
+        /* Botones de filtro por sabor */
+        .flavor-filters {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .filter-btn {
+            background-color: var(--blanco);
+            color: var(--verde-bosque);
+            border: 2px solid transparent;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--ambar);
+            color: var(--blanco);
+        }
+
+        /* Tarjetas de Recetas */
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 25px;
+        }
+
+        .recipe-card {
+            background-color: var(--blanco);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .recipe-category {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #f4ece1;
+            color: var(--ambar-oscuro);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .recipe-flavor-badge {
+            color: var(--verde-salvia);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .recipe-card h3 {
+            color: var(--verde-bosque);
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            padding-right: 90px;
+        }
+
+        .dosage-highlight {
+            background-color: #eef7f2;
+            border-left: 4px solid var(--verde-bosque);
+            padding: 10px 14px;
+            margin: 15px 0;
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--verde-bosque);
+        }
+
+        .recipe-card ul, .recipe-card ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .recipe-card h4 {
+            margin: 12px 0 6px;
+            color: var(--verde-bosque);
+            font-size: 1rem;
+        }
+
+        footer {
+            background-color: var(--verde-bosque);
+            color: var(--blanco);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            nav ul { display: none; }
         }
     </style>
 </head>
-<body class="bg-custom flex items-center justify-center p-4">
+<body>
 
-    <!-- CONTENEDOR PRINCIPAL DE CLAUSURA -->
-    <div class="relative w-full max-w-md bg-[#F8F5F2] card-shadow p-2 sm:p-3 fade-in" style="min-height: 550px;">
-        <div class="relative w-full h-full border-2 border-[#C5A059] flex flex-col justify-center items-center overflow-hidden bg-[#F2EDE8] inner-border py-16 px-6 sm:px-10">
+    <!-- Barra de acceso QR activo -->
+    <div class="qr-status-bar">
+        <span class="qr-badge">ACCESO QR ACTIVO</span>
+        <span id="qr-timer-text">Edición Recetario de Temporada — Tienes <strong>30 días restantes</strong> de acceso exclusivo.</span>
+    </div>
+
+    <!-- Encabezado -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">🌿 Herba<span>Viva</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#beneficios">Beneficios</a></li>
+                    <li><a href="#sabores">Nuestros Sabores</a></li>
+                    <li><a href="#recetario" class="btn-qr-nav">🔓 Club de Recetas QR</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>El huerto orgánico en una gota; un nuevo recetario en cada escaneo</h1>
+            <p>Saborizantes concentrados 100% naturales de hierbas de olor para alta repostería, bebidas de autor y confitería artesanal. Sin químicos, sin azúcar y sin desperdicio.</p>
+            <div class="hero-buttons">
+                <a href="#recetario" class="btn-primary">Explorar Recetas del Mes</a>
+                <a href="#sabores" class="btn-secondary">Ver Catálogo de Extractos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Propuesta de Valor -->
+    <section id="beneficios" class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🌱</div>
+            <h3>100% Orgánico y Puro</h3>
+            <p>Extraído de hierbas frescas cultivadas sin pesticidas. Sin saborizantes artificiales, sin colorantes ni azúcares añadidos.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💧</div>
+            <h3>Ulfraconcentrado Termoestable</h3>
+            <p>Un frasco de 30 ml rinde hasta 600 gotas. Resiste el horneado en repostería, caramelo caliente y se disuelve perfecto en bebidas frías.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Código QR Mensual</h3>
+            <p>Cada botella incluye un código QR único que desbloquea durante 30 días nuevas recetas exclusivas creadas por chefs y mixólogos.</p>
+        </div>
+    </section>
+
+    <!-- Catálogo de Sabores -->
+    <div id="sabores" class="section-title">
+        <h2>Nuestra Colección de Extractos</h2>
+        <p>Selecciona cualquier sabor para filtrar directamente sus recetas especializadas del mes.</p>
+    </div>
+
+    <section class="catalog">
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Clásico Refrescante</span>
+                <h3>🌿 Yerbabuena</h3>
+                <p>Notas verdes, frescas y ligeramente dulces. Ideal para mojitos sin alcohol, rellenos de chocolate y postres con frutos rojos.</p>
+            </div>
+            <div>
+                <div class="product-price">$145.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('yerbabuena')">Ver recetas de Yerbabuena →</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Frescura Intensa</span>
+                <h3>❄️ Menta Piperita</h3>
+                <p>Aroma limpio, balsámico y vigorizante. Perfecto para brownies, helados, macarrones, gomitas y cafés helados.</p>
+            </div>
+            <div>
+                <div class="product-price">$145.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('menta')">Ver recetas de Menta →</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Floral Gourmet</span>
+                <h3>💜 Lavanda Francesa</h3>
+                <p>Sutil, relajante y floral. Transforma panqués de limón, lattes calientes, merengues y galletas de mantequilla.</p>
+            </div>
+            <div>
+                <div class="product-price">$155.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('lavanda')">Ver recetas de Lavanda →</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Herbal Amaderado</span>
+                <h3>🌲 Romero Fresco</h3>
+                <p>Carácter mediterráneo profundo. Espectacular con cítricos, chocolates oscuros, caramelos salados y mocktails botánicos.</p>
+            </div>
+            <div>
+                <div class="product-price">$145.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('romero')">Ver recetas de Romero →</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Dulce Aromático</span>
+                <h3>🍃 Albahaca Dulce</h3>
+                <p>Toque fresco y ligeramente anisado. Marida a la perfección con fresas, mango, limón, mousses ligeros y sodas artesanales.</p>
+            </div>
+            <div>
+                <div class="product-price">$145.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('albahaca')">Ver recetas de Albahaca →</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Terroso y Sutil</span>
+                <h3>🌱 Tomillo Limón</h3>
+                <p>Elegante nota silvestre. Sorprende en tartas de durazno, peras pochadas, mieles infusionadas y galletas sablé.</p>
+            </div>
+            <div>
+                <div class="product-price">$145.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('tomillo')">Ver recetas de Tomillo →</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Cítrico Exótico</span>
+                <h3>🌾 Zacate Limón</h3>
+                <p>Explosión cítrica sin acidez. Ideal para cheesecakes, tés helados, gomitas ácidas y cremas pasteleras tropicales.</p>
+            </div>
+            <div>
+                <div class="product-price">$145.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('zacate')">Ver recetas de Zacate Limón →</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div>
+                <span class="herb-tag">Sugerencia Especial</span>
+                <h3>✨ Cedrón (Hierba Luisa)</h3>
+                <p>Perfume alimonado suave y sedoso. Excelente para trufas de chocolate blanco, panna cottas y digestivos artesanales.</p>
+            </div>
+            <div>
+                <div class="product-price">$155.00 MXN <small style="font-weight:normal; color:#666;">/ 30 ml</small></div>
+                <button class="btn-filter-recipe" onclick="filtrarRecetas('cedron')">Ver recetas de Cedrón →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portal de Recetas Especializadas (Acceso QR) -->
+    <section id="recetario" class="recipes-section">
+        <div class="recipes-container">
             
-            <!-- Esquina Floral Superior Izquierda -->
-            <svg class="absolute -top-4 -left-4 w-52 h-52 pointer-events-none opacity-95 z-0 drop-shadow-lg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
-                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
-                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
-                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
-                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
-                <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
-                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
-                <path d="M20 100 Q 50 20 120 40" stroke="#C5A059" stroke-width="1" fill="none"/>
-                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
-            </svg>
-
-            <!-- Esquina Floral Inferior Derecha -->
-            <svg class="absolute -bottom-4 -right-4 w-60 h-60 pointer-events-none opacity-95 z-0 drop-shadow-lg transform rotate-180" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 100 Q 50 20 120 40 Q 80 80 20 100 Z" fill="#4a5720" opacity="0.9"/>
-                <path d="M10 120 Q 30 50 100 80 Q 50 110 10 120 Z" fill="#3a4515" opacity="1"/>
-                <path d="M40 20 Q 100 10 140 60 Q 90 60 40 20 Z" fill="#596827" opacity="0.9"/>
-                <path d="M110 10 Q 160 30 140 90 Q 90 60 110 10 Z" fill="#596827" opacity="0.8"/>
-                <path d="M10 10 Q 60 -10 80 40 Q 20 60 10 10 Z" fill="#4A0E17"/>
-                <path d="M-10 40 Q 40 10 60 70 Q 0 90 -10 40 Z" fill="#5C1A1B"/>
-                <path d="M30 -10 Q 80 20 50 70 Q 0 40 30 -10 Z" fill="#3A0D11"/>
-                <path d="M10 10 Q 60 -10 80 40" stroke="#C5A059" stroke-width="1.5" fill="none"/>
-                <circle cx="40" cy="30" r="3.5" fill="#C5A059"/>
-            </svg>
-
-            <div class="relative z-10 text-center flex flex-col items-center">
-                
-                <!-- Encabezado sutil -->
-                <div class="flex items-center justify-center gap-2 mb-6">
-                    <span class="text-[#C5A059] text-[10px]">♦</span>
-                    <p class="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[#362017] font-semibold">
-                        Evento Finalizado
-                    </p>
-                    <span class="text-[#C5A059] text-[10px]">♦</span>
+            <div class="qr-activator-box">
+                <div>
+                    <h3>🔓 Portal de Recetas Exclusivas (Edición Mensual)</h3>
+                    <p>¿Compraste un nuevo frasco? Ingresa el código alfanumérico debajo de tu QR para reiniciar tus 30 días de acceso.</p>
                 </div>
-                
-                <!-- Título Principal -->
-                <h1 class="font-script text-5xl sm:text-6xl text-[#4A0E17] leading-none mb-2 drop-shadow-sm">
-                    La Dualidad<br>del Sabor
-                </h1>
-                
-                <!-- Subtítulo -->
-                <p class="font-serif text-xl sm:text-2xl text-[#596827] italic mb-6">
-                    Grupo D5 Gastronomía
-                </p>
+                <div class="qr-input-group">
+                    <input type="text" id="codigo-qr" placeholder="Ej. HV-LAV-2026">
+                    <button class="btn-primary" onclick="activarCodigoQR()">Validar Código QR</button>
+                </div>
+            </div>
 
-                <!-- Divisor Decorativo -->
-                <div class="flex items-center justify-center my-8 w-full max-w-[200px]">
-                    <div class="h-[1px] bg-gradient-to-r from-[#F8F5F2] via-[#C5A059] to-[#F8F5F2] w-full"></div>
-                    <div class="mx-2 text-[#C5A059] text-xs">✦</div>
-                    <div class="mx-1 w-2 h-2 rotate-45 bg-[#C5A059] border border-[#362017]"></div>
-                    <div class="mx-2 text-[#C5A059] text-xs">✦</div>
-                    <div class="h-[1px] bg-gradient-to-r from-[#C5A059] via-[#C5A059] to-[#F8F5F2] w-full"></div>
+            <div class="section-title">
+                <h2>Recetario Especializado por Sabor</h2>
+                <p>Filtra según el extracto que tengas en tu cocina. Todas las recetas están calibradas con nuestro gotero estándar.</p>
+            </div>
+
+            <!-- Botones de Filtro -->
+            <div class="flavor-filters">
+                <button class="filter-btn active" onclick="filtrarRecetas('todos', this)">Todos los Sabores</button>
+                <button class="filter-btn" onclick="filtrarRecetas('yerbabuena', this)">Yerbabuena</button>
+                <button class="filter-btn" onclick="filtrarRecetas('menta', this)">Menta</button>
+                <button class="filter-btn" onclick="filtrarRecetas('lavanda', this)">Lavanda</button>
+                <button class="filter-btn" onclick="filtrarRecetas('romero', this)">Romero</button>
+                <button class="filter-btn" onclick="filtrarRecetas('albahaca', this)">Albahaca</button>
+                <button class="filter-btn" onclick="filtrarRecetas('tomillo', this)">Tomillo</button>
+                <button class="filter-btn" onclick="filtrarRecetas('zacate', this)">Zacate Limón</button>
+                <button class="filter-btn" onclick="filtrarRecetas('cedron', this)">Cedrón</button>
+            </div>
+
+            <!-- Grid de Recetas -->
+            <div class="recipes-grid" id="recipes-grid">
+
+                <!-- YERBABUENA -->
+                <div class="recipe-card" data-flavor="yerbabuena">
+                    <span class="recipe-category">Repostería</span>
+                    <div class="recipe-flavor-badge">🌿 Sabor: Yerbabuena</div>
+                    <h3>Trufas de Chocolate Oscuro y Yerbabuena</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 8 gotas de Concentrado de Yerbabuena HerbaViva</div>
+                    <h4>Ingredientes (15 trufas):</h4>
+                    <ul>
+                        <li>200 g de chocolate amargo (70% cacao) picado</li>
+                        <li>100 ml de crema para batir (nata)</li>
+                        <li>1 cucharada de mantequilla sin sal</li>
+                        <li>Cacao alcalino en polvo para cubrir</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>Calienta la crema para batir hasta que rompa el primer hervor y retira del fuego.</li>
+                        <li>Agrega las <strong>8 gotas de Yerbabuena HerbaViva</strong>, el chocolate picado y la mantequilla. Mezcla hasta obtener una ganache brillante.</li>
+                        <li>Refrigera 2 horas, forma esferas y rebózalas en cacao en polvo.</li>
+                    </ol>
                 </div>
 
-                <!-- Mensaje de Agradecimiento -->
-                <p class="font-serif text-lg sm:text-xl text-[#362017] leading-relaxed mb-8 px-2">
-                    Gracias por haber vivido esta experiencia inolvidable con nosotros.
-                </p>
+                <!-- MENTA -->
+                <div class="recipe-card" data-flavor="menta">
+                    <span class="recipe-category">Dulces / Confitería</span>
+                    <div class="recipe-flavor-badge">❄️ Sabor: Menta Piperita</div>
+                    <h3>Merengues Crujientes de Menta y Cacao</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 6 gotas de Concentrado de Menta HerbaViva</div>
+                    <h4>Ingredientes:</h4>
+                    <ul>
+                        <li>3 claras de huevo a temperatura ambiente</li>
+                        <li>180 g de azúcar refinada</li>
+                        <li>1 pizca de cremor tártaro</li>
+                        <li>2 cucharadas de cocoa o chispas mini de chocolate</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>Bate las claras a punto de nieve y añade el azúcar en forma de lluvia hasta lograr picos firmes y brillantes.</li>
+                        <li>Incorpora las <strong>6 gotas de Menta Piperita</strong> en el último minuto de batido.</li>
+                        <li>Hornea a 95 °C durante 90 minutos hasta que estén secos y crujientes.</li>
+                    </ol>
+                </div>
 
-                <!-- Pie de página / Firma -->
-                <div class="mt-4 border-t border-[#C5A059] pt-4 border-opacity-50 inline-block">
-                    <p class="text-[9px] uppercase tracking-[0.3em] font-bold text-[#4A0E17]">
-                        Generación 2022 • 2027
-                    </p>
+                <!-- LAVANDA -->
+                <div class="recipe-card" data-flavor="lavanda">
+                    <span class="recipe-category">Bebidas & Café</span>
+                    <div class="recipe-flavor-badge">💜 Sabor: Lavanda Francesa</div>
+                    <h3>Iced Honey Lavender Oat Latte</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 3 gotas de Concentrado de Lavanda HerbaViva</div>
+                    <h4>Ingredientes (1 vaso de 12 oz):</h4>
+                    <ul>
+                        <li>1 shot doble de café espresso (o concentrado de té negro)</li>
+                        <li>1 cucharadita de miel de abeja orgánica</li>
+                        <li>200 ml de leche de avena o almendra fría</li>
+                        <li>Abundante hielo</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>En el espresso recién hecho y caliente, disuelve la miel junto con las <strong>3 gotas de Lavanda HerbaViva</strong>.</li>
+                        <li>Llena un vaso con hielo, vierte la leche vegetal y corona con el espresso aromático.</li>
+                    </ol>
+                </div>
+
+                <!-- ROMERO -->
+                <div class="recipe-card" data-flavor="romero">
+                    <span class="recipe-category">Repostería</span>
+                    <div class="recipe-flavor-badge">🌲 Sabor: Romero Fresco</div>
+                    <h3>Galletas Sablé de Toronja y Romero</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 10 gotas de Concentrado de Romero HerbaViva</div>
+                    <h4>Ingredientes (20 galletas):</h4>
+                    <ul>
+                        <li>150 g de mantequilla pomada</li>
+                        <li>80 g de azúcar glass</li>
+                        <li>Ralladura de 1 toronja rosada</li>
+                        <li>220 g de harina de trigo</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>Acrema la mantequilla con el azúcar glass, la ralladura de toronja y las <strong>10 gotas de Romero HerbaViva</strong>.</li>
+                        <li>Integra la harina sin amasar de más, refrigera 30 min, corta y hornea a 175 °C por 12-14 minutos.</li>
+                    </ol>
+                </div>
+
+                <!-- ALBAHACA -->
+                <div class="recipe-card" data-flavor="albahaca">
+                    <span class="recipe-category">Bebidas / Mocktail</span>
+                    <div class="recipe-flavor-badge">🍃 Sabor: Albahaca Dulce</div>
+                    <h3>Soda Artesanal de Fresa y Albahaca</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 4 gotas de Concentrado de Albahaca HerbaViva</div>
+                    <h4>Ingredientes:</h4>
+                    <ul>
+                        <li>4 fresas frescas maceradas con 1 cdita. de miel de agave</li>
+                        <li>Jugo de medio limón amarillo</li>
+                        <li>200 ml de agua mineral con gas bien fría</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>En el fondo de una copa mezcla el puré de fresa, el jugo de limón y las <strong>4 gotas de Albahaca Dulce HerbaViva</strong>.</li>
+                        <li>Agrega hielo picado y rellena suavemente con el agua mineral.</li>
+                    </ol>
+                </div>
+
+                <!-- TOMILLO -->
+                <div class="recipe-card" data-flavor="tomillo">
+                    <span class="recipe-category">Dulces / Glaseados</span>
+                    <div class="recipe-flavor-badge">🌱 Sabor: Tomillo Limón</div>
+                    <h3>Caramelo Suave de Miel y Tomillo</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 7 gotas de Concentrado de Tomillo HerbaViva</div>
+                    <h4>Ingredientes:</h4>
+                    <ul>
+                        <li>150 g de azúcar + 50 g de miel de abeja</li>
+                        <li>120 ml de crema para batir tibia</li>
+                        <li>40 g de mantequilla con sal</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>Funde el azúcar con la miel hasta lograr un color ámbar dorado.</li>
+                        <li>Retira del fuego, añade la crema tibia y la mantequilla; cuando baje ligeramente la temperatura, integra las <strong>7 gotas de Tomillo</strong>. Ideal para cubrir tartas de manzana o hacer chiclosos.</li>
+                    </ol>
+                </div>
+
+                <!-- ZACATE LIMÓN -->
+                <div class="recipe-card" data-flavor="zacate">
+                    <span class="recipe-category">Repostería Fría</span>
+                    <div class="recipe-flavor-badge">🌾 Sabor: Zacate Limón</div>
+                    <h3>Cheesecake Cremoso de Zacate Limón y Jengibre</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 12 gotas de Concentrado de Zacate Limón HerbaViva</div>
+                    <h4>Ingredientes:</h4>
+                    <ul>
+                        <li>Base de galletas de jengibre molidas con mantequilla</li>
+                        <li>400 g de queso crema + 1 lata de leche condensada</li>
+                        <li>150 ml de crema batida + 7 g de grenetina hidratada</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>Bate el queso crema con la leche condensada y las <strong>12 gotas de Zacate Limón HerbaViva</strong>.</li>
+                        <li>Incorpora la grenetina fundida y la crema batida en forma envolvente. Vierte sobre la base y refrigera 4 horas.</li>
+                    </ol>
+                </div>
+
+                <!-- CEDRÓN -->
+                <div class="recipe-card" data-flavor="cedron">
+                    <span class="recipe-category">Confitería Funcional</span>
+                    <div class="recipe-flavor-badge">✨ Sabor: Cedrón (Hierba Luisa)</div>
+                    <h3>Gomitas Botánicas Relajantes de Cedrón y Miel</h3>
+                    <div class="dosage-highlight">💧 Dosis exacta: 9 gotas de Concentrado de Cedrón HerbaViva</div>
+                    <h4>Ingredientes:</h4>
+                    <ul>
+                        <li>200 ml de infusión de manzanilla o jugo de manzana claro</li>
+                        <li>3 cucharadas de grenetina sin sabor (o agar-agar)</li>
+                        <li>2 cucharadas de miel de abeja pura</li>
+                    </ul>
+                    <h4>Preparación:</h4>
+                    <ol>
+                        <li>Hidrata la grenetina en la mitad del líquido frío y calienta el resto con la miel sin que hierva.</li>
+                        <li>Une ambas partes, añade las <strong>9 gotas de Cedrón HerbaViva</strong>, vierte en moldes de silicón y refrigera 45 minutos.</li>
+                    </ol>
                 </div>
 
             </div>
         </div>
-    </div>
+    </section>
 
+    <footer>
+        <p><strong>🌿 HerbaViva Orgánicos</strong> — Extractos Botánicos Culinarios con Recetario Inteligente QR</p>
+        <p style="margin-top:8px; opacity:0.75;">100% Natural • Sin Azúcar • Alta Concentración para Repostería, Bebidas y Confitería</p>
+    </footer>
+
+    <script>
+        function filtrarRecetas(sabor, botonSeleccionado) {
+            // Desplazar suavemente hacia la sección de recetas si viene del catálogo
+            document.getElementById('recetario').scrollIntoView({ behavior: 'smooth' });
+
+            // Actualizar estado visual de los botones
+            const botones = document.querySelectorAll('.filter-btn');
+            botones.forEach(btn => btn.classList.remove('active'));
+            
+            if (botonSeleccionado) {
+                botonSeleccionado.classList.add('active');
+            } else {
+                botones.forEach(btn => {
+                    if (btn.getAttribute('onclick').includes(sabor)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+
+            // Mostrar u ocultar tarjetas de recetas
+            const tarjetas = document.querySelectorAll('.recipe-card');
+            tarjetas.forEach(tarjeta => {
+                if (sabor === 'todos' || tarjeta.dataset.flavor === sabor) {
+                    tarjeta.style.display = 'block';
+                } else {
+                    tarjeta.style.display = 'none';
+                }
+            });
+        }
+
+        function activarCodigoQR() {
+            const input = document.getElementById('codigo-qr').value.trim();
+            const timerText = document.getElementById('qr-timer-text');
+            if (input.length > 3) {
+                timerText.innerHTML = `¡Código <strong>${input.toUpperCase()}</strong> verificado con éxito! Tienes <strong>30 días completos</strong> de acceso a las recetas exclusivas de este mes.`;
+                alert('¡Felicidades! Tu código QR ha sido activado. Disfruta de 30 días de recetas exclusivas.');
+            } else {
+                alert('Por favor ingresa el código que aparece debajo del QR de tu botella (Ej. HV-LAV-2026).');
+            }
+        }
+    </script>
 </body>
 </html>
